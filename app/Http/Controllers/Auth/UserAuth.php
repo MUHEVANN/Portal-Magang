@@ -39,7 +39,7 @@ class UserAuth extends Controller
             "password" => Hash::make($request->password),
             "verif_code" => Str::random(60),
         ]);
-
+        $user->addRole('admin');
         Auth::login($user);
         EmailUser::dispatch($user);
         return redirect()->back()->with('success', 'Akun berhasil dibuat silahkan verifikasi email anda');
@@ -69,11 +69,16 @@ class UserAuth extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 if ($user->is_active !== '1') {
+
                     return redirect()->back()->withErrors(['belum-verif' => "Akun anda belum diverifikasi, cek email anda"]);
                 } else {
                     Session::put('user', $user);
                     Auth::login($user);
-                    return redirect()->to('home');
+                    if ($user->hasRole('client')) {
+                        return redirect()->to('dashboard');
+                    } else {
+                        return redirect()->to('home');
+                    }
                 }
             } else {
                 return redirect()->back()->withErrors(['password' => "password salah"]);
