@@ -34,6 +34,10 @@ class ApplyJobController extends Controller
      */
     public function store(Request $request)
     {
+        $user = User::where('email', Auth::user()->email)->first();
+        if ($user->is_active !== '1') {
+            return redirect()->to('profile')->withErrors(['belum-verif' => "Akun anda belum diverifikasi, cek email anda"]);
+        }
         $validate = Validator::make($request->all(), [
             'user_id' => 'required',
             'job_id' => 'required',

@@ -31,18 +31,15 @@ class UserAuth extends Controller
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
 
-
-
         $user = User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "verif_code" => Str::random(60),
         ]);
-        $user->addRole('admin');
+        $user->addRole('client');
         Auth::login($user);
-        EmailUser::dispatch($user);
-        return redirect()->back()->with('success', 'Akun berhasil dibuat silahkan verifikasi email anda');
+        return redirect()->back()->with('success', 'Akun berhasil dibuat');
     }
 
     public function login()
@@ -68,17 +65,12 @@ class UserAuth extends Controller
 
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
-                if ($user->is_active !== '1') {
-
-                    return redirect()->back()->withErrors(['belum-verif' => "Akun anda belum diverifikasi, cek email anda"]);
+                Session::put('user', $user);
+                Auth::login($user);
+                if ($user->hasRole('client')) {
+                    return redirect()->to('dashboard');
                 } else {
-                    Session::put('user', $user);
-                    Auth::login($user);
-                    if ($user->hasRole('client')) {
-                        return redirect()->to('dashboard');
-                    } else {
-                        return redirect()->to('home');
-                    }
+                    return redirect()->to('home');
                 }
             } else {
                 return redirect()->back()->withErrors(['password' => "password salah"]);

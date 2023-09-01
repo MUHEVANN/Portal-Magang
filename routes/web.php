@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplyJobController;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Lowongan\LowonganController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,9 +52,7 @@ Route::get('/home', function () {
 
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('Admin.Dashboard');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index']);
     // Lowongan
     Route::resource('lowongan', LowonganController::class);
     // Apply

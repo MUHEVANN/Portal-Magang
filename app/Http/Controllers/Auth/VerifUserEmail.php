@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\EmailUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,5 +25,12 @@ class VerifUserEmail extends Controller
         } else {
             return redirect()->to('register')->with('error', 'Akun gagal diverifikasi');
         }
+    }
+
+    public function kirim_verif()
+    {
+        $user = Auth::user();
+        EmailUser::dispatch($user);
+        return redirect()->back()->with(['success' => 'Kami telah mengirimkan verifikasi cek email ada']);
     }
 }
