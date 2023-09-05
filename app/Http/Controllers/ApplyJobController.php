@@ -58,7 +58,6 @@ class ApplyJobController extends Controller
             return redirect()->back()->withErrors(['sudah-lulus' => 'Anda sudah lulus, silahkan cek email anda']);
         }
         $email = $request->email;
-        $password = $request->password;
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
             $carrer = new CarrerUser();
@@ -68,12 +67,18 @@ class ApplyJobController extends Controller
                     'email' => $email[$i],
                     'password' => Str::random(60),
                 ]);
+                if ($request->has('nameKelompok')) {
+                    $carrer->nama_kelompok = $request->namaKelompok;
+                }
                 $carrer->user_id = $new_user->id;
                 $carrer->lowongan_id = $request->lowongan[$i];
                 $carrer->cv = $request->cv[$i];
                 $carrer->save();
                 CreateUserFromApply::dispatch($new_user);
             } else {
+                if ($request->has('nameKelompok')) {
+                    $carrer->nama_kelompok = $request->namaKelompok;
+                }
                 $carrer->user_id = $user_acc->id;
                 $carrer->lowongan_id = $request->lowongan[$i];
                 $carrer->cv = $request->cv[$i];
@@ -83,7 +88,7 @@ class ApplyJobController extends Controller
         }
     }
 
-    /**
+    /** 
      * Display the specified resource.
      */
     public function show(string $id)

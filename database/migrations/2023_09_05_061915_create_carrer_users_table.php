@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('lowongan_id');
             $table->string('cv-user');
             $table->string('konfirmasi')->default('belum');
+            $table->string('nama_kelompok')->default('Tidak Ada');
             $table->timestamps();
             $table->foreign('carrer_id')->references('id')->on('carrers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

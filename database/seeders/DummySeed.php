@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\ApplyJob;
+use App\Models\Carrer;
+use App\Models\CarrerUser;
 use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,20 +18,6 @@ class DummySeed extends Seeder
      */
     public function run(): void
     {
-        $user = User::create([
-            'name' => "user",
-            'email' => "user@gmail.com",
-            'password' => Hash::make("password"),
-            'is_active' => "1"
-        ]);
-        $user->addRole('client');
-        $user2 = User::create([
-            'name' => "evan",
-            'email' => "evan@gmail.com",
-            'password' => Hash::make("password"),
-            'is_active' => "1"
-        ]);
-        $user2->addRole('client');
         $job = Lowongan::create([
             'name' => 'Font End',
             'desc' => 'Lowongan mangang untuk bagaian fe atau ui aplikasi',
@@ -38,37 +26,22 @@ class DummySeed extends Seeder
             'gambar' => '01293.jpg',
             'max_applay' => '01-02-24',
         ]);
-
-        ApplyJob::create([
-            'user_id' => $user->id,
-            'lowongan_id' => $job->id,
-            'cv' => '21213.pdf',
-            'start' => '01-02-24',
-            'end' => '01-05-24',
-            'alamat' => 'klaten',
-            'pendidikan' => 'kuliah',
-            'sekolah' => 'Universitas Amikom Yogyakarta',
-            'portofolio_url' => 'www.google.com',
-            'ig_url' => 'www.google.com',
-            'linkedin_url' => 'www.google.com',
-            'gender' => 'L',
-            'alasan' => 'menambah wawasan dibisang fe',
+        $carrer = Carrer::create([
+            'batch' => 1
         ]);
-        ApplyJob::create([
-            'user_id' => $user2->id,
+        CarrerUser::create([
+            'carrer_id' => $carrer->id,
+            'user_id' => 1,
             'lowongan_id' => $job->id,
-            'cv' => '21213.pdf',
-            'start' => '01-02-24',
-            'end' => '01-05-24',
-            'alamat' => 'klaten',
-            'pendidikan' => 'kuliah',
-            'sekolah' => 'Universitas Amikom Yogyakarta',
-            'portofolio_url' => 'www.google.com',
-            'ig_url' => 'www.google.com',
-            'linkedin_url' => 'www.google.com',
-            'gender' => 'L',
-            'alasan' => 'menambah wawasan dibisang fe',
-            'konfirmasi' => 'lulus',
+            'cv-user' => '21213.pdf',
+            'nama_kelompok' => 'macan'
+        ]);
+        CarrerUser::create([
+            'carrer_id' => $carrer->id,
+            'user_id' => 2,
+            'lowongan_id' => $job->id,
+            'cv-user' => '21213.pdf',
+            'nama_kelompok' => 'macan'
         ]);
     }
 }

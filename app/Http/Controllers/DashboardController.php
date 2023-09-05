@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $applyBelumKonfirmasi = CarrerUser::with('user', 'lowongan')->where('status', 'belum')->get();
+        $applyBelumKonfirmasi = CarrerUser::with('user', 'lowongan')->where('konfirmasi', 'belum')->get();
         return view('Admin.dashboard', ['applyBelumKonfirmasi' => $applyBelumKonfirmasi]);
     }
 }
