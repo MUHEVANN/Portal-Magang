@@ -21,7 +21,7 @@
             <input type="email" name="email">
         </form-group>
         <form-group style="display: flex">
-            <label for="password">Name</label>
+            <label for="password">Password</label>
             <input type="password" name="password">
         </form-group>
         <button type="submit">Register</button>

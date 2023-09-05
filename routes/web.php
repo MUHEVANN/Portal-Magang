@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Lowongan\LowonganController;
+use App\Http\Controllers\TesCVController;
 use Illuminate\Support\Facades\Route;
 
 /*

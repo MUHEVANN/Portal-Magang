@@ -17,6 +17,9 @@ class UserAuth extends Controller
 {
     public function register()
     {
+        if (Auth::check()) {
+            return redirect()->back();
+        }
         return view('Auth.register');
     }
     public function proccess_register(Request $request)
@@ -39,7 +42,7 @@ class UserAuth extends Controller
         ]);
         $user->addRole('client');
         Auth::login($user);
-        return redirect()->back()->with('success', 'Akun berhasil dibuat');
+        return redirect()->to('home')->with('success', 'Akun berhasil dibuat');
     }
 
     public function login()
@@ -67,7 +70,7 @@ class UserAuth extends Controller
             if (Hash::check($request->password, $user->password)) {
                 Session::put('user', $user);
                 Auth::login($user);
-                if ($user->hasRole('client')) {
+                if ($user->hasRole('admin')) {
                     return redirect()->to('dashboard');
                 } else {
                     return redirect()->to('home');

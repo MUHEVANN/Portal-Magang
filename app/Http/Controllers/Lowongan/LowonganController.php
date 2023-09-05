@@ -23,12 +23,13 @@ class LowonganController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->file('gambar'));
         $validate = Validator::make($request->all(), [
             'name' => 'required',
             'desc' => 'required',
             'benefit' => 'required',
             'kualifikasi' => 'required',
-            'gambar' => 'required|mimes:JPEG,JPG,PNG',
+            'gambar' => 'required|mimes:jpg,jpeg,png',
             'max_applay' => 'required',
         ]);
 
