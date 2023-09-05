@@ -15,9 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('password');
+            $table->enum('gender', ['L', 'P'])->nullable();
+            $table->string('alamat')->nullable();
+            $table->integer('no_hp')->nullable();
+            $table->string('profile_image')->nullable();
             $table->string('verif_code')->nullable();
             $table->string('is_active')->default(0);
-            $table->string('password');
+            $table->string('is_ketua')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

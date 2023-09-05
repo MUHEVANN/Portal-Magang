@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\AfterApply;
+use App\Jobs\CreateUserFromApply;
 use App\Jobs\StatusApplyJob;
 use App\Mail\StatusApply;
-use App\Models\ApplyJob;
+use App\Models\CarrerUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ApplyJobController extends Controller
 {
@@ -17,7 +20,7 @@ class ApplyJobController extends Controller
      */
     public function index()
     {
-        ApplyJob::with('user', 'lowongan')->get();
+        CarrerUser::with('user', 'lowongan')->get();
         return view('Admin.Apply.index');
     }
 
@@ -40,45 +43,43 @@ class ApplyJobController extends Controller
         }
         $validate = Validator::make($request->all(), [
             'user_id' => 'required',
-            'job_id' => 'required',
+            'lowongan_id' => 'required',
             'cv' => 'required|mimes:pdf',
-            'start' => 'required',
-            'end' => 'required',
-            'alamat' => 'required',
-            'pendidikan' => 'required',
-            'sekolah' => 'required',
-            'portofolio_url' => 'required',
-            'ig_url' => 'required',
-            'gender' => 'required',
-            'alasan' => 'required',
         ]);
 
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-        $user = ApplyJob::where('id', Auth::user()->id)->where('konfirmasi', 'belum')->first();
+        $user = CarrerUser::where('id', Auth::user()->id)->where('konfirmasi', 'belum')->first();
+        $user2 = CarrerUser::where('id', Auth::user()->id)->where('konfirmasi', 'lulus')->first();
         if ($user) {
             return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
+        } elseif ($user2) {
+            return redirect()->back()->withErrors(['sudah-lulus' => 'Anda sudah lulus, silahkan cek email anda']);
         }
-        $apply = ApplyJob::create([
-            'user_id' => auth()->id,
-            'job_id' => $request->job_id,
-            'cv' => $request->cv,
-            'start' => $request->start,
-            'end' => $request->end,
-            'alamat' => $request->alamat,
-            'pendidikan' => $request->pendidikan,
-            'sekolah' => $request->sekolah,
-            'portofolio_url' => $request->portofolio_url,
-            'ig_url' => $request->ig_url,
-            'gender' => $request->gender,
-            'alasan' => $request->alasan,
-        ]);
-
-        if ($apply) {
-            return redirect()->back()->with(['success' => 'Berhasil Apply']);
-        } else {
-            return redirect()->back()->with(['gagal' => 'Gagal Apply, Silahkan Apply Ulang']);
+        $email = $request->email;
+        $password = $request->password;
+        for ($i = 0; $i < count($email); $i++) {
+            $user_acc = User::where('email', $email[$i])->first();
+            $carrer = new CarrerUser();
+            if (!$user_acc) {
+                $new_user = User::create([
+                    'name' => $request->name[$i],
+                    'email' => $email[$i],
+                    'password' => Str::random(60),
+                ]);
+                $carrer->user_id = $new_user->id;
+                $carrer->lowongan_id = $request->lowongan[$i];
+                $carrer->cv = $request->cv[$i];
+                $carrer->save();
+                CreateUserFromApply::dispatch($new_user);
+            } else {
+                $carrer->user_id = $user_acc->id;
+                $carrer->lowongan_id = $request->lowongan[$i];
+                $carrer->cv = $request->cv[$i];
+                $carrer->save();
+                AfterApply::dispatch($user_acc);
+            }
         }
     }
 
@@ -87,7 +88,7 @@ class ApplyJobController extends Controller
      */
     public function show(string $id)
     {
-        $apply =  ApplyJob::find($id);
+        $apply =  CarrerUser::find($id);
         return view('Admin.Apply.show');
     }
 
@@ -96,7 +97,7 @@ class ApplyJobController extends Controller
      */
     public function reject($id)
     {
-        $apply = ApplyJob::find($id);
+        $apply = CarrerUser::find($id);
         $apply->konfirmasi = 'tidak-lulus';
         $apply->save();
         StatusApplyJob::dispatch($apply);
@@ -104,7 +105,7 @@ class ApplyJobController extends Controller
     }
     public function konfirm($id)
     {
-        $apply = ApplyJob::find($id);
+        $apply = CarrerUser::find($id);
         $apply->konfirmasi = 'lulus';
         $apply->save();
         StatusApplyJob::dispatch($apply);
