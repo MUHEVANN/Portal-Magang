@@ -63,7 +63,6 @@ class UserAuth extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-
         $user = User::where('email', $request->email)->first();
 
         if ($user) {

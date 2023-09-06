@@ -24,6 +24,7 @@ Route::get('/', function () {
 Route::get('register', [UserAuth::class, 'register']);
 Route::post('register', [UserAuth::class, 'proccess_register']);
 
+
 Route::middleware('auth')->group(function () {
     // verif user
     Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
