@@ -6,10 +6,14 @@ use App\Jobs\AfterApply;
 use App\Jobs\CreateUserFromApply;
 use App\Jobs\StatusApplyJob;
 use App\Mail\StatusApply;
+use App\Models\Apply;
+use App\Models\Carrer;
 use App\Models\CarrerUser;
+use App\Models\Kelompok;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -50,35 +54,49 @@ class ApplyJobController extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-        $user = CarrerUser::where('id', Auth::user()->id)->where('konfirmasi', 'belum')->first();
-        $user2 = CarrerUser::where('id', Auth::user()->id)->where('konfirmasi', 'lulus')->first();
+        $user = Apply::where('kelompok_id', Auth::user()->kelompok_id)->where('konfirmasi', 'belum')->first();
+        $user2 = Apply::where('kelompok_id', Auth::user()->kelompok_id)->where('konfirmasi', 'lulus')->first();
         if ($user) {
             return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
         } elseif ($user2) {
             return redirect()->back()->withErrors(['sudah-lulus' => 'Anda sudah lulus, silahkan cek email anda']);
         }
         $email = $request->email;
+        if ($request->has('kelompok')) {
+            $kelompok = Kelompok::create([
+                'name' => $request->kelompok
+            ]);
+        }
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
-            $carrer = new CarrerUser();
+            $carr = Carrer::latest()->get();
+            $carrer = new Apply();
             if (!$user_acc) {
-                $new_user = User::create([
-                    'name' => $request->name[$i],
-                    'email' => $email[$i],
-                    'password' => Str::random(60),
-                ]);
-                if ($request->has('nameKelompok')) {
-                    $carrer->nama_kelompok = $request->namaKelompok;
+                $new_user = new User();
+                $new_user->name = $request->name;
+                $new_user->email = $request->email;
+                $new_user->password = Hash::make($request->password);
+                if ($request->has('kelompok')) {
+                    $new_user->kelompok_id = $kelompok->id;
                 }
+                if ($request->has('jabatan')) {
+                    $new_user->jabatan = 1;
+                }
+                $carrer->carrer_id = $carr->id;
                 $carrer->user_id = $new_user->id;
                 $carrer->lowongan_id = $request->lowongan[$i];
                 $carrer->cv = $request->cv[$i];
+
                 $carrer->save();
                 CreateUserFromApply::dispatch($new_user);
             } else {
-                if ($request->has('nameKelompok')) {
-                    $carrer->nama_kelompok = $request->namaKelompok;
+                if ($request->has('kelompok')) {
+                    $carrer->kelompok_id = $kelompok->id;
                 }
+                if ($request->has('jabatan')) {
+                    $carrer->jabatan = 1;
+                }
+                $carrer->carrer_id = $carr->id;
                 $carrer->user_id = $user_acc->id;
                 $carrer->lowongan_id = $request->lowongan[$i];
                 $carrer->cv = $request->cv[$i];
@@ -93,7 +111,7 @@ class ApplyJobController extends Controller
      */
     public function show(string $id)
     {
-        $apply =  CarrerUser::find($id);
+        $apply =  Apply::find($id);
         return view('Admin.Apply.show');
     }
 

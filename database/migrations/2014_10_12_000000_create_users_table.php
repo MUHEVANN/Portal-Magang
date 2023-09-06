@@ -11,9 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('kelompok', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('kelompok_id')->default(0);
+            $table->integer('jabatan')->default(0);
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('gender', ['L', 'P'])->nullable();
@@ -22,9 +29,9 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->string('verif_code')->nullable();
             $table->string('is_active')->default(0);
-            $table->string('is_ketua')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('kelompok_id')->references('id')->on('kelompok')->onDelete('cascade');
         });
     }
 

@@ -30,6 +30,7 @@ class User extends Authenticatable implements LaratrustUser
         'no_hp',
         'gender',
         'profile_image',
+        'nama_kelompok'
     ];
 
     /**
@@ -50,4 +51,13 @@ class User extends Authenticatable implements LaratrustUser
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function carrer_user()
+    {
+        return $this->hasOne(CarrerUser::class);
+    }
+    public function kelompok()
+    {
+        return $this->belongsTo(Kelompok::class, 'kelompok_id', 'id');
+    }
 }
