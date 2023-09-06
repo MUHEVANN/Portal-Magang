@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('carrers', function (Blueprint $table) {
             $table->id();
-            $table->integer('batch');
+            $table->string('batch');
             $table->timestamps();
         });
     }

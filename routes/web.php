@@ -3,9 +3,11 @@
 use App\Http\Controllers\ApplyJobController;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
+use App\Http\Controllers\CarrerUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Lowongan\LowonganController;
 use App\Http\Controllers\TesCVController;
+use App\Models\CarrerUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,4 +67,6 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('apply-show', [ApplyJobController::class, 'show']);
     Route::post('apply-status-reject', [ApplyJobController::class, 'reject']);
     Route::post('apply-status-konfirm', [ApplyJobController::class, 'konfirm']);
+
+    Route::get('detail-pemagang/{namaKelompok}', [CarrerUserController::class, 'detailPemagang']);
 });

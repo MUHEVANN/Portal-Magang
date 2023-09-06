@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Kelompok;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,6 +15,9 @@ class AdminSeed extends Seeder
      */
     public function run(): void
     {
+        Kelompok::create([
+            'name' => 'tidak ada'
+        ]);
         $user = User::create([
             'name' => "Admin",
             'email' => "Admin@gmail.com",
