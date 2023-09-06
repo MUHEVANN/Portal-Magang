@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\CodeChangePassword as MailCodeChangePassword;
+use App\Mail\AfterApply as MailAfterApply;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,9 +11,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class CodeChangePassword implements ShouldQueue
+class AfterApply implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     private $user;
     /**
      * Create a new job instance.
@@ -28,6 +29,6 @@ class CodeChangePassword implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->user->email)->send(new MailCodeChangePassword($this->user->verif_code));
+        Mail::to($this->user->email)->send(new MailAfterApply($this->user));
     }
 }

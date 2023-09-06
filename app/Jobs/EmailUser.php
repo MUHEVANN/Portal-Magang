@@ -28,6 +28,5 @@ class EmailUser implements ShouldQueue
     public function handle(): void
     {
         Mail::to($this->user->email)->send(new VerifCode($this->user));
-        Mail::to($request->email)->send(new CodeChangePassword);
     }
 }

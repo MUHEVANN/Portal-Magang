@@ -65,8 +65,6 @@
             </form>
         </section>
     </div>
-
-
 </body>
 <script src='{{ asset('js/main.js') }}'></script>
 

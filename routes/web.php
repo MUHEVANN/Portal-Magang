@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\ApplyJobController;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Lowongan\LowonganController;
+use App\Http\Controllers\TesCVController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
+
 
 // Auth User
 // Register User
@@ -35,10 +37,7 @@ Route::middleware('auth')->group(function () {
 // login
 Route::get('login', [UserAuth::class, 'login'])->name('login');
 Route::post('login', [UserAuth::class, 'proccess_login']);
-// Home
-Route::get('/home', function () {
-    return view('welcome');
-})->middleware('auth');
+
 // changePassword
 Route::get('verif-email-changePassword', [UserAuth::class, 'verif_email_changePassword']);
 Route::post('verif-email-changePassword', [UserAuth::class, 'code_changePassword']);
@@ -47,18 +46,16 @@ Route::get('changePassword', [UserAuth::class, 'changePassword']);
 Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 
 // Pages
-//  Client
+// Client
 // Home
 Route::get('/home', function () {
-    return view('Auth.login');
+    return view('welcome');
 })->middleware('auth');
 
 
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('Admin.Dashboard');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index']);
     // Lowongan
     Route::resource('lowongan', LowonganController::class);
     // Apply
