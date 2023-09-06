@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carrer_users', function (Blueprint $table) {
+        Schema::create('apply', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('carrer_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('kelompok_id');
             $table->unsignedBigInteger('lowongan_id');
-            $table->string('cv-user');
-            $table->string('konfirmasi')->default('belum');
-            $table->string('nama_kelompok')->default('Tidak Ada');
+            $table->string('cv_user');
+            $table->string('status')->default('menunggu');
             $table->timestamps();
             $table->foreign('carrer_id')->references('id')->on('carrers')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('kelompok_id')->references('id')->on('kelompok')->onDelete('cascade');
             $table->foreign('lowongan_id')->references('id')->on('lowongans')->onDelete('cascade');
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carrer_users');
+        Schema::dropIfExists('apply');
     }
 };

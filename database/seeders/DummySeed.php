@@ -33,15 +33,8 @@ class DummySeed extends Seeder
             'carrer_id' => $carrer->id,
             'user_id' => 1,
             'lowongan_id' => $job->id,
-            'cv-user' => '21213.pdf',
-            'nama_kelompok' => 'macan'
-        ]);
-        CarrerUser::create([
-            'carrer_id' => $carrer->id,
-            'user_id' => 2,
-            'lowongan_id' => $job->id,
-            'cv-user' => '21213.pdf',
-            'nama_kelompok' => 'macan'
+            'cv_user' => '21213.pdf',
+            'is_ketua' => '1'
         ]);
     }
 }
