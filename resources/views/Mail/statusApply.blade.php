@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    {{ $user->konfirmasi }}
+    Status kelulusan anda adalah{{ $status }}
 </body>
 
 </html>

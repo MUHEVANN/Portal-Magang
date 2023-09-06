@@ -63,8 +63,8 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('apply-create', [ApplyJobController::class, 'create']);
     Route::post('apply', [ApplyJobController::class, 'store']);
     Route::get('apply-show', [ApplyJobController::class, 'show']);
-    Route::post('apply-status-reject', [ApplyJobController::class, 'reject']);
-    Route::post('apply-status-konfirm', [ApplyJobController::class, 'konfirm']);
+    Route::get('apply-status-reject/{id}', [ApplyJobController::class, 'reject']);
+    Route::get('apply-status-konfirm/{id}', [ApplyJobController::class, 'konfirm']);
 
     Route::get('detail-pemagang/{namaKelompok}', [CarrerUserController::class, 'detailPemagang']);
 });

@@ -64,45 +64,46 @@ class ApplyJobController extends Controller
         $email = $request->email;
         if ($request->has('kelompok')) {
             $kelompok = Kelompok::create([
-                'name' => $request->kelompok
+                'name' => Str::random(5)
             ]);
         }
+        $carrer = new Apply();
+        $carr = Carrer::latest()->get();
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
-            $carr = Carrer::latest()->get();
-            $carrer = new Apply();
             if (!$user_acc) {
                 $new_user = new User();
                 $new_user->name = $request->name;
                 $new_user->email = $request->email;
                 $new_user->password = Hash::make($request->password);
-                if ($request->has('kelompok')) {
-                    $new_user->kelompok_id = $kelompok->id;
-                }
                 if ($request->has('jabatan')) {
                     $new_user->jabatan = 1;
                 }
-                $carrer->carrer_id = $carr->id;
-                $carrer->user_id = $new_user->id;
-                $carrer->lowongan_id = $request->lowongan[$i];
-                $carrer->cv = $request->cv[$i];
-
-                $carrer->save();
+                if ($request->has('kelompok')) {
+                    $new_user->kelompok_id = $kelompok->id;
+                }
                 CreateUserFromApply::dispatch($new_user);
             } else {
                 if ($request->has('kelompok')) {
-                    $carrer->kelompok_id = $kelompok->id;
+                    $user_acc->kelompok_id = $kelompok->id;
                 }
                 if ($request->has('jabatan')) {
-                    $carrer->jabatan = 1;
+                    $user_acc->jabatan = 1;
                 }
-                $carrer->carrer_id = $carr->id;
-                $carrer->user_id = $user_acc->id;
-                $carrer->lowongan_id = $request->lowongan[$i];
-                $carrer->cv = $request->cv[$i];
-                $carrer->save();
                 AfterApply::dispatch($user_acc);
             }
+        }
+        if ($request->has('kelompok')) {
+            $carrer->kelompok_id = $kelompok->id;
+        }
+        $carrer->carrer_id = $carr->id;
+        $carrer->user_id = $user_acc->id;
+        $carrer->lowongan_id = $request->lowongan;
+        $carrer->cv = $request->cv;
+        $carrer->save();
+
+        if ($carrer) {
+            return redirect()->back();
         }
     }
 
@@ -120,18 +121,24 @@ class ApplyJobController extends Controller
      */
     public function reject($id)
     {
-        $apply = CarrerUser::find($id);
-        $apply->konfirmasi = 'tidak-lulus';
+        $apply = Apply::find($id);
+        $apply->status = 'Ditolak';
         $apply->save();
-        StatusApplyJob::dispatch($apply);
+        foreach ($apply->kelompok->user as $user) {
+            // dd($apply->status);
+            StatusApplyJob::dispatch($user, $apply->status);
+        }
         return redirect()->back()->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function konfirm($id)
     {
-        $apply = CarrerUser::find($id);
-        $apply->konfirmasi = 'lulus';
+        $apply = Apply::find($id);
+        $apply->status = 'lulus';
         $apply->save();
-        StatusApplyJob::dispatch($apply);
+        foreach ($apply->kelompok->user as $user) {
+            // dd($apply->status);
+            StatusApplyJob::dispatch($user, $apply->status);
+        }
         return redirect()->back()->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
 
