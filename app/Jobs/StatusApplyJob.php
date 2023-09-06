@@ -15,12 +15,14 @@ class StatusApplyJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private $user;
+    private $status;
     /**
      * Create a new job instance.
      */
-    public function __construct($user)
+    public function __construct($user, $status)
     {
         $this->user = $user;
+        $this->status = $status;
     }
 
     /**
@@ -28,6 +30,6 @@ class StatusApplyJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->user->email)->send(new StatusApply($this->user));
+        Mail::to($this->user->email)->send(new StatusApply($this->status));
     }
 }

@@ -30,7 +30,7 @@ class User extends Authenticatable implements LaratrustUser
         'no_hp',
         'gender',
         'profile_image',
-        'nama_kelompok'
+        'kelompok_id'
     ];
 
     /**
