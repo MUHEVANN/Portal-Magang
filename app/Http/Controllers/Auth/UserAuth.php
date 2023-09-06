@@ -40,6 +40,7 @@ class UserAuth extends Controller
             "password" => Hash::make($request->password),
             "verif_code" => Str::random(60),
         ]);
+        // dd('hello' . $user);
         $user->addRole('client');
         Auth::login($user);
         return redirect()->to('home')->with('success', 'Akun berhasil dibuat');

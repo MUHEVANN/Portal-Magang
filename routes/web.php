@@ -48,7 +48,7 @@ Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 // Pages
 // Client
 // Home
-Route::get('/home', function () {
+Route::get('home', function () {
     return view('welcome');
 })->middleware('auth');
 

@@ -16,6 +16,9 @@
     <div class="bg-white h-fit flex align-middle shadow-sm rounded-md">
         <img src="images/Login.png" class="bg-center w-96 h-auto rounded-lg object-fill p-5" alt="login jetorbit logo">
         <section class="p-10 sm:w-[30rem]">
+            <span class="block text-right text-sm opacity-50 text-gray-700">Belum punya akun? <a
+                    class="hover:underline text-[#001D86]" href="register">buat
+                    akun</a></span>
             <h1 class="my-10 text-3xl">Login</h1>
             <form action="{{ url('login') }}" method="post">
                 @csrf
@@ -48,9 +51,6 @@
                     <p class="text-red-600">{{ $errors->first('password') }}</p>
                 @endif
                 <br>
-                <span class="block text-right text-sm text-gray-700">Belum punya akun? <a class="text-[#001D86]"
-                        href="register">buat
-                        akun</a></span>
                 <button type="submit"
                     class=" text-pink-100 cursor-pointer bg-[#001D86] mt-9 my-6 py-2 px-4 w-full">Login</button>
                 <a class="text-center cursor-pointer block hover:underline" href="register">Register</a>
