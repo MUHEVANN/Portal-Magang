@@ -30,7 +30,9 @@ class User extends Authenticatable implements LaratrustUser
         'no_hp',
         'gender',
         'profile_image',
-        'kelompok_id'
+        'kelompok_id',
+        'job_magang_id',
+        'jabatan'
     ];
 
     /**
@@ -59,5 +61,9 @@ class User extends Authenticatable implements LaratrustUser
     public function kelompok()
     {
         return $this->belongsTo(Kelompok::class, 'kelompok_id', 'id');
+    }
+    public function lowongan()
+    {
+        return $this->belongsTo(Lowongan::class, 'job_magang_id', 'id');
     }
 }

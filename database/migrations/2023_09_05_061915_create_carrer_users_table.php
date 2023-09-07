@@ -15,13 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('carrer_id');
             $table->unsignedBigInteger('kelompok_id');
-            $table->unsignedBigInteger('lowongan_id');
             $table->string('cv_user');
             $table->string('status')->default('menunggu');
             $table->timestamps();
             $table->foreign('carrer_id')->references('id')->on('carrers')->onDelete('cascade');
             $table->foreign('kelompok_id')->references('id')->on('kelompok')->onDelete('cascade');
-            $table->foreign('lowongan_id')->references('id')->on('lowongans')->onDelete('cascade');
         });
     }
 

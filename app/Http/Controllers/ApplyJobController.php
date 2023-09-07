@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Jobs\AfterApply;
 use App\Jobs\CreateUserFromApply;
 use App\Jobs\StatusApplyJob;
-use App\Mail\StatusApply;
 use App\Models\Apply;
 use App\Models\Carrer;
 use App\Models\CarrerUser;
 use App\Models\Kelompok;
+use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ class ApplyJobController extends Controller
      */
     public function index()
     {
-        CarrerUser::with('user', 'lowongan')->get();
+        Apply::with('user', 'lowongan')->get();
         return view('Admin.Apply.index');
     }
 
@@ -46,67 +46,70 @@ class ApplyJobController extends Controller
             return redirect()->to('profile')->withErrors(['belum-verif' => "Akun anda belum diverifikasi, cek email anda"]);
         }
         $validate = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'lowongan_id' => 'required',
+            'job_magang' => 'required',
             'cv' => 'required|mimes:pdf',
+            'name' => 'required',
+            'email' => 'required',
         ]);
 
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-        $user = Apply::where('kelompok_id', Auth::user()->kelompok_id)->where('konfirmasi', 'belum')->first();
-        $user2 = Apply::where('kelompok_id', Auth::user()->kelompok_id)->where('konfirmasi', 'lulus')->first();
-        if ($user) {
+        $existingApply = Apply::where('kelompok_id', Auth::user()->kelompok_id)
+            ->whereIn('status', ['mengunggu', 'lulus'])
+            ->first();
+        if ($existingApply) {
             return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
-        } elseif ($user2) {
-            return redirect()->back()->withErrors(['sudah-lulus' => 'Anda sudah lulus, silahkan cek email anda']);
         }
         $email = $request->email;
-        if ($request->has('kelompok')) {
-            $kelompok = Kelompok::create([
-                'name' => Str::random(5)
-            ]);
-        }
+        $kelompok = Kelompok::create([
+            'name' => Str::random(5)
+        ]);
+
         $carrer = new Apply();
         $carr = Carrer::latest()->get();
+
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
             if (!$user_acc) {
                 $new_user = new User();
-                $new_user->name = $request->name;
-                $new_user->email = $request->email;
-                $new_user->password = Hash::make($request->password);
-                if ($request->has('jabatan')) {
-                    $new_user->jabatan = 1;
-                }
-                if ($request->has('kelompok')) {
-                    $new_user->kelompok_id = $kelompok->id;
-                }
+                $new_user->name = $request->name[$i];
+                $new_user->email = $request->email[$i];
+                $new_user->job_magang_id = $request->job_magang[$i];
+                $new_user->password = Str::random(60);
+                $new_user->kelompok_id = $kelompok->id;
+                $new_user->save();
                 CreateUserFromApply::dispatch($new_user);
             } else {
-                if ($request->has('kelompok')) {
-                    $user_acc->kelompok_id = $kelompok->id;
-                }
-                if ($request->has('jabatan')) {
-                    $user_acc->jabatan = 1;
-                }
+                $user_acc->kelompok_id = $kelompok->id;
+                $user_acc->job_magang_id = $request->job_magang[$i];
+                $user_acc->save();
                 AfterApply::dispatch($user_acc);
             }
         }
-        if ($request->has('kelompok')) {
-            $carrer->kelompok_id = $kelompok->id;
-        }
-        $carrer->carrer_id = $carr->id;
-        $carrer->user_id = $user_acc->id;
-        $carrer->lowongan_id = $request->lowongan;
-        $carrer->cv = $request->cv;
-        $carrer->save();
+        $ketua = User::where('email', Auth::user()->email)->first();
+        $ketua->jabatan = 1;
+        $ketua->save();
 
-        if ($carrer) {
-            return redirect()->back();
-        }
+        $carrer->kelompok_id = $kelompok->id;
+        $carrer->carrer_id = $carr->first()->id;
+        $cv_file = $request->file('cv');
+        $cv_name = date('ymdhis') . '.' . $cv_file->getClientOriginalExtension();
+        $cv_path = $cv_file->storeAs('public/cv', $cv_name);
+        $carrer->cv_user = $cv_name;
+        $carrer->save();
+        // dd($carrer->carrer_id);
+
+
+        return redirect()->to('home');
     }
 
+    public function formApply()
+    {
+        // dd(Auth::user()->kelompok_id);
+        $lowongan = Lowongan::get();
+        return view('Admin.Apply.form', compact('lowongan'));
+    }
     /** 
      * Display the specified resource.
      */
@@ -128,7 +131,7 @@ class ApplyJobController extends Controller
             // dd($apply->status);
             StatusApplyJob::dispatch($user, $apply->status);
         }
-        return redirect()->back()->with(['success' => 'Apply job berhasil dikonfirmasi']);
+        return redirect()->to('dashboard')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function konfirm($id)
     {
@@ -139,7 +142,7 @@ class ApplyJobController extends Controller
             // dd($apply->status);
             StatusApplyJob::dispatch($user, $apply->status);
         }
-        return redirect()->back()->with(['success' => 'Apply job berhasil dikonfirmasi']);
+        return redirect()->to('dashboard')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
 
     /**

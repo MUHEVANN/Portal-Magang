@@ -22,5 +22,12 @@ class DummySeed extends Seeder
         Kelompok::create([
             'name' => 'tidak ada'
         ]);
+        Lowongan::create([
+            'name' => 'kosong',
+            'desc' => 'tidak ada job',
+            'kualifikasi' => 'tidak ada',
+            'gambar' => 'tidak ada',
+            'benefit' => 'tidak ada',
+        ]);
     }
 }
