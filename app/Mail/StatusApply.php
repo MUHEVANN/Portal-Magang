@@ -12,13 +12,13 @@ use Illuminate\Queue\SerializesModels;
 class StatusApply extends Mailable
 {
     use Queueable, SerializesModels;
-    private $user;
+    private $status;
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct($status)
     {
-        $this->user = $user;
+        $this->status = $status;
     }
 
     /**
@@ -38,7 +38,7 @@ class StatusApply extends Mailable
     {
         return new Content(
             view: 'Mail.statusApply',
-            with: ['user' => $this->user]
+            with: ['status' => $this->status]
         );
     }
 

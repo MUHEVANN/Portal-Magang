@@ -2,19 +2,19 @@
 @section('content')
     <div class="card">
         <div class="container-xxl  container-p-y">
-            Nama Kelompok : {{ $kelompok[0]->nama_kelompok }}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>no</th>
-                        <th>Nama Aggota</th>
-                        <th>Cv</th>
-                        <th>Jabatan</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($kelompok as $item)
+            @foreach ($kelompok as $item)
+                Nama Kelompok : {{ $item->name }}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>no</th>
+                            <th>Nama Aggota</th>
+                            <th>Cv</th>
+                            <th>Jabatan</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @foreach ($item->user as $user)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -30,9 +30,12 @@
                                 <td>{{ $item->apply->status }}</td>
                             </tr>
                         @endforeach
-                    @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+
+                <div class="d-flex"><a href="{{ url('apply-status-konfirm/' . $item->apply->id) }}">Konfimasi</a><a
+                        href="{{ url('apply-status-reject/' . $item->apply->id) }}">Tolak</a></div>
         </div>
     </div>
+    @endforeach
 @endsection
