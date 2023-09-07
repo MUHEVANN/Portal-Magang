@@ -15,14 +15,13 @@ class AdminSeed extends Seeder
      */
     public function run(): void
     {
-        Kelompok::create([
-            'name' => 'tidak ada'
-        ]);
+
         $user = User::create([
             'name' => "Admin",
             'email' => "Admin@gmail.com",
             'password' => Hash::make("password"),
-            'is_active' => "1"
+            'is_active' => "1",
+            'job_magang_id' => 1
         ]);
         $user->addRole('admin');
     }

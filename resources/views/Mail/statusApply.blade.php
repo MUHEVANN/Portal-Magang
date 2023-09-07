@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    Status kelulusan anda adalah{{ $status }}
+    Status kelulusan anda adalah {{ $status }}
 </body>
 
 </html>

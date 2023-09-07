@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kelompok', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('kelompok_id')->default(1);
+            $table->unsignedBigInteger('job_magang_id')->default(1);
             $table->integer('jabatan')->default(0);
             $table->string('email')->unique();
             $table->string('password');
@@ -32,6 +29,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('kelompok_id')->references('id')->on('kelompok')->onDelete('cascade');
+            $table->foreign('job_magang_id')->references('id')->on('job_magang')->onDelete('cascade');
         });
     }
 

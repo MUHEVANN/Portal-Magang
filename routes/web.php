@@ -51,6 +51,8 @@ Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 Route::get('/home', function () {
     return view('welcome');
 })->middleware('auth');
+Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
+Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
 
 
 // Admin

@@ -12,7 +12,7 @@ class CarrerUserController extends Controller
 {
     public function detailPemagang($namaKelompok)
     {
-        $kelompok = Kelompok::with('user', 'apply')->where('name', $namaKelompok)->get();
+        $kelompok = Kelompok::with('user.lowongan', 'apply')->where('name', $namaKelompok)->get();
         return view('Admin.detail-pemagang', compact('kelompok'));
     }
 }

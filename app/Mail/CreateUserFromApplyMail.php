@@ -37,7 +37,7 @@ class CreateUserFromApplyMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Mail.Akun.blade.php',
+            view: 'Mail.Akun',
             with: ['user' => $this->user]
         );
     }
