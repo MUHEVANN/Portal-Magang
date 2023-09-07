@@ -5,7 +5,11 @@ export default {
     "./resources/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'title' : ['Offside', 'sans-serif']
+      }
+    },
   },
   plugins: [],
 }

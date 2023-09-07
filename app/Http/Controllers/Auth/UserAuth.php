@@ -49,9 +49,9 @@ class UserAuth extends Controller
     {
         if (!Auth::check()) {
             return view('Auth.login');
-        } else {
-            return redirect()->back();
         }
+
+        return redirect()->back();
     }
     public function proccess_login(Request $request)
     {

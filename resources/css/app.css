@@ -1,7 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400;700&family=Offside&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 *{
     font-family: "monda";
+}
+
+.ornament{
+    @apply rounded-full absolute -z-10;
 }
