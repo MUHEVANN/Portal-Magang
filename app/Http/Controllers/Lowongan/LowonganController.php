@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Lowongan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Carrer;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,6 @@ class LowonganController extends Controller
             'benefit' => 'required',
             'kualifikasi' => 'required',
             'gambar' => 'required|mimes:jpg,jpeg,png',
-            'max_applay' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -39,13 +39,15 @@ class LowonganController extends Controller
         $gambar = $request->file('gambar');
         $gambar_name = date('ymdhis') . "." . $gambar->getClientOriginalExtension();
         $gambar_path = $gambar->storeAs('public/lowongan', $gambar_name);
+        $carrer = Carrer::latest()->first();
+
         $lowongan = Lowongan::create([
             'name' => $request->name,
             'desc' => $request->desc,
             'benefit' => $request->benefit,
             'kualifikasi' => $request->kualifikasi,
             'gambar' => $gambar_name,
-            'max_applay' => $request->max_applay,
+            'carrer_id' => $carrer->id
         ]);
 
         if ($lowongan) {
@@ -76,7 +78,6 @@ class LowonganController extends Controller
             'benefit' => 'required',
             'kualifikasi' => 'required',
             'gambar' => 'mimes:jpeg,jpg,png',
-            'max_applay' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -87,7 +88,8 @@ class LowonganController extends Controller
         $lowongan->desc = $request->desc;
         $lowongan->benefit = $request->benefit;
         $lowongan->kualifikasi = $request->kualifikasi;
-        $lowongan->max_applay = $request->max_applay;
+        $carrer = Carrer::latest()->first();
+        $lowongan->carrer_id = $carrer->id;
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar');
             $gambar_name = date('ymhdis') . "." . $gambar->getClientOriginalExtension();

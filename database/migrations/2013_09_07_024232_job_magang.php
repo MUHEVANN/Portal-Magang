@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apply', function (Blueprint $table) {
+        Schema::create('job_magang', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('carrer_id');
-            $table->unsignedBigInteger('kelompok_id');
-            $table->string('cv_user');
-            $table->string('status')->default('menunggu');
+            $table->string('name');
+            $table->text('desc');
+            $table->text('benefit');
+            $table->text('kualifikasi');
+            $table->string('gambar');
             $table->timestamps();
             $table->foreign('carrer_id')->references('id')->on('carrers')->onDelete('cascade');
-            $table->foreign('kelompok_id')->references('id')->on('kelompok')->onDelete('cascade');
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('apply');
+        //
     }
 };

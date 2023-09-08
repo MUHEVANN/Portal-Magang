@@ -9,7 +9,7 @@ class Apply extends Model
 {
     use HasFactory;
     protected $table = 'apply';
-    protected $fillable = ['carrer_id', 'user_id', 'lowongan_id', 'status', 'kelompok_id'];
+    protected $fillable = ['carrer_id', 'status', 'kelompok_id', 'cv_user'];
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
