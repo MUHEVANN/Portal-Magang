@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
-    @vite('resources/css/app.css')
+    <script src="//unpkg.com/alpinejs" defer></script>
+    @vite(['resources/css/app.css', 'resources/js/main.js'])
 </head>
 
 <body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center">
@@ -41,11 +42,17 @@
                 @endif
                 <br>
                 <label for="password" class="text-slate-900">Password</label>
-                <div class="relative">
-                    <input type="password" id='pass' name="password" class="pl-11 bg-slate-200 py-2 px-2 w-full">
+                <div class="relative" x-data="{
+                    isVisible: false,
+                    toggle() {
+                        this.isVisible = !this.isVisible;
+                    }
+                }" x-transition>
+                    <input :type="!isVisible ? 'password' : 'text'" id='pass' name="password"
+                        class="pl-11 bg-slate-200 py-2 px-2 w-full">
                     <img src="assets/pass.svg" class="absolute w-6 top-2 left-3" alt="">
-                    <img src="assets/close-eye.svg" id='indicator' onclick="changeVisiblity()"
-                        class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                    <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator'
+                        x-on:click='toggle()' class="absolute cursor-pointer w-6 top-2 right-3" alt="">
                 </div>
                 @if ($errors->any() && $errors->password)
                     <p class="text-red-600">{{ $errors->first('password') }}</p>
@@ -58,6 +65,5 @@
         </section>
     </div>
 </body>
-<script src='{{ asset('js/main.js') }}'></script>
 
 </html>

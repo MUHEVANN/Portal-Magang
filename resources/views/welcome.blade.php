@@ -9,8 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
-    <script src="//unpkg.com/alpinejs" defer></script>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="antialiased bg-slate-100 m-0  overflow-x-hidden">
@@ -29,7 +28,7 @@
                             x-bind:class="open ? 'rotate-180' : ''" alt="arrow down">
                     </div>
 
-                    <span x-show="open"
+                    <span x-show="open" x-transition
                         class="bg-white shadow-md  border-[1px] border-slate-100 absolute w-full mt-4 rounded-md">
                         <ul class="py-3 px-2 text-center">
                             <li class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
