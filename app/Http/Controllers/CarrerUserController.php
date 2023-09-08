@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apply;
 use App\Models\Carrer;
 use App\Models\CarrerUser;
 use App\Models\Kelompok;
@@ -14,5 +15,11 @@ class CarrerUserController extends Controller
     {
         $kelompok = Kelompok::with('user.lowongan', 'apply')->where('name', $namaKelompok)->get();
         return view('Admin.detail-pemagang', compact('kelompok'));
+    }
+
+    public function lulus()
+    {
+        $user = Apply::with('kelompok.user', 'lowongan')->where('status', 'lulus')->get();
+        return view('Admin.lulus', compact('user'));
     }
 }

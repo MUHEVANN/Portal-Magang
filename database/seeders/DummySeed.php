@@ -22,12 +22,16 @@ class DummySeed extends Seeder
         Kelompok::create([
             'name' => 'tidak ada'
         ]);
+        $batch = Carrer::create([
+            'batch' => 'magang 2023'
+        ]);
         Lowongan::create([
             'name' => 'kosong',
             'desc' => 'tidak ada job',
             'kualifikasi' => 'tidak ada',
             'gambar' => 'tidak ada',
             'benefit' => 'tidak ada',
+            'carrer_id' => $batch->id
         ]);
     }
 }
