@@ -12,6 +12,7 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('template/assets/img/favicon/favicon.ico') }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -122,7 +123,7 @@
                         class="menu-item {{ config('app.url') . '/status-pemagang/lulus' === request()->url() ? 'active' : '' }}">
                         <a href="{{ url('status-pemagang/lulus') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Pemangan Lulus</div>
+                            <div data-i18n="Analytics">Status Pemagang</div>
                         </a>
                     </li>
                     <li
@@ -246,9 +247,9 @@
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{ asset('template/assets/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js"
-        integrity="sha512-bztGAvCE/3+a1Oh0gUro7BHukf6v7zpzrAb3ReWAVrt+bVNNphcl2tDTKCBr5zk7iEDmQ2Bv401fX3jeVXGIcA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="{{ asset('template/assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('template/assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>

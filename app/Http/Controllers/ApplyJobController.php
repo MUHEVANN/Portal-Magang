@@ -55,12 +55,12 @@ class ApplyJobController extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-        $existingApply = Apply::where('kelompok_id', Auth::user()->kelompok_id)
-            ->whereIn('status', ['mengunggu', 'lulus'])
-            ->get();
-        if ($existingApply) {
-            return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
-        }
+        // $existingApply = Apply::where('kelompok_id', Auth::user()->kelompok_id)
+        //     ->whereIn('status', ['mengunggu', 'lulus'])
+        //     ->get();
+        // if ($existingApply) {
+        //     return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
+        // }
         $email = $request->email;
         $kelompok = Kelompok::create([
             'name' => Str::random(5)
@@ -105,6 +105,12 @@ class ApplyJobController extends Controller
     }
 
     public function formApply()
+    {
+        // dd(Auth::user()->kelompok_id);
+        $lowongan = Lowongan::get();
+        return view('Admin.Apply.form', compact('lowongan'));
+    }
+    public function detail_lowongan()
     {
         // dd(Auth::user()->kelompok_id);
         $lowongan = Lowongan::get();

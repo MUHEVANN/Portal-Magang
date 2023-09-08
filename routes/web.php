@@ -54,6 +54,7 @@ Route::get('/home', [HomeController::class, 'home'])->middleware('auth');
 
 Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
 Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
+Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->middleware('auth');
 
 
 // Admin
