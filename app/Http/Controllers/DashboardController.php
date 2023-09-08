@@ -13,7 +13,10 @@ class DashboardController extends Controller
     public function index()
     {
 
-        $allApply = User::with('kelompok.apply')->where('jabatan', 1)->get();
+        $allApply = User::with('kelompok.apply')->where('jabatan', 1)->whereHas('kelompok.apply', function ($query) {
+            $query->where('status', 'menunggu');
+        })
+            ->get();
         return view('Admin.dashboard', ['allApply' => $allApply]);
     }
 }

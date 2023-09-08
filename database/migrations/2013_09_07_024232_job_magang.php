@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('job_magang', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('carrer_id');
             $table->string('name');
             $table->text('desc');
             $table->text('benefit');
             $table->text('kualifikasi');
             $table->string('gambar');
             $table->timestamps();
+            $table->foreign('carrer_id')->references('id')->on('carrers')->onDelete('cascade');
         });
     }
 

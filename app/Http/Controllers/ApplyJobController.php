@@ -57,7 +57,7 @@ class ApplyJobController extends Controller
         }
         $existingApply = Apply::where('kelompok_id', Auth::user()->kelompok_id)
             ->whereIn('status', ['mengunggu', 'lulus'])
-            ->first();
+            ->get();
         if ($existingApply) {
             return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
         }

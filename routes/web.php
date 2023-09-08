@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplyJobController;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
+use App\Http\Controllers\CarrerBatchController;
 use App\Http\Controllers\CarrerUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Lowongan\LowonganController;
@@ -69,4 +70,8 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('apply-status-konfirm/{id}', [ApplyJobController::class, 'konfirm']);
 
     Route::get('detail-pemagang/{namaKelompok}', [CarrerUserController::class, 'detailPemagang']);
+    Route::get('status-pemagang/lulus', [CarrerUserController::class, 'lulus']);
+
+    // batch carrer
+    Route::resource('carrer-batch', CarrerBatchController::class);
 });
