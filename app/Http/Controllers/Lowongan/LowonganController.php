@@ -13,15 +13,9 @@ class LowonganController extends Controller
 {
     public function index()
     {
-        $lowongan = Lowongan::get();
+        $lowongan = Lowongan::where('name', '!=', 'kosong')->get();
         return view('Admin.Lowongan.index', ['lowongan' => $lowongan]);
     }
-
-    public function create()
-    {
-        return view('Admin.Lowongan.create');
-    }
-
     public function store(Request $request)
     {
         // dd($request->file('gambar'));
@@ -49,6 +43,12 @@ class LowonganController extends Controller
             'gambar' => $gambar_name,
             'carrer_id' => $carrer->id
         ]);
+        // if($lowongan){
+
+        //     return response()->json(['success' => 'lowongan berhasil dibuat']);
+        // }else{
+        //     return response()->json(['gagal' => 'gagal menambahkan data'])
+        // }
 
         if ($lowongan) {
             return redirect()->to('lowongan')->with(['success' => 'Berhasil menambah lowongan']);
@@ -61,12 +61,6 @@ class LowonganController extends Controller
     {
         $lowongan = Lowongan::find($id);
         return view('Admin.Lowongan.show');
-    }
-
-    public function edit($id)
-    {
-        $lowongan = Lowongan::find($id);
-        return view('Admin.Lowongan.edit', ['lowongan' => $lowongan]);
     }
 
     public function update(Request $request, $id)

@@ -23,7 +23,7 @@ class DummySeed extends Seeder
             'name' => 'tidak ada'
         ]);
         $batch = Carrer::create([
-            'batch' => 'magang 2023'
+            'batch' => 'tidak ada'
         ]);
         Lowongan::create([
             'name' => 'kosong',
