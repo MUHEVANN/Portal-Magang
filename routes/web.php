@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\VerifUserEmail;
 use App\Http\Controllers\CarrerBatchController;
 use App\Http\Controllers\CarrerUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Lowongan\LowonganController;
 use App\Http\Controllers\TesCVController;
 use App\Models\CarrerUser;
@@ -51,12 +52,14 @@ Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 // Pages
 // Client
 // Home
-Route::get('home', function () {
-    return view('welcome');
-})->middleware('auth');
+Route::get('/', function () {
+    return redirect('home');
+});
+
+Route::get('home', [HomeController::class, 'home'])->middleware('auth');
 Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
 Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
-
+Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail'])->middleware('auth');
 
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {

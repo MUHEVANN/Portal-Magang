@@ -22,15 +22,6 @@
             <h1 class="my-10 text-3xl">Login</h1>
             <form action="{{ url('login') }}" method="post">
                 @csrf
-                {{-- @if ($errors->any())
-            <div class="text-red-600">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif --}}
                 <label for="email" class=" text-slate-900 mb-1">Email</label> <br>
                 <div class="relative">
                     <input type="email" name="email" class="pl-11 bg-slate-200 py-2 mb-2 px-2 w-full"> <br>

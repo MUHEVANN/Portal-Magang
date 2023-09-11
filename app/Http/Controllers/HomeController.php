@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function home()
     {
-        $carrer = Carrer::lataest()->fisrt();
+        $carrer = Carrer::latest()->first();
 
         $lowongan = Lowongan::where('carrer_id', $carrer->id)->get();
         return view('Home.index', compact('lowongan'));
@@ -18,6 +18,6 @@ class HomeController extends Controller
     public function lowonganDetail($id)
     {
         $lowongan = Lowongan::find($id);
-        return view('Home.index', compact('lowongan'));
+        return view('Home.detail', compact('lowongan'));
     }
 }

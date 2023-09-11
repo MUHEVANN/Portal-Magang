@@ -14,7 +14,7 @@
 
 <body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center">
     <div class="bg-white h-fit flex align-middle shadow-sm rounded-md">
-        <img src="images/Login.png" class="bg-center w-96 h-auto rounded-lg object-fill p-5" alt="login jetorbit logo">
+        <img src="images/Login.png" class="bg-center w-96 h-auto rounded-lg object-cover p-5" alt="login jetorbit logo">
         <section class="p-10 sm:w-[30rem]">
             <span class="block text-right text-sm opacity-50 text-gray-700">Sudah punya akun? <a
                     class="hover:underline text-[#001D86]" href="login">Login</a></span>
@@ -57,6 +57,24 @@
                     }
                 }" x-transition>
                     <input :type="!isVisible ? 'password' : 'text'" id='pass' name="password"
+                        class="pl-11 bg-slate-200 py-2 px-2 w-full">
+                    <img src="assets/pass.svg" class="absolute w-6 top-2 left-3" alt="">
+                    <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator'
+                        x-on:click='toggle()' class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                </div>
+                @if ($errors->any() && $errors->password)
+                    <p class="text-red-600">{{ $errors->first('password') }}</p>
+                @endif
+                <br>
+                <label for="password" class="text-slate-900">Ulangi Password</label>
+
+                <div class="relative" x-data="{
+                    isVisible: false,
+                    toggle() {
+                        this.isVisible = !this.isVisible;
+                    }
+                }" x-transition>
+                    <input :type="!isVisible ? 'password' : 'text'" id='pass' name="ulangi-password"
                         class="pl-11 bg-slate-200 py-2 px-2 w-full">
                     <img src="assets/pass.svg" class="absolute w-6 top-2 left-3" alt="">
                     <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator'

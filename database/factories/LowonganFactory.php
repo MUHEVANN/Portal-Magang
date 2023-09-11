@@ -22,11 +22,12 @@ class LowonganFactory extends Factory
     {
         return [
             'name' => fake()->name,
-            'desc' => fake()->realTextBetween(50,100),
+            'carrer_id' => 1,
+            'desc' => fake()->realTextBetween(50, 100),
             'benefit' => fake()->realTextBetween(30, 70),
             'kualifikasi' => fake()->realTextBetween(25, 40),
             'gambar' => fake()->imageUrl,
-            'max_applay' => fake()->dateTime('now')
+            // 'max_applay' => fake()->dateTime('now')
         ];
     }
 }
