@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
 use App\Http\Controllers\CarrerUserController;
+<<<<<<< HEAD
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Table\ApplyController;
 use App\Http\Controllers\Admin\Table\BatchController;
@@ -11,6 +12,14 @@ use App\Http\Controllers\Admin\Table\ListPemagangController;
 use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Admin\Table\TrashController;
 use App\Http\Controllers\User\ApplyJobController;
+=======
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Lowongan\LowonganController;
+use App\Http\Controllers\TesCVController;
+use App\Models\CarrerUser;
+use Illuminate\Support\Facades\Route;
+>>>>>>> 6d9004ca35daf84ed1f4880805d39fc19ef2a7ae
 
 /*
 |--------------------------------------------------------------------------
@@ -50,9 +59,8 @@ Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 // Pages
 //  Client
 // Home
-Route::get('/home', function () {
-    return view('welcome');
-})->middleware('auth');
+// Route::get('/home', [HomeController::class, 'home'])->middleware('auth');
+
 Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
 Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
 Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->middleware('auth');
@@ -78,6 +86,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('apply-user-detail-kelompok/{id}', [ApplyController::class, 'detail_page']);
     Route::get('apply-user-get-detail/{id}', [ApplyController::class, 'detail_kelompok']);
     // batch carrer
+<<<<<<< HEAD
     Route::get('batch-page', [DashboardController::class, 'batch_page']);
     Route::resource('carrer-batch', BatchController::class);
     // list Pemagang
@@ -91,3 +100,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('trash', [TrashController::class, 'trash']);
     Route::put('restore/{id}', [TrashController::class, 'restore']);
 });
+=======
+    Route::resource('carrer-batch', CarrerBatchController::class);
+});
+>>>>>>> 6d9004ca35daf84ed1f4880805d39fc19ef2a7ae
