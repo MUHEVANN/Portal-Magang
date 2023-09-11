@@ -1,10 +1,10 @@
 @extends('Home.layouts.main')
 
 @section('jumbotron')
-    <h1 class="text-4xl pt-28 font-bold m-auto font-title w-7/12">DAPATKAN KESEMPATAN MAGANG BERSAMA
+    <h1 class="text-4xl pt-10 font-bold m-auto font-title w-7/12">DAPATKAN KESEMPATAN MAGANG BERSAMA
         <span class="text-[#001D86] font-title">JETORBIT</span>
     </h1>
-    <div class="flex gap-6 justify-center items-center mb-20">
+    <div class="flex gap-6 justify-center items-center mt-6 mb-20">
         <a href="#" class="hover:underline bg-[#D9D9D9] rounded-full px-6 py-1">Temukan
             Lowongan</a>
         <a href="#" class="hover:underline bg-[#001D86] text-white rounded-full px-6 py-1">Pelajari Lebih

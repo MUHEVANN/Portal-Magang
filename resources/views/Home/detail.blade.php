@@ -17,13 +17,16 @@
         <p>{{ $lowongan->kualifikasi }}</p>
     </div>
 @endsection
-
+{{-- <div x-data='{open: false}'> --}}
 @section('sidebar')
-    <button class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 w-full text-slate-50">Apply
+    <button x-on:click='apply = !apply'
+        class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 w-full text-slate-50">Apply
         Lowongan</button>
     <a href="#" class="my-3 cursor-pointer hover:underline text-center block">Hubungi Kita</a>
-    <div class="mt-5">
-        <h1 class="font-bold text-lg">Dipublis pada</h1>
-        <p class="text-slate-700">{{ $lowongan->created_at }}</p>
+    <div class="mt-8">
+        <p class="text-slate-700">Dipublis pada</p>
+        <h3 class="font-bold text-md">{{ $lowongan->created_at }}</h3>
     </div>
 @endsection
+
+{{-- </div> --}}
