@@ -6,13 +6,14 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard Admin</title>
+    <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('template/assets/img/favicon/favicon.ico') }}" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -112,31 +113,42 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-                    <li class="menu-item {{ config('app.url') . '/dashboard' === request()->url() ? 'active' : '' }}">
-
-                        <a href="{{ url('dashboard') }}" class="menu-link">
+                    <li
+                        class="menu-item {{ config('app.url') . '/all-pemagang' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('all-pemagang') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Perlu Konfirmasi</div>
+                            <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
-                    <li
-                        class="menu-item {{ config('app.url') . '/status-pemagang/lulus' === request()->url() ? 'active' : '' }}">
-                        <a href="{{ url('status-pemagang/lulus') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Status Pemagang</div>
-                        </a>
-                    </li>
-                    <li
-                        class="menu-item {{ config('app.url') . '/carrer-batch' === request()->url() ? 'active' : '' }}">
-                        <a href="{{ url('carrer-batch') }}" class="menu-link">
+                    <li class="menu-item {{ config('app.url') . '/batch' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('batch-page') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Batch</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ config('app.url') . '/lowongan' === request()->url() ? 'active' : '' }}">
-                        <a href="{{ url('lowongan') }}" class="menu-link">
+                    <li
+                        class="menu-item {{ config('app.url') . '/lowongan-page' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('lowongan-page') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Lowongan</div>
+                        </a>
+                    </li>
+
+                    <!-- Forms & Tables -->
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Perlu
+                            Konfirmasi</span></li>
+                    <li class="menu-item {{ config('app.url') . '/pendaftar' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('pendaftar') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Pendaftar</div>
+                        </a>
+                    </li>
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Trash</span></li>
+                    <li
+                        class="menu-item {{ config('app.url') . '/trash-page' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('trash-page') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">User Trashed</div>
                         </a>
                     </li>
                 </ul>
@@ -168,7 +180,12 @@
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             <!-- Place this tag where you want the button to render. -->
-
+                            <li class="nav-item lh-1 me-3">
+                                <a class="github-button"
+                                    href="https://github.com/themeselection/sneat-html-admin-template-free"
+                                    data-icon="octicon-star" data-size="large" data-show-count="true"
+                                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
+                            </li>
 
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -182,15 +199,16 @@
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a class="dropdown-item" href="#">
-                                            <div class="d-flex align-items-center">
+                                            <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
                                                         <img src="{{ asset('template/assets/img/avatars/1.png') }}"
                                                             alt class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
+                                                <div class="flex-grow-1">
+                                                    <span class="fw-semibold d-block">John Doe</span>
+                                                    <small class="text-muted">Admin</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -204,9 +222,27 @@
                                             <span class="align-middle">My Profile</span>
                                         </a>
                                     </li>
-
                                     <li>
-                                        <a class="dropdown-item" href="logout">
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bx bx-cog me-2"></i>
+                                            <span class="align-middle">Settings</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="d-flex align-items-center align-middle">
+                                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                                                <span class="flex-grow-1 align-middle">Billing</span>
+                                                <span
+                                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="auth-login-basic.html">
                                             <i class="bx bx-power-off me-2"></i>
                                             <span class="align-middle">Log Out</span>
                                         </a>
@@ -221,40 +257,49 @@
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
-                <div class="content-wrapper container mt-3">
-                    <!-- Content -->
-
-                    @yield('content')
-                    <!-- / Content -->
-
-
-
-
-                    <div class="content-backdrop fade"></div>
+                <div class="content-wrapper">
+                    <div class="container-xxl container-p-y">
+                        <div class="card container">
+                            @yield('content')
+                        </div>
+                    </div>
                 </div>
-                <!-- Content wrapper -->
-            </div>
-            <!-- / Layout page -->
-        </div>
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+                <!-- / Content -->
+
+                <!-- Footer -->
+                <footer class="content-footer footer bg-footer-theme">
+
+                </footer>
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
 
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{ asset('template/assets/vendor/libs/jquery/jquery.js') }}"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script src="{{ asset('template/assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('template/assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
     <script src="{{ asset('template/assets/vendor/js/menu.js') }}"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
@@ -265,6 +310,7 @@
 
     <!-- Page JS -->
     <script src="{{ asset('template/assets/js/dashboards-analytics.js') }}"></script>
+    @yield('script')
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

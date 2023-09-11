@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Lowongan;
+namespace App\Http\Controllers\Admin\Table;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrer;
@@ -8,13 +8,25 @@ use App\Models\Lowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class LowonganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $lowongan = Lowongan::where('name', '!=', 'kosong')->get();
-        return view('Admin.Lowongan.index', ['lowongan' => $lowongan]);
+        $batch_id = $request->batch_id;
+
+        $query = Lowongan::where('name', '!=', 'kosong');
+        if ($batch_id) {
+            $query->where('carrer_id', $batch_id);
+        }
+        $data = $query->get();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($data) {
+                return view('Admin.updel-user')->with('data', $data);
+            })
+            ->make(true);
     }
     public function store(Request $request)
     {

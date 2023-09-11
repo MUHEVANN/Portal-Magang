@@ -18,6 +18,6 @@ class HomeController extends Controller
     public function lowonganDetail($id)
     {
         $lowongan = Lowongan::find($id);
-        return view('Home.index', compact('lowongan'));
+        return view('Home.detail-lowongan', compact('lowongan'));
     }
 }

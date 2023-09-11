@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\ApplyJobController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
-use App\Http\Controllers\CarrerBatchController;
 use App\Http\Controllers\CarrerUserController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Lowongan\LowonganController;
-use App\Http\Controllers\TesCVController;
-use App\Models\CarrerUser;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\Table\ApplyController;
+use App\Http\Controllers\Admin\Table\BatchController;
+use App\Http\Controllers\Admin\Table\ListPemagangController;
+use App\Http\Controllers\Admin\Table\LowonganController;
+use App\Http\Controllers\Admin\Table\TrashController;
+use App\Http\Controllers\User\ApplyJobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,20 +60,34 @@ Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->mid
 
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/pendaftar', [DashboardController::class, 'index']);
     // Lowongan
+    Route::get('lowongan-page', [DashboardController::class, 'lowongan_page']);
     Route::resource('lowongan', LowonganController::class);
-    // Apply
+    // Apply-user
     Route::get('apply', [ApplyJobController::class, 'index']);
     Route::get('apply-create', [ApplyJobController::class, 'create']);
     Route::post('apply', [ApplyJobController::class, 'store']);
     Route::get('apply-show', [ApplyJobController::class, 'show']);
     Route::get('apply-status-reject/{id}', [ApplyJobController::class, 'reject']);
     Route::get('apply-status-konfirm/{id}', [ApplyJobController::class, 'konfirm']);
-
     Route::get('detail-pemagang/{namaKelompok}', [CarrerUserController::class, 'detailPemagang']);
     Route::get('status-pemagang/lulus', [CarrerUserController::class, 'lulus']);
-
+    // Mangae User Apply
+    Route::get('apply-user', [ApplyController::class, 'index']);
+    Route::get('apply-user-detail-kelompok/{id}', [ApplyController::class, 'detail_page']);
+    Route::get('apply-user-get-detail/{id}', [ApplyController::class, 'detail_kelompok']);
     // batch carrer
-    Route::resource('carrer-batch', CarrerBatchController::class);
+    Route::get('batch-page', [DashboardController::class, 'batch_page']);
+    Route::resource('carrer-batch', BatchController::class);
+    // list Pemagang
+    Route::get('all-pemagang', [DashboardController::class, 'list_pemagang_page']);
+    Route::get('list-pemagang', [ListPemagangController::class, 'index']);
+    Route::get('edit-pemagang/{id}', [ListPemagangController::class, 'edit']);
+    Route::put('edit-pemagang/{id}', [ListPemagangController::class, 'update']);
+    Route::delete('hapus-pemagang/{id}', [ListPemagangController::class, 'delete']);
+    // Trash
+    Route::get('trash-page', [DashboardController::class, 'trash_page']);
+    Route::get('trash', [TrashController::class, 'trash']);
+    Route::put('restore/{id}', [TrashController::class, 'restore']);
 });
