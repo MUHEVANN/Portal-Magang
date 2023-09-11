@@ -91,5 +91,4 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('trash-page', [DashboardController::class, 'trash_page']);
     Route::get('trash', [TrashController::class, 'trash']);
     Route::put('restore/{id}', [TrashController::class, 'restore']);
-    Route::resource('carrer-batch', CarrerBatchController::class);
 });
