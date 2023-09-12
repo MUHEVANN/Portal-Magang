@@ -50,9 +50,9 @@ class UserAuth extends Controller
     {
         if (!Auth::check()) {
             return view('Auth.login');
-        } else {
-            return redirect()->back();
         }
+
+        return redirect()->back();
     }
     public function proccess_login(Request $request)
     {
@@ -64,7 +64,6 @@ class UserAuth extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-
         $user = User::where('email', $request->email)->first();
 
         if ($user) {

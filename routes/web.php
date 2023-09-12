@@ -8,6 +8,7 @@ use App\Http\Controllers\CarrerUserController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\ApplyJobController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\Table\ApplyController;
 use App\Http\Controllers\Admin\Table\BatchController;
 use App\Http\Controllers\Admin\Table\TrashController;
@@ -33,12 +34,19 @@ use App\Http\Controllers\Admin\Table\ListPemagangController;
 Route::get('register', [UserAuth::class, 'register']);
 Route::post('register', [UserAuth::class, 'proccess_register']);
 
+
 Route::middleware('auth')->group(function () {
+    Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
     // verif user
     Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
     // logout
     Route::get('logout', [UserAuth::class, 'logout']);
 });
+
+// Route::get('/cekverif', function () {
+//     return view('Verification.verif');
+// });
+
 // login
 Route::get('login', [UserAuth::class, 'login'])->name('login');
 Route::post('login', [UserAuth::class, 'proccess_login']);
@@ -51,16 +59,23 @@ Route::get('changePassword', [UserAuth::class, 'changePassword']);
 Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 
 // Pages
-//  Client
+// Client
 // Home
-// Route::get('/home', [HomeController::class, 'home'])->middleware('auth');
+Route::get('/', function () {
+    return redirect('home');
+});
 
+Route::get('home', [HomeController::class, 'home'])->middleware('auth');
 Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
 Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
 Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->middleware('auth');
+
+Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail'])->middleware('auth');
+
 // Profile
 Route::post('/update-profile', [ProfileController::class, 'update_profile']);
 Route::get('/update-profile', [ProfileController::class, 'index']);
+
 
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {
