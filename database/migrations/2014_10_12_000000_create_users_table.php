@@ -26,9 +26,10 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->string('verif_code')->nullable();
             $table->string('is_active')->default(0);
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('kelompok_id')->references('id')->on('kelompok')->onDelete('cascade');
+            $table->foreign('kelompok_id')->references('id')->on('kelompok');
             $table->foreign('job_magang_id')->references('id')->on('job_magang')->onDelete('cascade');
         });
     }

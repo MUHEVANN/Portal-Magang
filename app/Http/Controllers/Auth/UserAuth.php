@@ -67,11 +67,11 @@ class UserAuth extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
-            if (Hash::check($request->password, $user->password) || $user->password === $request->password) {
+            if (Hash::check($request->password, $user->password)) {
                 Session::put('user', $user);
                 Auth::login($user);
                 if ($user->hasRole('admin')) {
-                    return redirect()->to('dashboard');
+                    return redirect()->to('all-pemagang');
                 } else {
                     return redirect()->to('home');
                 }

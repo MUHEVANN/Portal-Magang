@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Lowongan;
+namespace App\Http\Controllers\Admin\Table;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrer;
@@ -8,20 +8,26 @@ use App\Models\Lowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class LowonganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $lowongan = Lowongan::get();
-        return view('Admin.Lowongan.index', ['lowongan' => $lowongan]);
-    }
+        $batch_id = $request->batch_id;
 
-    public function create()
-    {
-        return view('Admin.Lowongan.create');
+        $query = Lowongan::where('name', '!=', 'kosong');
+        if ($batch_id) {
+            $query->where('carrer_id', $batch_id);
+        }
+        $data = $query->get();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($data) {
+                return view('Admin.updel-user')->with('data', $data);
+            })
+            ->make(true);
     }
-
     public function store(Request $request)
     {
         // dd($request->file('gambar'));
@@ -49,6 +55,12 @@ class LowonganController extends Controller
             'gambar' => $gambar_name,
             'carrer_id' => $carrer->id
         ]);
+        // if($lowongan){
+
+        //     return response()->json(['success' => 'lowongan berhasil dibuat']);
+        // }else{
+        //     return response()->json(['gagal' => 'gagal menambahkan data'])
+        // }
 
         if ($lowongan) {
             return redirect()->to('lowongan')->with(['success' => 'Berhasil menambah lowongan']);
@@ -61,12 +73,6 @@ class LowonganController extends Controller
     {
         $lowongan = Lowongan::find($id);
         return view('Admin.Lowongan.show');
-    }
-
-    public function edit($id)
-    {
-        $lowongan = Lowongan::find($id);
-        return view('Admin.Lowongan.edit', ['lowongan' => $lowongan]);
     }
 
     public function update(Request $request, $id)

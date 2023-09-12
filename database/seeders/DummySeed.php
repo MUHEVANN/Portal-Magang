@@ -23,7 +23,7 @@ class DummySeed extends Seeder
             'name' => 'tidak ada'
         ]);
         $batch = Carrer::create([
-            'batch' => 'magang 2023'
+            'batch' => 'tidak ada'
         ]);
         Lowongan::create([
             'name' => 'kosong',
@@ -32,6 +32,25 @@ class DummySeed extends Seeder
             'gambar' => 'tidak ada',
             'benefit' => 'tidak ada',
             'carrer_id' => $batch->id
+        ]);
+        $batch2 = Carrer::create([
+            'batch' => 'magang 2023'
+        ]);
+        Lowongan::create([
+            'name' => 'Front End',
+            'desc' => 'Mmebuat Ui',
+            'kualifikasi' => 'tidak ada',
+            'gambar' => 'tidak ada',
+            'benefit' => 'tidak ada',
+            'carrer_id' => $batch2->id
+        ]);
+        Lowongan::create([
+            'name' => 'Back end',
+            'desc' => 'Mmebuat database',
+            'kualifikasi' => 'tidak ada',
+            'gambar' => 'tidak ada',
+            'benefit' => 'tidak ada',
+            'carrer_id' => $batch2->id
         ]);
     }
 }

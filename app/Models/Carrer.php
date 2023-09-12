@@ -12,6 +12,6 @@ class Carrer extends Model
     protected $fillable = ['batch'];
     public function lowongan()
     {
-        return $this->hasMany(Lowongan::class);
+        return $this->hasMany(Lowongan::class, 'carrer_id', 'id');
     }
 }
