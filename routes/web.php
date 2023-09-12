@@ -34,11 +34,16 @@ Route::post('register', [UserAuth::class, 'proccess_register']);
 
 
 Route::middleware('auth')->group(function () {
+    Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
     // verif user
     Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
     // logout
     Route::get('logout', [UserAuth::class, 'logout']);
 });
+
+// Route::get('/cekverif', function () {
+//     return view('Verification.verif');
+// });
 
 // login
 Route::get('login', [UserAuth::class, 'login'])->name('login');

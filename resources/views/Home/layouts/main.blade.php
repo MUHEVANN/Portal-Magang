@@ -14,17 +14,25 @@
 
 <body class="antialiased bg-slate-100 m-0 relative" x-cloak :class="apply ? 'overflow-hidden' : 'overflow-x-hidden'"
     x-data='{apply: false}'>
+    @if (Auth::user()->is_active == 0)
+        <p class="bg-yellow-300 text-center py-5 w-full">Akun anda belum terverifikasi,
+            silahkan
+            verifikasi dengan mengklik
+            tautan <a href="/email/verifikasi" class="underline">berikut</a>
+        </p>
+    @endif
     @if (session('success'))
         <p class="text-green-500">{{ session('success') }}</p>
     @endif
     <div class="bg-white">
-        <header class="flex shadow-sm py-5 mx-10 md:mx-auto max-w-[1080px] justify-between items-center">
+        <header class="flex py-5 shadow-sm mx-5 md:mx-auto max-w-[1080px] justify-between items-center">
             <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
 
             @if (Auth::check())
                 <div x-data="{ open: false }" class="relative z-20">
                     <div class="flex items-center">
-                        <p x-on:click="open = ! open" class="cursor-pointer">Hello, <strong> Pengguna </strong></p>
+                        <p x-on:click="open = ! open" class="cursor-pointer">Hello, <strong>{{ Auth::user()->name }}
+                            </strong></p>
                         <img src="{{ asset('assets/chevron.svg') }}" width="20" class='opacity-50'
                             x-bind:class="open ? 'rotate-180' : ''" alt="arrow down">
                     </div>
@@ -54,7 +62,7 @@
     </div>
 
     <div class="text-center h-full relative overflow-hidden">
-        <div class="my-16 md:mx-auto max-w-[1080px]">
+        <div class="my-10 mx-5 md:mx-auto max-w-[1080px]">
             @yield('jumbotron')
         </div>
         <span class="bg-[#EAEEFF] w-60 h-60 ornament -top-20 -right-16"></span>
@@ -64,10 +72,10 @@
         <span class="bg-[#f0f1f3] w-28 h-28 ornament left-28 -top-20"></span>
     </div>
 
-    <main class=" bg-white">
-        <div class="max-w-[1000px] py-16 mx-auto flex justify-start gap-5">
+    <main class="bg-white">
+        <div class="max-w-[1000px] py-16 mx-auto flex-col-reverse flex md:flex-row justify-start gap-5 px-5">
             @yield('content')
-            <div class="h-max w-2/5 p-3 border-2 border-slate-100 rounded-md sticky top-5">
+            <div class="h-max w-full md:w-2/5 p-3 border-2 border-slate-100 rounded-md md:sticky top-5">
                 @yield('sidebar')
             </div>
         </div>

@@ -12,7 +12,7 @@
     </div>
 @endsection
 @section('content')
-    <section class="w-4/5" x-data="{
+    <section class="md:w-4/5" x-data="{
         search: '',
         datas: {{ $lowongan }},
     
