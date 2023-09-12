@@ -30,7 +30,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('kelompok_id')->references('id')->on('kelompok');
-            $table->foreign('job_magang_id')->references('id')->on('job_magang')->onDelete('cascade');
+            $table->foreign('job_magang_id')->references('id')->on('job_magang');
         });
     }
 

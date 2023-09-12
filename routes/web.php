@@ -1,17 +1,19 @@
 <?php
 
+use App\Http\Controllers\tes;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
 use App\Http\Controllers\CarrerUserController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\ApplyJobController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\Table\ApplyController;
 use App\Http\Controllers\Admin\Table\BatchController;
-use App\Http\Controllers\Admin\Table\ListPemagangController;
-use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Admin\Table\TrashController;
-use App\Http\Controllers\User\ApplyJobController;
+use App\Http\Controllers\Admin\Table\LowonganController;
+use App\Http\Controllers\Admin\Table\ListPemagangController;
 
 
 /*
@@ -67,7 +69,13 @@ Route::get('home', [HomeController::class, 'home'])->middleware('auth');
 Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
 Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
 Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->middleware('auth');
+
 Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail'])->middleware('auth');
+
+// Profile
+Route::post('/update-profile', [ProfileController::class, 'update_profile']);
+Route::get('/update-profile', [ProfileController::class, 'index']);
+
 
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {
@@ -75,6 +83,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Lowongan
     Route::get('lowongan-page', [DashboardController::class, 'lowongan_page']);
     Route::resource('lowongan', LowonganController::class);
+    Route::post('lowongans/{id}', [tes::class, 'update']);
     // Apply-user
     Route::get('apply', [ApplyJobController::class, 'index']);
     Route::get('apply-create', [ApplyJobController::class, 'create']);

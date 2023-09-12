@@ -21,7 +21,7 @@ class VerifUserEmail extends Controller
                 'is_active' => "1",
             ]);
             Session::put('user', Auth::user());
-            return redirect()->to('/')->with('success', 'Akun berhasil diverifikasi');
+            return redirect()->to('/home')->with('success', 'Akun berhasil diverifikasi');
         } else {
             return redirect()->to('register')->with('error', 'Akun gagal diverifikasi');
         }

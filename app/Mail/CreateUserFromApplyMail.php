@@ -13,12 +13,15 @@ class CreateUserFromApplyMail extends Mailable
 {
     use Queueable, SerializesModels;
     private $user;
+    private $password;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct($user, $password)
     {
         $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -38,7 +41,7 @@ class CreateUserFromApplyMail extends Mailable
     {
         return new Content(
             view: 'Mail.Akun',
-            with: ['user' => $this->user]
+            with: ['user' => $this->user, 'password' => $this->password]
         );
     }
 

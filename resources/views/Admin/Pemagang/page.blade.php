@@ -104,6 +104,7 @@
                 }
             });
             var table = $('#myTable').DataTable({
+                responsive: true,
                 processing: true,
                 serverside: true,
                 ajax: 'list-pemagang',
