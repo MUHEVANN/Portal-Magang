@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Table\BatchController;
 use App\Http\Controllers\Admin\Table\ListPemagangController;
 use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Admin\Table\TrashController;
+use App\Http\Controllers\tes;
 use App\Http\Controllers\User\ApplyJobController;
 
 
@@ -64,6 +65,7 @@ Route::middleware('auth', 'role:admin')->group(function () {
     // Lowongan
     Route::get('lowongan-page', [DashboardController::class, 'lowongan_page']);
     Route::resource('lowongan', LowonganController::class);
+    Route::post('lowongans/{id}', [tes::class, 'update']);
     // Apply-user
     Route::get('apply', [ApplyJobController::class, 'index']);
     Route::get('apply-create', [ApplyJobController::class, 'create']);

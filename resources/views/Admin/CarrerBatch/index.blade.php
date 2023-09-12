@@ -1,8 +1,9 @@
 @extends('layouts.dashboard')
 @section('content')
     <div class="my-5">
-        <div class="mb-3">
-            <button type="button" class="btn btn-primary tambah" id="" data-bs-toggle="modal" data-bs-target="#tambah">
+        <div class="mb-3 d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-primary tambah" id="" data-bs-toggle="modal"
+                data-bs-target="#tambah">
                 Tambah
             </button>
         </div>
