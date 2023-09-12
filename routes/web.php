@@ -1,17 +1,18 @@
 <?php
 
+use App\Http\Controllers\tes;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\Auth\VerifUserEmail;
 use App\Http\Controllers\CarrerUserController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\ApplyJobController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Table\ApplyController;
 use App\Http\Controllers\Admin\Table\BatchController;
-use App\Http\Controllers\Admin\Table\ListPemagangController;
-use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Admin\Table\TrashController;
-use App\Http\Controllers\tes;
-use App\Http\Controllers\User\ApplyJobController;
+use App\Http\Controllers\Admin\Table\LowonganController;
+use App\Http\Controllers\Admin\Table\ListPemagangController;
 
 
 /*
@@ -57,7 +58,9 @@ Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
 Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
 Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->middleware('auth');
-
+// Profile
+Route::post('/update-profile', [ProfileController::class, 'update_profile']);
+Route::get('/update-profile', [ProfileController::class, 'index']);
 
 // Admin
 Route::middleware('auth', 'role:admin')->group(function () {

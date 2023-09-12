@@ -52,8 +52,8 @@ class ApplyJobController extends Controller
         ]);
 
         $carrer = new Apply();
-        $carr = Carrer::latest()->get();
-
+        $carr = Carrer::latest()->first();
+        dd($carr->id);
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
             if (!$user_acc) {
@@ -92,8 +92,8 @@ class ApplyJobController extends Controller
 
     public function formApply()
     {
-        // dd(Auth::user()->kelompok_id);
-        $lowongan = Lowongan::whereNotIn('name', ['kosong', 'admin'])->get();
+        $carrer_id = Carrer::latest()->first()->id;
+        $lowongan = Lowongan::whereNotIn('name', ['kosong', 'admin'])->where('carrer_id', $carrer_id)->get();
         return view('Admin.Apply.form', compact('lowongan'));
     }
     public function detail_lowongan()
