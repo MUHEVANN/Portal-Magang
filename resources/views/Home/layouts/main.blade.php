@@ -46,7 +46,7 @@
                             </li>
                             <li class="flex p-1 rounded hover:bg-slate-200 items-center cursor-pointer"> <img
                                     src="{{ asset('assets/logout.svg') }}" alt="log out">
-                                <a href="logout" class="px-1 text-red-500">Logout</a>
+                                <a href="/logout" class="px-1 text-red-500">Logout</a>
                             </li>
                         </ul>
 

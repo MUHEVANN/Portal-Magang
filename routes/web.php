@@ -75,6 +75,7 @@ Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail'])->m
 // Profile
 Route::post('/update-profile', [ProfileController::class, 'update_profile']);
 Route::get('/update-profile', [ProfileController::class, 'index']);
+Route::get('/profile-user', [ProfileController::class, 'get_profile']);
 
 
 // Admin

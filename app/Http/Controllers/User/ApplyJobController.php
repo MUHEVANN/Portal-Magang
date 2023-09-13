@@ -53,7 +53,6 @@ class ApplyJobController extends Controller
 
         $carrer = new Apply();
         $carr = Carrer::latest()->first();
-        dd($carr->id);
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
             if (!$user_acc) {
@@ -78,7 +77,7 @@ class ApplyJobController extends Controller
         $ketua->save();
 
         $carrer->kelompok_id = $kelompok->id;
-        $carrer->carrer_id = $carr->first()->id;
+        $carrer->carrer_id = $carr->id;
         $cv_file = $request->file('cv');
         $cv_name = date('ymdhis') . '.' . $cv_file->getClientOriginalExtension();
         $cv_path = $cv_file->storeAs('public/cv', $cv_name);
@@ -133,7 +132,7 @@ class ApplyJobController extends Controller
         foreach ($apply->kelompok->user as $user) {
             StatusApplyJob::dispatch($user, $apply->status);
         }
-        return redirect()->to('dashboard')->with(['success' => 'Apply job berhasil dikonfirmasi']);
+        return redirect()->to('all-pemagang')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function destroy(string $id)
     {

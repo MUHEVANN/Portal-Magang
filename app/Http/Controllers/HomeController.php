@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         $carrer = Carrer::latest()->first();
 
-        $lowongan = Lowongan::where('carrer_id', $carrer->id)->get();
+        $lowongan = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong'])->get();
         return view('Home.index', compact('lowongan'));
     }
     public function lowonganDetail($id)

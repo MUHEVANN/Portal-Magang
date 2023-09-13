@@ -16,6 +16,25 @@ class ProfileController extends Controller
         $user = User::with('lowongan')->find($user_id);
         return view('Home.profile.index', compact('user'));
     }
+
+    public function get_profile()
+    {
+        $user_id = Auth::user()->id;
+        $user = User::with('lowongan')->find($user_id);
+        $response = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => $user->password,
+            'gender' => $user->gender,
+            'alamat' => $user->alamat,
+            'no_hp' => $user->no_hp,
+            'job_magang_id' => $user->job_magang_id === 1 ? 'Tidak Ada Job' : $user->lowongan->name,
+            'profile_image' => $user->profile_image,
+            'lowongan_name' => $user->lowongan->name, // Ini adalah informasi nama lowongan.
+        ];
+        return response()->json($response);
+    }
+
     public function update_profile(Request $request)
     {
         $user_id = Auth::user()->id;
@@ -39,7 +58,8 @@ class ProfileController extends Controller
         $user->no_hp = $request->no_hp;
         $user->save();
 
+        $image = asset('storage/profile/' . $user->profile_image);
 
-        return response()->json('update profile berhasil');
+        return response()->json(['message' => 'update profile berhasil', 'image' => $image]);
     }
 }
