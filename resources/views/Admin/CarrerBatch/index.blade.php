@@ -2,8 +2,7 @@
 @section('content')
     <div class="my-5">
         <div class="mb-3 d-flex justify-content-end">
-            <button type="button" class="btn btn-outline-primary tambah" id="" data-bs-toggle="modal"
-                data-bs-target="#tambah">
+            <button type="button" class="btn btn-outline-primary tambah">
                 Tambah
             </button>
         </div>
@@ -32,6 +31,7 @@
                     <div class="mb-3">
                         <label for="batch">Batch</label>
                         <input type="text" name="batch" id="batch" class="form-control">
+                        <span class="text-danger" id="error-batch"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -86,15 +86,34 @@
                             batch: $('#batch').val()
                         },
                         success: function(response) {
-                            $('#tambah-modal').modal('hide');
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Your work has been saved',
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            table.ajax.reload();
+                            if (response.error) {
+                                $('#error-batch').text(response.error.batch);
+                            } else {
+                                $('#batch').val('');
+                                $('#tambah-modal').modal('hide');
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 18,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+
+                                    icon: 'success',
+                                    title: response.success
+                                });
+                                table.ajax.reload();
+                            }
                         }
                     });
                 });

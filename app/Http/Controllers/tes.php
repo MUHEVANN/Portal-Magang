@@ -23,5 +23,6 @@ class tes extends Controller
         $lowongan->kualifikasi = $request->kualifikasi;
         $lowongan->benefit = $request->benefit;
         $lowongan->save();
+        return response()->json(['success' => 'Perubahan Disimpan']);
     }
 }
