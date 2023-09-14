@@ -1,29 +1,43 @@
 
-function inform(param){
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'bottom-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
+// function inform(param){
+//     const Toast = Swal.mixin({
+//         toast: true,
+//         position: 'bottom-end',
+//         showConfirmButton: false,
+//         timer: 3000,
+//         timerProgressBar: true,
+//         didOpen: (toast) => {
+//           toast.addEventListener('mouseenter', Swal.stopTimer)
+//           toast.addEventListener('mouseleave', Swal.resumeTimer)
+//         }
+//       })
       
-      Toast.fire({
-        icon: 'success',
-        title: param
-      })
-}
+//       Toast.fire({
+//         icon: 'success',
+//         title: param
+//       })
+// }
+
+document.addEventListener('alpine:init', () => {
+  Alpine.data('home', () => ({
+
+    lowongan: {},
+    filterType: false,
+    sortedBy: false,
+    type: 'terbaru',
+
+    async getSorted(){
+      this.lowongan = await (await fetch(`filters/${type}`)).json();
+      console.log(this.lowongan);
+    }
+  }));
+})
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('apply', () => ({
 
       apply: false,
       current_pos: 1,
-      html: '',
       output: '',
       fields: [],
 
@@ -39,11 +53,10 @@ document.addEventListener('alpine:init', () => {
       },
 
       cek_output(){
-        if(this.output == 'sendiri'){
-          return false;
+        if(this.output == 'kelompok'){
+          return true;
         }
-        
-        return true;
+         return false;
       },
 
       remove(param){

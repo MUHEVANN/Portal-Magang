@@ -53,6 +53,10 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    // filter ajax
+    Route::get('/filters/{type}', [HomeController::class, 'filter'])->name('filters');
+
     // Auth verif
     Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
     // verif user
