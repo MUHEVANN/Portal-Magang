@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('carrer_id');
             $table->unsignedBigInteger('kelompok_id');
             $table->string('cv_user');
+            $table->date('tgl_mulai');
+            $table->date('tgl_selesai');
             $table->string('status')->default('menunggu');
             $table->timestamps();
             $table->foreign('carrer_id')->references('id')->on('carrers')->onDelete('cascade');

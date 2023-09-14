@@ -14,14 +14,13 @@
         <div x-show.transition="current_pos == 1">
 
             <label for="tgl-mulai">Tanggal Mulai</label>
-            <input type="date" name="tgl-mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
+            <input type="date" name="tgl_mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
 
             <label for="tgl-selesai">Tanggal Selesai</label>
-            <input type="date" name="tgl-selesai" id="tgl-selesai" class="input-style" id="tipe-magang">
+            <input type="date" name="tgl_selesai" id="tgl-selesai" class="input-style" id="tipe-magang">
             <button
                 class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
                 x-on:click.prevent="next()">Berikutnya</button>
-
         </div>
 
         <div x-show.transition="current_pos == 2">
@@ -47,7 +46,7 @@
                 <button
                     class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50 w-full"
                     x-on:click.prevent='add_field'>Tambah Anggota</button>
-                    <template x-for="i in fields">
+                <template x-for="i in fields">
                     <x-groupInput :num='$index' :lowongan='$lowongan' />
                 </template>
             </div>
@@ -63,8 +62,9 @@
         </div>
         <div x-show.transition="current_pos==3">
 
-            <label for="alamat">Alamat</label> <br>
-            <input type="text" name="alamat" id="alamat" class="py-2 px-3 w-full mb-3 bg-slate-200 rounded-sm">
+            <label for="alamat">Job Magang Ketua</label> <br>
+            <input type="text" name="job_magang_ketua" id="alamat"
+                class="py-2 px-3 w-full mb-3 bg-slate-200 rounded-sm">
 
             <label for="cv">CV</label>
             <input type="file" name="cv" class="input-style" id="cv" />
