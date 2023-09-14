@@ -15,3 +15,15 @@
 .ornament{
     @apply rounded-full absolute -z-10;
 }
+
+.indicator{
+    @apply  text-center inline-block py-2 px-4 my-3 m-5 border-[1px] border-white rounded-full;
+}
+
+.active{
+    @apply text-black bg-slate-200; 
+}
+
+.input-style{
+    @apply py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm font-bold;
+}

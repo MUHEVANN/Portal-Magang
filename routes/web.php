@@ -35,10 +35,6 @@ Route::get('register', [UserAuth::class, 'register']);
 Route::post('register', [UserAuth::class, 'proccess_register']);
 
 
-Route::middleware('auth')->group(function () {
-});
-
-
 // login
 Route::get('login', [UserAuth::class, 'login'])->name('login');
 Route::post('login', [UserAuth::class, 'proccess_login']);

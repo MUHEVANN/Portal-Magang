@@ -5,6 +5,8 @@ namespace Database\Factories;
 use App\Models\Lowongan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use App\Models\Carrer;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Lowongan>
  */
@@ -22,7 +24,7 @@ class LowonganFactory extends Factory
     {
         return [
             'name' => fake()->name,
-            'carrer_id' => 1,
+            'carrer_id' => Carrer::latest()->first()->id,
             'desc' => fake()->realTextBetween(50, 100),
             'benefit' => fake()->realTextBetween(30, 70),
             'kualifikasi' => fake()->realTextBetween(25, 40),
