@@ -26,6 +26,16 @@ class LowonganController extends Controller
             ->addColumn('action', function ($data) {
                 return view('Admin.updel-user')->with('data', $data);
             })
+            ->addColumn('description', function ($data) {
+                return $data->desc;
+            })
+            ->addColumn('kualifikasi', function ($data) {
+                return $data->kualifikasi;
+            })
+            ->addColumn('benefit', function ($data) {
+                return $data->benefit;
+            })
+            ->rawColumns(['description', 'kualifikasi', 'benefit'])
             ->make(true);
     }
     public function store(Request $request)
@@ -35,11 +45,11 @@ class LowonganController extends Controller
             'desc' => 'required',
             'benefit' => 'required',
             'kualifikasi' => 'required',
-            'gambar' => 'required',
+            'gambar' => 'required|mimes:jpg,jpeg,png',
         ]);
 
         if ($validate->fails()) {
-            return response()->json($validate->messages());
+            return response()->json(['error' => $validate->messages()]);
         }
         $gambar = $request->file('gambar');
         $gambar_name = date('ymdhis') . "." . $gambar->getClientOriginalExtension();

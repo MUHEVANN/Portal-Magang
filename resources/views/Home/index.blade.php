@@ -30,7 +30,8 @@
                 <div
                     class="p-2 my-2 pr-5 items-center border-2 border-slate-100 flex justify-between rounded cursor-pointer hover:bg-slate-50">
                     <div class="flex gap-3">
-                        <img :src="data.gambar" alt="" class="w-28">
+                        <img :src="'storage/lowongan/' + data.gambar" alt="" class="w-28">
+                        <p x-text="storage/lowongan/data.gambar"></p>
                         <div class="justify-around flex-wrap flex flex-col">
                             <h1 class="text-[#000D3B] font-bold text-2xl" x-text='data.name'></h1>
                             <p class="text-slate-500 text-md" x-text='new Date(data.created_at).toLocaleDateString()'></p>

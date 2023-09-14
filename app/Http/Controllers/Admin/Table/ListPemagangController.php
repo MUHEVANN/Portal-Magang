@@ -12,7 +12,7 @@ class ListPemagangController extends Controller
 {
     public function index()
     {
-        $data = User::with('kelompok.apply.carrer', 'lowongan')->where('name', '!=', 'Admin')->orderBy('created_at', 'asc')->get();
+        $data = User::with('kelompok.apply.carrer', 'lowongan')->whereNotIn('job_magang_id', [1])->orderBy('created_at', 'asc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('type-magang', function ($data) {

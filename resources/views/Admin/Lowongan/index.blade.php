@@ -11,7 +11,7 @@
                     @endforeach
                 </select>
             </div>
-            <button type="button" class="btn btn-primary" id="tambah">
+            <button type="button" class="btn btn-outline-primary" id="tambah">
                 Tambah
             </button>
         </div>
@@ -42,29 +42,37 @@
                         <div class="mb-3">
                             <label for="name">Nama Lowongan</label>
                             <input type="text" name="name" id="name" class="form-control">
+                            <span id="error-name" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="desc">Descripsi</label>
-                            <input type="text" name="desc" id="desc" class="form-control">
+                            <label for="desc">Deskripsi</label>
+                            <trix-editor id="desc"></trix-editor>
+                            <span id="error-desc" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="benefit">Benefit</label>
-                            <input type="text" name="benefit" id="benefit" class="form-control">
+                            <trix-editor id="benefit"></trix-editor>
+                            <span id="error-benefit" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="kualifikasi">Kualifikasi</label>
-                            <input type="text" name="kualifikasi" id="kualifikasi" class="form-control">
+                            <trix-editor id="kualifikasi"></trix-editor>
+                            <span id="error-kualifikasi" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="gambar">Gambar</label>
                             <input type="file" name="gambar" id="gambar" class="form-control">
+                            <span id="error-gambar" class="text-danger"></span>
+                        </div>
 
+                        <div class="col-12">
+                            <img src="" id="image-preview" alt="" class="col-12">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" class="close"
                             data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary submit">Tambah</button>
+                        <button type="button" class="btn btn-primary submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -99,16 +107,25 @@
                         name: 'name'
                     },
                     {
-                        data: 'desc',
-                        name: 'desc'
+                        data: 'description',
+                        name: 'description',
+                        render: function(data) {
+                            return data.substring(0, 20) + '...';
+                        }
                     },
                     {
                         data: 'benefit',
-                        name: 'benefit'
+                        name: 'benefit',
+                        render: function(data) {
+                            return data.substring(0, 20) + '...';
+                        }
                     },
                     {
                         data: 'kualifikasi',
-                        name: 'kualifikasi'
+                        name: 'kualifikasi',
+                        render: function(data) {
+                            return data.substring(0, 20) + '...';
+                        }
                     },
                     {
                         data: 'gambar',
@@ -132,11 +149,21 @@
                 table.ajax.reload();
 
             });
-
+            $('#gambar').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image-preview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
             $('body').on('click', '#tambah', function(e) {
                 e.preventDefault();
-                $('#tambah-modal').modal('show');
 
+                $('#tambah-modal').modal('show');
+                $('.submit').off('click');
                 $('.submit').click(function(e) {
                     e.preventDefault();
                     var formData = new FormData();
@@ -152,16 +179,44 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
-                            console.log(response);
-                            $('#tambah-modal').modal('hide');
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Your work has been saved',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                            table.ajax.reload();
+                            if (response.error) {
+                                $('#error-benefit').text(response.error.benefit);
+                                $('#error-name').text(response.error.name);
+                                $('#error-desc').text(response.error.desc);
+                                $('#error-kualifikasi').text(response.error
+                                    .kualifikasi);
+                                $('#error-gambar').text(response.error.gambar);
+                            } else {
+                                $('#name').val('');
+                                $('#desc').val('');
+                                $('#benefit').val('');
+                                $('#kualifikasi').val('');
+                                $('#gambar').val('');
+                                $('#image-preview').attr('src', '');
+                                $('#tambah-modal').modal('hide');
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 18,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+
+                                    icon: 'success',
+                                    title: response.success
+                                })
+                                table.ajax.reload();
+                            }
                         }
                     });
                 });
@@ -176,47 +231,84 @@
                     url: 'lowongan/' + id + '/edit',
                     success: function(response) {
                         $('#tambah-modal').modal('show');
+                        var desc = document.querySelector('#desc');
+                        desc.editor.loadHTML(response.desc);
+                        var benefit = document.querySelector('#benefit');
+                        benefit.editor.loadHTML(response.benefit);
+                        var kualifikasi = document.querySelector('#kualifikasi');
+                        kualifikasi.editor.loadHTML(response.kualifikasi);
+
                         $('#name').val(response.name);
                         $('#desc').val(response.desc);
                         $('#kualifikasi').val(response.kualifikasi);
                         $('#benefit').val(response.benefit);
-                        $('.submit').off('click');
-                        $('.submit').click(function(e) {
-                            e.preventDefault();
-                            var formData = new FormData();
-                            formData.append('name', $('#name').val());
-                            formData.append('desc', $('#desc').val());
-                            formData.append('benefit', $('#benefit').val());
-                            formData.append('kualifikasi', $('#kualifikasi').val());
-                            formData.append('gambar', $('#gambar')[0].files[0]);
-                            $.ajax({
-                                method: 'POST',
-                                url: 'lowongans/' + id,
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function(response) {
-                                    $('#tambah-modal').modal('hide');
-                                    Swal.fire({
-                                        position: 'top-end',
-                                        icon: 'success',
-                                        title: 'Your work has been saved',
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-                                    table.ajax.reload();
-                                }
-                            });
-                        });
+                        $('#image-preview').attr('src', '/storage/lowongan/' + response.gambar);
                     },
                 });
-                $('.close').click(function() {
-                    $('#name').val('');
-                    $('#desc').val('');
-                    $('#benefit').val('');
-                    $('#kualifikasi').val('');
+                $('.submit').off('click');
+                $('.submit').click(function(e) {
+                    e.preventDefault();
+                    var formData = new FormData();
+                    formData.append('name', $('#name').val());
+                    formData.append('desc', $('#desc').val());
+                    formData.append('benefit', $('#benefit').val());
+                    formData.append('kualifikasi', $('#kualifikasi').val());
+                    formData.append('gambar', $('#gambar')[0].files[0]);
+                    $.ajax({
+                        method: 'POST',
+                        url: 'lowongans/' + id,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.error) {
+                                $('#error-benefit').text(response.error.benefit);
+                                $('#error-name').text(response.error.name);
+                                $('#error-desc').text(response.error.desc);
+                                $('#error-kualifikasi').text(response.error
+                                    .kualifikasi);
+                                $('#error-gambar').text(response.error.gambar);
+                            } else {
+                                $('#name').val('');
+                                $('#desc').val('');
+                                $('#benefit').val('');
+                                $('#kualifikasi').val('');
+                                $('#gambar').val('');
+                                $('#image-preview').attr('src', '');
+                                $('#tambah-modal').modal('hide');
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 18,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
 
+                                Toast.fire({
+
+                                    icon: 'success',
+                                    title: response.success
+                                })
+                                table.ajax.reload();
+                            }
+                        }
+                    });
                 });
+            });
+            $('.close').click(function() {
+                $('#name').val('');
+                $('#desc').val('');
+                $('#benefit').val('');
+                $('#kualifikasi').val('');
+                $('#image-preview').attr('src', '');
             });
             $('body').on('click', '.hapus', function(e) {
                 var id = $(this).data('id');
@@ -242,11 +334,27 @@
                             url: 'lowongan/' + id,
                             method: 'DELETE',
                             success: function(response) {
-                                swalWithBootstrapButtons.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                )
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 15,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+
+                                    icon: 'success',
+                                    title: 'Signed in successfully'
+                                })
                                 table.ajax.reload();
                             }
                         });
@@ -254,11 +362,28 @@
                         /* Read more about handling dismissals below */
                         result.dismiss === Swal.DismissReason.cancel
                     ) {
-                        swalWithBootstrapButtons.fire(
-                            'Cancelled',
-                            'Your imaginary file is safe :)',
-                            'error'
-                        )
+                        $('#tambah-modal').modal('hide');
+                        const Toast = Swal.mixin({
+                            width: 400,
+                            padding: 18,
+                            toast: true,
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter',
+                                    Swal.stopTimer)
+                                toast.addEventListener('mouseleave',
+                                    Swal.resumeTimer)
+                            }
+                        })
+
+                        Toast.fire({
+
+                            icon: 'error',
+                            title: 'Tidak jadi menghapus'
+                        })
                     }
                 })
             });

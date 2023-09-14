@@ -35,18 +35,6 @@ Route::get('register', [UserAuth::class, 'register']);
 Route::post('register', [UserAuth::class, 'proccess_register']);
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
-    // verif user
-    Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif  ');
-    // logout
-    Route::get('logout', [UserAuth::class, 'logout']);
-});
-
-// Route::get('/cekverif', function () {
-//     return view('Verification.verif');
-// });
-
 // login
 Route::get('login', [UserAuth::class, 'login'])->name('login');
 Route::post('login', [UserAuth::class, 'proccess_login']);
@@ -65,50 +53,59 @@ Route::get('/', function () {
     return redirect('home');
 });
 
-Route::get('home', [HomeController::class, 'home'])->middleware('auth');
-Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
-Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
-Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->middleware('auth');
+Route::middleware('auth')->group(function () {
+    // Auth verif
+    Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
+    // verif user
+    Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
+    // logout
+    Route::get('logout', [UserAuth::class, 'logout']);
+    // client
+    Route::get('home', [HomeController::class, 'home']);
+    Route::get('/apply-form', [ApplyJobController::class, 'formApply']);
+    Route::post('/apply-form', [ApplyJobController::class, 'store']);
+    Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan']);
+    Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail']);
+    // Profile
+    Route::middleware('role:client')->group(function () {
+        Route::post('/update-profile', [ProfileController::class, 'update_profile']);
+        Route::get('/update-profile', [ProfileController::class, 'index']);
+        Route::get('/profile-user', [ProfileController::class, 'get_profile']);
+    });
 
-Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail'])->middleware('auth');
+    // Admin
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/pendaftar', [DashboardController::class, 'index']);
+        // Lowongan
+        Route::get('lowongan-page', [DashboardController::class, 'lowongan_page']);
+        Route::resource('lowongan', LowonganController::class);
+        Route::post('lowongans/{id}', [tes::class, 'update']);
+        // Apply-user
+        Route::get('apply', [ApplyJobController::class, 'index']);
+        Route::get('apply-create', [ApplyJobController::class, 'create']);
+        Route::post('apply', [ApplyJobController::class, 'store']);
+        Route::get('apply-show', [ApplyJobController::class, 'show']);
+        Route::get('apply-status-reject/{id}', [ApplyJobController::class, 'reject']);
+        Route::get('apply-status-konfirm/{id}', [ApplyJobController::class, 'konfirm']);
+        Route::get('detail-pemagang/{namaKelompok}', [CarrerUserController::class, 'detailPemagang']);
+        Route::get('status-pemagang/lulus', [CarrerUserController::class, 'lulus']);
+        // Mangae User Apply
+        Route::get('apply-user', [ApplyController::class, 'index']);
+        Route::get('apply-user-detail-kelompok/{id}', [ApplyController::class, 'detail_page']);
+        Route::get('apply-user-get-detail/{id}', [ApplyController::class, 'detail_kelompok']);
+        // batch carrer
 
-// Profile
-Route::post('/update-profile', [ProfileController::class, 'update_profile']);
-Route::get('/update-profile', [ProfileController::class, 'index']);
-
-
-// Admin
-Route::middleware('auth', 'role:admin')->group(function () {
-    Route::get('/pendaftar', [DashboardController::class, 'index']);
-    // Lowongan
-    Route::get('lowongan-page', [DashboardController::class, 'lowongan_page']);
-    Route::resource('lowongan', LowonganController::class);
-    Route::post('lowongans/{id}', [tes::class, 'update']);
-    // Apply-user
-    Route::get('apply', [ApplyJobController::class, 'index']);
-    Route::get('apply-create', [ApplyJobController::class, 'create']);
-    Route::post('apply', [ApplyJobController::class, 'store']);
-    Route::get('apply-show', [ApplyJobController::class, 'show']);
-    Route::get('apply-status-reject/{id}', [ApplyJobController::class, 'reject']);
-    Route::get('apply-status-konfirm/{id}', [ApplyJobController::class, 'konfirm']);
-    Route::get('detail-pemagang/{namaKelompok}', [CarrerUserController::class, 'detailPemagang']);
-    Route::get('status-pemagang/lulus', [CarrerUserController::class, 'lulus']);
-    // Mangae User Apply
-    Route::get('apply-user', [ApplyController::class, 'index']);
-    Route::get('apply-user-detail-kelompok/{id}', [ApplyController::class, 'detail_page']);
-    Route::get('apply-user-get-detail/{id}', [ApplyController::class, 'detail_kelompok']);
-    // batch carrer
-
-    Route::get('batch-page', [DashboardController::class, 'batch_page']);
-    Route::resource('carrer-batch', BatchController::class);
-    // list Pemagang
-    Route::get('all-pemagang', [DashboardController::class, 'list_pemagang_page']);
-    Route::get('list-pemagang', [ListPemagangController::class, 'index']);
-    Route::get('edit-pemagang/{id}', [ListPemagangController::class, 'edit']);
-    Route::put('edit-pemagang/{id}', [ListPemagangController::class, 'update']);
-    Route::delete('hapus-pemagang/{id}', [ListPemagangController::class, 'delete']);
-    // Trash
-    Route::get('trash-page', [DashboardController::class, 'trash_page']);
-    Route::get('trash', [TrashController::class, 'trash']);
-    Route::put('restore/{id}', [TrashController::class, 'restore']);
+        Route::get('batch-page', [DashboardController::class, 'batch_page']);
+        Route::resource('carrer-batch', BatchController::class);
+        // list Pemagang
+        Route::get('all-pemagang', [DashboardController::class, 'list_pemagang_page']);
+        Route::get('list-pemagang', [ListPemagangController::class, 'index']);
+        Route::get('edit-pemagang/{id}', [ListPemagangController::class, 'edit']);
+        Route::put('edit-pemagang/{id}', [ListPemagangController::class, 'update']);
+        Route::delete('hapus-pemagang/{id}', [ListPemagangController::class, 'delete']);
+        // Trash
+        Route::get('trash-page', [DashboardController::class, 'trash_page']);
+        Route::get('trash', [TrashController::class, 'trash']);
+        Route::put('restore/{id}', [TrashController::class, 'restore']);
+    });
 });

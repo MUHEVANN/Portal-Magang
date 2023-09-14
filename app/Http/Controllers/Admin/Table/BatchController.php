@@ -38,13 +38,13 @@ class BatchController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json($validate->messages());
+            return response()->json(['error' => $validate->messages()]);
         }
 
         $batch = Carrer::create([
             'batch' => $request->batch
         ]);
-        return response()->json('berhasil menambahkan');
+        return response()->json(['success' => 'Berhasil menambahkan batch'], 200);
     }
     public function edit($id)
     {
@@ -60,12 +60,12 @@ class BatchController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json($validate->messages());
+            return response()->json(['error' => $validate->messages()], 400);
         }
 
         $batch = Carrer::find($id);
         $batch->update(['batch' => $request->batch]);
-        return response()->json('berhasil mengupdate');
+        return response()->json(['success' => 'Berhasil menambahkan batch'], 200);
     }
 
     public function destroy($id)
