@@ -36,7 +36,7 @@ Route::post('register', [UserAuth::class, 'proccess_register']);
 Route::middleware('auth')->group(function () {
     Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
     // verif user
-    Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
+    Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif  ');
     // logout
     Route::get('logout', [UserAuth::class, 'logout']);
 });
@@ -67,6 +67,7 @@ Route::get('home', [HomeController::class, 'home'])->middleware('auth');
 Route::get('/apply-form', [ApplyJobController::class, 'formApply'])->middleware('auth');
 Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('auth');
 Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan'])->middleware('auth');
+
 Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail'])->middleware('auth');
 
 // Admin

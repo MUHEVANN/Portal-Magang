@@ -1,16 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('Home.layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
+@section('jumbotron')
+    <div class="flex items-center gap-3 cursor-pointer hover:underline">
+        <img src="{{ asset('assets/chevron.svg') }}" class="bg-slate-300 text-center rounded-full p-1 rotate-90"
+            alt="">
+        <a href="/">Kembali</a>
+    </div>
+@endsection
 
-<body>
-    @if ($errors->has('sudah-Apply'))
-        <div class="alert alert-danger">
+@section('content')
+    <form action="{{ url('apply-form') }}" class="bg-red w-3/5" method="post" enctype="multipart/form-data">
+        @csrf
+        <div x-show.transition="current_pos == 1">
+
+            <label for="tgl-mulai">Tanggal Mulai</label>
+            <input type="date" name="tgl-mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
+
+            <label for="tgl-selesai">Tanggal Selesai</label>
+            <input type="date" name="tgl-selesai" id="tgl-selesai" class="input-style" id="tipe-magang">
+            <button
+                class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
+                x-on:click.prevent="next()">Berikutnya</button>
+
+        </div>
+
+        <div x-show.transition="current_pos == 2">
+            @if ($errors->has('sudah-Apply'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('sudah-Apply') }}
+                </div>
+            @endif
+
+            @if ($errors->has('sudah-lulus'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('sudah-lulus') }}
+                </div>
+            @endif
+            <label for="tipe-magang">Tipe Magang</label> <br>
+            <select x-model='output' name="tipe-magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
+                id="tipe-magang">
+                <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
+                <option value="sendiri">Sendiri</option>
+                <option value="kelompok">Kelompok</option>
+            </select>
+            <div x-show="cek_output">
+                <button
+                    class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50 w-full"
+                    x-on:click.prevent='add_field'>Tambah Anggota</button>
+                    <template x-for="i in fields">
+                    <x-groupInput :num='$index' :lowongan='$lowongan' />
+                </template>
+            </div>
+
+
+            <div class="flex justify-between items-center">
+                <button x-on:click.prevent="previous()"
+                    class="py-2 bg-gray-300 px-5 hover:underline block rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
+                <button
+                    class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-950"
+                    x-on:click.prevent="next()">Berikutnya</button>
+            </div>
+        </div>
+        <div x-show.transition="current_pos==3">
+
+            <label for="alamat">Alamat</label> <br>
+            <input type="text" name="alamat" id="alamat" class="py-2 px-3 w-full mb-3 bg-slate-200 rounded-sm">
+
+            <label for="cv">CV</label>
+            <input type="file" name="cv" class="input-style" id="cv" />
+            <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
+            @error('cv')
+                {{ $message }}
+            @enderror
+            <div class="flex justify-between items-center">
+                <button x-on:click.prevent="previous()"
+                    class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
+                <button type="submit"
+                    class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
+            </div>
+        </div>
+    </form>
+@endsection
+
+@section('sidebar')
+    <div class="w-full py-3 rounded-lg h-full bg-blue-900">
+        <section class="flex items-center text-white">
+
+            <p class="indicator" :class="current_pos == 1 ? 'active' : 'text-white'">
+                1</p>
+            <span :class="current_pos == 1 ? 'font-bold' : ''">Tanggal Magang</span>
+        </section>
+        <section class="flex items-center text-white">
+
+            <p class="indicator" :class="current_pos == 2 ? 'active' : 'text-white'">
+                2</p>
+            <span :class="current_pos == 2 ? 'font-bold' : ''">Anggota Magang</span>
+        </section>
+        <section class="flex items-center text-white">
+
+            <p class="indicator" :class="current_pos == 3 ? 'active' : 'text-white'">
+                3</p>
+            <span :class="current_pos == 3 ? 'font-bold' : ''">Berkas Peribadi</span>
+        </section>
+    </div>
+@endsection
+
+{{-- @if ($errors->has('sudah-Apply'))
+    <div class="alert alert-danger">
             {{ $errors->first('sudah-Apply') }}
         </div>
     @endif
@@ -105,7 +201,4 @@
             });
 
         });
-    </script>
-</body>
-
-</html>
+    </script> --}}

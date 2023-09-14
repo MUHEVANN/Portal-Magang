@@ -84,15 +84,15 @@ class ApplyJobController extends Controller
         $carrer->save();
         // dd($carrer->carrer_id);
 
-
         return redirect()->to('home');
     }
 
     public function formApply()
     {
         // dd(Auth::user()->kelompok_id);
+        $index = 0;
         $lowongan = Lowongan::whereNotIn('name', ['kosong', 'admin'])->get();
-        return view('Admin.Apply.form', compact('lowongan'));
+        return view('Admin.Apply.form', ['lowongan' => $lowongan, 'index' => $index]);
     }
     public function detail_lowongan()
     {
