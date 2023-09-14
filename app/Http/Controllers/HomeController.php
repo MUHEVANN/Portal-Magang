@@ -15,16 +15,20 @@ class HomeController extends Controller
         return view('Home.index', compact('lowongan'));
     }
 
-    public function filter(Request $request)
+    public function filter(string $type)
     {
         $carrer = Carrer::latest()->first();
 
         $query = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong']);
-        if ($request->has('terbaru')) {
-            $query->orderBy('created_at', 'desc');
-        }
-        if ($request->has('terlama')) {
+        // if ($request->has('terbaru')) {
+        // }
+        // if ($request->has('terlama')) {
+        // }
+
+        if ($type == 'terlama') {
             $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
         }
         $lowongan = $query->get();
         return response()->json($lowongan);

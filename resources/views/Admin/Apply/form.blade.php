@@ -1,7 +1,7 @@
 @extends('Home.layouts.main')
 
 @section('jumbotron')
-    <div class="flex items-center gap-3 cursor-pointer hover:underline">
+    <div class="flex items-center gap-3 cursor-pointer hover-underline">
         <img src="{{ asset('assets/chevron.svg') }}" class="bg-slate-300 text-center rounded-full p-1 rotate-90"
             alt="">
         <a href="/">Kembali</a>
@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ url('apply-form') }}" class="bg-red w-3/5" method="post" enctype="multipart/form-data">
+    <form action="{{ url('apply-form') }}" class="bg-red lg:w-3/5" method="post" enctype="multipart/form-data">
         @csrf
         <div x-show.transition="current_pos == 1">
 
@@ -18,8 +18,7 @@
 
             <label for="tgl-selesai">Tanggal Selesai</label>
             <input type="date" name="tgl-selesai" id="tgl-selesai" class="input-style" id="tipe-magang">
-            <button
-                class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
+            <button class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
                 x-on:click.prevent="next()">Berikutnya</button>
 
         </div>
@@ -43,29 +42,71 @@
                 <option value="sendiri">Sendiri</option>
                 <option value="kelompok">Kelompok</option>
             </select>
+
+            <label for="job">Job</label>
+            <select name="job_magang[]" id="" class="input-style">
+                <option class="text-slate-500" value="" selected disabled>--Pilih Job Magang--</option>
+                @foreach ($lowongan as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
             <div x-show="cek_output">
                 <button
                     class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50 w-full"
-                    x-on:click.prevent='add_field'>Tambah Anggota</button>
-                    <template x-for="i in fields">
-                    <x-groupInput :num='$index' :lowongan='$lowongan' />
+                    x-on:click.prevent='add_field' id='tambah-anggota'>Tambah Anggota</button>
+
+                <template x-for="(ar, idx) in fields">
+                    <div class="border-2 border-slate-100 px-2 py-3 mt-5">
+                        <span class="hover-underline  block w-fit ml-auto mb-5 cursor-pointer"
+                            x-on:click="remove(idx)">remove</span>
+                        <label for="name">Name Aggota ke-<span x-text="idx+1"></span></label>
+                        <input type="text" name="name[]" class="input-style" id="name" />
+                        @foreach ($errors->get('name') as $error)
+                            {{ $error }}
+                        @endforeach
+                        <label for="email">Email Anggota ke-<span x-text='idx+1'></span> </label>
+                        <input type="email" name="email[]" class="input-style" id="email" />
+                        @error('email')
+                            {{ $message }}
+                        @enderror
+                        <label for="job">Job Anggota ke-<span x-text='idx+1'></span></label>
+                        <select name="job_magang[]" id="job" class="input-style">
+                            <option value="">Pilih Job Magang</option>
+                            @foreach ($lowongan as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('job_magang')
+                            {{ $message }}
+                        @enderror
+
+                        <label for="cv">CV</label>
+                        <input type="file" name="cv" class="input-style" id="cv" />
+                        <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
+                        @error('cv')
+                            {{ $message }}
+                        @enderror
+                        <div class="flex justify-between items-center">
+                            <button x-on:click.prevent="previous()"
+                                class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
+                            <button type="submit"
+                                class="bg-[#000D3B] py-2 px-5 rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
+                        </div>
+                    </div>
                 </template>
+
             </div>
 
 
             <div class="flex justify-between items-center">
                 <button x-on:click.prevent="previous()"
-                    class="py-2 bg-gray-300 px-5 hover:underline block rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
-                <button
-                    class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-950"
+                    class="py-2 bg-gray-300 px-5 block rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
+                <button class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-950"
                     x-on:click.prevent="next()">Berikutnya</button>
             </div>
         </div>
         <div x-show.transition="current_pos==3">
-
-            <label for="alamat">Alamat</label> <br>
-            <input type="text" name="alamat" id="alamat" class="py-2 px-3 w-full mb-3 bg-slate-200 rounded-sm">
-
             <label for="cv">CV</label>
             <input type="file" name="cv" class="input-style" id="cv" />
             <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
@@ -74,9 +115,9 @@
             @enderror
             <div class="flex justify-between items-center">
                 <button x-on:click.prevent="previous()"
-                    class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
+                    class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
                 <button type="submit"
-                    class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
+                    class="bg-[#000D3B] py-2 px-5 rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
             </div>
         </div>
     </form>
@@ -94,13 +135,13 @@
 
             <p class="indicator" :class="current_pos == 2 ? 'active' : 'text-white'">
                 2</p>
-            <span :class="current_pos == 2 ? 'font-bold' : ''">Anggota Magang</span>
+            <span :class="current_pos == 2 ? 'font-bold' : ''">Peserta Magang</span>
         </section>
         <section class="flex items-center text-white">
 
             <p class="indicator" :class="current_pos == 3 ? 'active' : 'text-white'">
                 3</p>
-            <span :class="current_pos == 3 ? 'font-bold' : ''">Berkas Peribadi</span>
+            <span :class="current_pos == 3 ? 'font-bold' : ''">Berkas</span>
         </section>
     </div>
 @endsection
@@ -162,9 +203,7 @@
         @enderror
         <button type="submit">Submit</button>
     </form>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
+    
     <script>
         $(document).ready(function() {
             $('#tambah-anggota').click(function(e) {
