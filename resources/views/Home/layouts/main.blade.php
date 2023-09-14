@@ -14,7 +14,7 @@
 </head>
 
 <body class="antialiased bg-slate-100 m-0 relative" x-cloak :class="apply ? 'overflow-hidden' : 'overflow-x-hidden'"
-    x-data='{apply: false}'>
+    x-data='apply'>
     @if (Auth::user()->is_active == 0)
         <p class="bg-yellow-300 text-center py-5 w-full">Akun anda belum terverifikasi,
             silahkan
@@ -38,7 +38,7 @@
                             x-bind:class="open ? 'rotate-180' : ''" alt="arrow down">
                     </div>
 
-                    <span x-show="open" x-transition
+                    <span x-show="open" x
                         class="bg-white shadow-md  border-[1px] border-slate-100 absolute w-full mt-4 rounded-md">
                         <ul class="py-3 px-2 text-center">
                             <li class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1">
@@ -86,46 +86,99 @@
         </div>
     </main>
 
-    <div class="absolute flex top-0 w-full h-full bottom-0 justify-center items-center bg-gray-700/40 z-20 p-5 overflow-auto shadow-md"
+    {{-- <div class="fixed flex w-full top-0 bottom-0 justify-center items-center bg-gray-700/40 overflow-auto z-20 p-5 shadow-md"
         x-show='apply' x-transition>
-        <div class="bg-white rounded-md w-[40rem] p-5 my-5">
-            <header class="flex justify-between items-center">
-                <h1 class="text-center my-5 text-xl">Silahkan Dilengkapi:</h1>
-                <img x-on:click='apply = !apply' class="cursor-pointer" src="{{ asset('assets/close.svg') }}"
-                    alt="">
-            </header>
-            <form action="#" method="post">
-                <label for="alamat">Alamat</label> <br>
-                <input type="text" name="alamat" id="alamat"
-                    class="py-2 px-3 w-full mb-3 bg-slate-200 rounded-sm">
+        <div class="bg-white rounded-md w-[34rem] h-max p-5 my-5 gap-5 flex items-start">
+            <div class="w-28 rounded-lg h-full bg-blue-900">
+                <p class="indicator" :class="current_pos == 1 ? 'active' : 'text-white'">
+                    1</p>
+                <p class="indicator" :class="current_pos == 2 ? 'active' : 'text-white'">
+                    2</p>
+                <p class="indicator" :class="current_pos == 3 ? 'active' : 'text-white'">
+                    3</p>
+            </div>
+            <div class="w-50">
+                <header class="flex mb-5 justify-between items-center">
+                    <h1 class="text-center text-xl">Silahkan Dilengkapi:</h1>
+                    <img x-on:click='apply = !apply' class="cursor-pointer" src="{{ asset('assets/close.svg') }}"
+                        alt="">
+                </header>
+                <form action="{{ url('apply-form') }}" id="container" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="first" x-show="current_pos == 1" x-transition>
 
-                <label for="tgl-mulai">Tanggal Mulai</label>
-                <input type="date" name="tgl-mulai" id="tgl-mulai"
-                    class="py-2 mb-3 px-3 w-full mr-3 bg-slate-200 rounded-sm" id="tipe-magang">
+                        <label for="tgl-mulai">Tanggal Mulai</label>
+                        <input type="date" name="tgl-mulai" id="tgl-mulai"
+                            class="py-2 mb-3 px-3 w-full mr-3 bg-slate-200 rounded-sm" id="tipe-magang">
 
-                <label for="tgl-selesai">Tanggal Selesai</label>
-                <input type="date" name="tgl-selesai" id="tgl-selesai"
-                    class="py-2 mb-3 px-3 w-full mr-3 bg-slate-200 rounded-sm" id="tipe-magang">
+                        <label for="tgl-selesai">Tanggal Selesai</label>
+                        <input type="date" name="tgl-selesai" id="tgl-selesai"
+                            class="py-2 mb-3 px-3 w-full mr-3 bg-slate-200 rounded-sm" id="tipe-magang">
+                        <button
+                            class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
+                            x-on:click.prevent="next()">Berikutnya</button>
 
-                <label for="tipe-magang" class="my-1">Tipe Magang</label> <br>
-                <select name="tipe-magang" class="py-2 mb-3 px-3 w-full mr-3 bg-slate-200 rounded-sm" id="tipe-magang">
-                    <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
-                    <option value="sendiri">Sendiri</option>
-                    <option value="kelompok">Kelompok</option>
-                </select>
+                    </div>
 
-                <label for="cv">CV</label>
-                <input type="file" name="cv" id="cv"
-                    class="py-2 px-3 w-full mr-3 bg-slate-200 rounded-sm">
+                    <div class="second" x-show="current_pos == 2" x-transition>
+                        @if ($errors->has('sudah-Apply'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('sudah-Apply') }}
+                            </div>
+                        @endif
 
-                <button type="submit"
-                    class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 my-3 ml-auto text-slate-50">Berikutnya</button>
-            </form>
+                        @if ($errors->has('sudah-lulus'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('sudah-lulus') }}
+                            </div>
+                        @endif
+                        <button
+                            class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50 w-full"
+                            x-on:click.prevent='add_new'>Tambah
+                            Anggota</button>
+
+                        <div x-html='html'></div>
+
+                        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+               
+                        <div class="flex justify-between items-center hover:underline">
+                            <button x-on:click.prevent="previous()"
+                                class="py-2 bg-gray-300 px-5 hover:underline block rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
+                            <button
+                                class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-950"
+                                x-on:click.prevent="next()">Berikutnya</button>
+                        </div>
+                    </div>
+                    <div class="w-full" x-show="current_pos==3" x-transition>
+
+                        <label for="alamat">Alamat</label> <br>
+                        <input type="text" name="alamat" id="alamat"
+                            class="py-2 px-3 w-full mb-3 bg-slate-200 rounded-sm">
+
+                        <label for="cv">CV</label>
+                        <input type="file" name="cv"
+                            class="py-2 mb-3 px-3 w-full mr-3 bg-slate-200 rounded-sm" id="cv" />
+
+                        @error('cv')
+                            {{ $message }}
+                        @enderror
+
+                        <div class="flex justify-between items-center hover:underline">
+                            <button x-on:click.prevent="previous()"
+                                class="py-2 bg-gray-300 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
+                            <button type="submit"
+                                class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-
+    </div> --}}
+    <script src="{{ asset('js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

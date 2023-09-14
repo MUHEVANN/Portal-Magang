@@ -79,4 +79,15 @@
                     Terlama</label></li>
         </ul>
     </section>
+
+    <section class="mt-5">
+        <a href='apply-form' x-on:click='apply = !apply'
+            class="bg-[#000D3B] py-2 px-5 hover:underline block text-center rounded hover:opacity-80 text-slate-50">Apply
+            Lowongan</a>
+        <a href="#" class="my-3 cursor-pointer hover:underline text-center block">Hubungi Kita</a>
+        {{-- <div class="mt-8">
+            <p class="text-slate-700">Dipublis pada</p>
+            <h3 class="font-bold text-md">{{ $lowongan->created_at }}</h3>
+        </div> --}}
+    </section>
 @endsection

@@ -90,15 +90,15 @@ class ApplyJobController extends Controller
         $carrer->save();
         // dd($carrer->carrer_id);
 
-
         return redirect()->to('home');
     }
 
     public function formApply()
     {
+        $index = 0;
         $carrer_id = Carrer::latest()->first()->id;
         $lowongan = Lowongan::whereNotIn('name', ['kosong', 'admin'])->where('carrer_id', $carrer_id)->get();
-        return view('Admin.Apply.form', compact('lowongan'));
+        return view('Admin.Apply.form', ['lowongan' => $lowongan, 'index' => $index]);
     }
     public function detail_lowongan()
     {
