@@ -36,11 +36,18 @@
                 </div>
             @endif
             <label for="tipe-magang">Tipe Magang</label> <br>
-            <select x-model='output' name="tipe-magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
+            <select x-model='output' name="tipe_magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
                 id="tipe-magang">
                 <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
-                <option value="sendiri">Sendiri</option>
+                <option value="mandiri">Mandiri</option>
                 <option value="kelompok">Kelompok</option>
+            </select>
+            <label for="alamat">Job Magang Ketua</label> <br>
+            <select name="job_magang_ketua" id="">
+                <option value="">Pilih Job Magang</option>
+                @foreach ($lowongan as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
             </select>
             <div x-show="cek_output">
                 <button
@@ -62,9 +69,6 @@
         </div>
         <div x-show.transition="current_pos==3">
 
-            <label for="alamat">Job Magang Ketua</label> <br>
-            <input type="text" name="job_magang_ketua" id="alamat"
-                class="py-2 px-3 w-full mb-3 bg-slate-200 rounded-sm">
 
             <label for="cv">CV</label>
             <input type="file" name="cv" class="input-style" id="cv" />

@@ -21,7 +21,6 @@ class AdminSeed extends Seeder
             'email' => "Admin@gmail.com",
             'password' => Hash::make("password"),
             'is_active' => "1",
-            'job_magang_id' => 1
         ]);
         $user->addRole('admin');
     }
