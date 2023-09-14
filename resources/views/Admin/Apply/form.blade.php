@@ -24,6 +24,15 @@
         enctype="multipart/form-data">
         @csrf
         <form-group style="display: flex">
+            <label for="name">Job Magang Ketua</label>
+            <select name="job_magang_ketua" id="">
+                <option value="">Pilih Job Magang</option>
+                @foreach ($lowongan as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </form-group>
+        <form-group style="display: flex">
             <label for="name">Name Aggota</label>
             <input type="text" name="name[]" />
         </form-group>

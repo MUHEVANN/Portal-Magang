@@ -30,6 +30,12 @@ class ApplyJobController extends Controller
         if ($user->is_active !== '1') {
             return redirect()->to('profile')->withErrors(['belum-verif' => "Akun anda belum diverifikasi, cek email anda"]);
         }
+        $existingApply = Apply::where('kelompok_id', Auth::user()->kelompok_id)
+            ->whereIn('status', ['menunggu'])
+            ->first();
+        if ($existingApply) {
+            return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
+        }
         $validate = Validator::make($request->all(), [
             'job_magang' => 'required',
             'cv' => 'required|mimes:pdf',
@@ -40,12 +46,6 @@ class ApplyJobController extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-        // $existingApply = Apply::where('kelompok_id', Auth::user()->kelompok_id)
-        //     ->whereIn('status', ['mengunggu', 'lulus'])
-        //     ->get();
-        // if ($existingApply) {
-        //     return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
-        // }
         $email = $request->email;
         $kelompok = Kelompok::create([
             'name' => Str::random(5)
@@ -53,6 +53,8 @@ class ApplyJobController extends Controller
 
         $carrer = new Apply();
         $carr = Carrer::latest()->first();
+
+
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
             if (!$user_acc) {
@@ -72,7 +74,10 @@ class ApplyJobController extends Controller
                 AfterApply::dispatch($user_acc);
             }
         }
+
         $ketua = User::where('email', Auth::user()->email)->first();
+        $ketua->job_magang_id = $request->job_magang_ketua;
+        $ketua->kelompok_id = $kelompok->id;
         $ketua->jabatan = 1;
         $ketua->save();
 
