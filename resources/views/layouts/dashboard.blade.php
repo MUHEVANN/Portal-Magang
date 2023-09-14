@@ -6,14 +6,19 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Dashboard - Admin</title>
 
     <meta name="description" content="" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- datatables --}}
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('template/assets/img/favicon/favicon.ico') }}" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -120,16 +125,21 @@
                             <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ config('app.url') . '/batch' === request()->url() ? 'active' : '' }}">
+                    <li
+                        class="menu-item {{ config('app.url') . '/batch-page' === request()->url() ? 'active' : '' }}">
                         <a href="{{ url('batch-page') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <span class="menu-icon tf-icons material-symbols-outlined">
+                                sort_by_alpha
+                            </span>
                             <div data-i18n="Analytics">Batch</div>
                         </a>
                     </li>
                     <li
                         class="menu-item {{ config('app.url') . '/lowongan-page' === request()->url() ? 'active' : '' }}">
                         <a href="{{ url('lowongan-page') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <span class="menu-icon tf-icons material-symbols-outlined">
+                                work
+                            </span>
                             <div data-i18n="Analytics">Lowongan</div>
                         </a>
                     </li>
@@ -139,7 +149,9 @@
                             Konfirmasi</span></li>
                     <li class="menu-item {{ config('app.url') . '/pendaftar' === request()->url() ? 'active' : '' }}">
                         <a href="{{ url('pendaftar') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <span class="menu-icon tf-icons material-symbols-outlined">
+                                receipt_long
+                            </span>
                             <div data-i18n="Tables">Pendaftar</div>
                         </a>
                     </li>
@@ -147,8 +159,10 @@
                     <li
                         class="menu-item {{ config('app.url') . '/trash-page' === request()->url() ? 'active' : '' }}">
                         <a href="{{ url('trash-page') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-table"></i>
-                            <div data-i18n="Tables">User Trashed</div>
+                            <span class="menu-icon tf-icons material-symbols-outlined">
+                                auto_delete
+                            </span>
+                            <div data-i18n="Tables" class="">Riwayat Hapus </div>
                         </a>
                     </li>
                 </ul>
@@ -294,7 +308,10 @@
     <script src="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
     <script src="{{ asset('template/assets/vendor/js/menu.js') }}"></script>
+    {{-- datatable --}}
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    {{-- bootstrap --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
     </script>
@@ -310,6 +327,7 @@
 
     <!-- Page JS -->
     <script src="{{ asset('template/assets/js/dashboards-analytics.js') }}"></script>
+
     @yield('script')
 
     <!-- Place this tag in your head or just before your close body tag. -->

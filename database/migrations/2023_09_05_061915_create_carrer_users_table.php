@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('status')->default('menunggu');
             $table->timestamps();
             $table->foreign('carrer_id')->references('id')->on('carrers')->onDelete('cascade');
-            $table->foreign('kelompok_id')->references('id')->on('kelompok')->onDelete('cascade');
+            $table->foreign('kelompok_id')->references('id')->on('kelompok');
         });
     }
 

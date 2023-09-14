@@ -13,6 +13,7 @@ use App\Models\Kelompok;
 use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -51,19 +52,20 @@ class ApplyJobController extends Controller
         ]);
 
         $carrer = new Apply();
-        $carr = Carrer::latest()->get();
-
+        $carr = Carrer::latest()->first();
+        dd($carr->id);
         for ($i = 0; $i < count($email); $i++) {
             $user_acc = User::where('email', $email[$i])->first();
             if (!$user_acc) {
+                $password = Str::random(10);
                 $new_user = new User();
                 $new_user->name = $request->name[$i];
                 $new_user->email = $request->email[$i];
                 $new_user->job_magang_id = $request->job_magang[$i];
-                $new_user->password = Str::random(60);
+                $new_user->password = Hash::make($password);
                 $new_user->kelompok_id = $kelompok->id;
                 $new_user->save();
-                CreateUserFromApply::dispatch($new_user);
+                CreateUserFromApply::dispatch($new_user, $password);
             } else {
                 $user_acc->kelompok_id = $kelompok->id;
                 $user_acc->job_magang_id = $request->job_magang[$i];
@@ -89,9 +91,9 @@ class ApplyJobController extends Controller
 
     public function formApply()
     {
-        // dd(Auth::user()->kelompok_id);
         $index = 0;
-        $lowongan = Lowongan::whereNotIn('name', ['kosong', 'admin'])->get();
+        $carrer_id = Carrer::latest()->first()->id;
+        $lowongan = Lowongan::whereNotIn('name', ['kosong', 'admin'])->where('carrer_id', $carrer_id)->get();
         return view('Admin.Apply.form', ['lowongan' => $lowongan, 'index' => $index]);
     }
     public function detail_lowongan()

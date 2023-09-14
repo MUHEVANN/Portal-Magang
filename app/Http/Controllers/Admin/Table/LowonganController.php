@@ -30,22 +30,22 @@ class LowonganController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request->file('gambar'));
         $validate = Validator::make($request->all(), [
             'name' => 'required',
             'desc' => 'required',
             'benefit' => 'required',
             'kualifikasi' => 'required',
-            'gambar' => 'required|mimes:jpg,jpeg,png',
+            'gambar' => 'required',
         ]);
 
         if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate->messages())->withInput();
+            return response()->json($validate->messages());
         }
         $gambar = $request->file('gambar');
         $gambar_name = date('ymdhis') . "." . $gambar->getClientOriginalExtension();
         $gambar_path = $gambar->storeAs('public/lowongan', $gambar_name);
         $carrer = Carrer::latest()->first();
+
 
         $lowongan = Lowongan::create([
             'name' => $request->name,
@@ -55,17 +55,10 @@ class LowonganController extends Controller
             'gambar' => $gambar_name,
             'carrer_id' => $carrer->id
         ]);
-        // if($lowongan){
-
-        //     return response()->json(['success' => 'lowongan berhasil dibuat']);
-        // }else{
-        //     return response()->json(['gagal' => 'gagal menambahkan data'])
-        // }
-
         if ($lowongan) {
-            return redirect()->to('lowongan')->with(['success' => 'Berhasil menambah lowongan']);
+            return response()->json(['success' => 'Berhasil menambah lowongan']);
         } else {
-            return redirect()->back()->withErrors(['gagal' => 'Gagal menambahkan Lowongan']);
+            return response()->json(['gagal' => 'Gagal menambahkan Lowongan']);
         }
     }
 
@@ -74,43 +67,32 @@ class LowonganController extends Controller
         $lowongan = Lowongan::find($id);
         return view('Admin.Lowongan.show');
     }
-
-    public function update(Request $request, $id)
+    public function edit($id)
     {
-        // dd($request->hasFile('gambar'));
-        $validate = Validator::make($request->all(), [
-            'name' => 'required',
-            'desc' => 'required',
-            'benefit' => 'required',
-            'kualifikasi' => 'required',
-            'gambar' => 'mimes:jpeg,jpg,png',
-        ]);
-
-        if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate->messages())->withInput();
-        }
         $lowongan = Lowongan::find($id);
-        $lowongan->name = $request->name;
-        $lowongan->desc = $request->desc;
-        $lowongan->benefit = $request->benefit;
-        $lowongan->kualifikasi = $request->kualifikasi;
-        $carrer = Carrer::latest()->first();
-        $lowongan->carrer_id = $carrer->id;
-        if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar');
-            $gambar_name = date('ymhdis') . "." . $gambar->getClientOriginalExtension();
-            $gambar_path = $gambar->storeAs('public/lowongan', $gambar_name);
-            Storage::delete('public/lowongan/' . $lowongan->gambar);
-            $lowongan->gambar = $gambar_name;
-        }
-        $lowongan->save();
-        return redirect()->to('lowongan')->with(['success' => 'Berhasil diupdate']);
+        return response()->json($lowongan);
     }
+
+    // public function update(Request $request, $id)
+    // {
+    //     $lowongan = Lowongan::find($id);
+    //     if ($request->hasFile('gambar')) {
+    //         $gambar = $request->file('gambar');
+    //         $gambar_name = date('ymhdis') . "." . $gambar->getClientOriginalExtension();
+    //         $gambar_path = $gambar->storeAs('public/lowongan', $gambar_name);
+    //         Storage::delete('public/lowongan/' . $lowongan->gambar);
+    //         $lowongan->gambar = $gambar_name;
+    //     }
+    //     $lowongan->name = $request->name;
+    //     $lowongan->desc = $request->desc;
+    //     $lowongan->kualifikasi = $request->kualifikasi;
+    //     $lowongan->benefit = $request->benefit;
+    //     $lowongan->save();
+    // }
 
     public function destroy($id)
     {
         $lowongan = Lowongan::find($id);
         $lowongan->delete();
-        return redirect()->back()->with(['success' => 'Berhasil diupdate']);
     }
 }
