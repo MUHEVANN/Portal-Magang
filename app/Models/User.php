@@ -65,4 +65,8 @@ class User extends Authenticatable implements LaratrustUser
     {
         return $this->belongsTo(Lowongan::class, 'job_magang_id', 'id');
     }
+    public function apply()
+    {
+        return $this->hasOne(Apply::class);
+    }
 }

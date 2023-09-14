@@ -11,27 +11,30 @@ class ApplyController extends Controller
 {
     public function index()
     {
-        $data = User::with('kelompok.apply')->where('jabatan', 1)->whereHas('kelompok', function ($query) {
+        $data = User::with('apply', 'lowongan', 'kelompok')->where('jabatan', 1)->whereHas('kelompok', function ($query) {
             $query->where('id', '!=', 1);
-        })->whereHas('kelompok.apply', function ($query) {
+        })->whereHas('apply', function ($query) {
             $query->where('status', 'menunggu');
         })->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-                return view('Admin.kelompok-id')->with('data', $data);
+                return $data->apply->tipe_magang === 'kelompok' ?  view('Admin.kelompok-id')->with('data', $data) :  view('Admin.status')->with('data', $data);
             })
             ->make(true);
     }
 
     public function detail_kelompok($id)
     {
-        $data = User::with('kelompok.apply')->where('kelompok_id', $id)->get();
+        $data = User::with('apply')->where('kelompok_id', $id)->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('Admin.status')->with('data', $data);
+            })
+            ->addColumn('cv_user', function ($data) {
+                return  view('Admin.cv')->with('data', $data);
             })
             ->make(true);
     }

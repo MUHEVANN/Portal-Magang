@@ -1,16 +1,30 @@
 @extends('layouts.dashboard')
 @section('content')
-    <table class="table table-stiped " id="myTable">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Status</th>
-                <th>Jabatan</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>
+    <div class="my-5">
+        <div class="mb-3 d-flex justify-content-end">
+            <div class="col-3">
+                <select name="" id="select-tipe" class="form-control">
+                    <option value="">Tipe Magang</option>
+                    <option value="mandiri">Mandiri</option>
+                    <option value="kelompok">Kelompok</option>
+                </select>
+            </div>
+        </div>
+        <table class="table table-stiped " id="myTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>cv</th>
+                    <th>Job Magang</th>
+                    <th>Tipe Magang</th>
+                    <th>Status</th>
+                    <th>Jabatan</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 @endsection
 @section('script')
     <script>
@@ -20,7 +34,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('#myTable').DataTable({
+            var table = $('#myTable').DataTable({
                 processing: true,
                 serverside: true,
                 ajax: '/apply-user',
@@ -32,6 +46,19 @@
                 }, {
                     data: 'name',
                     name: 'name',
+                }, {
+                    data: 'kelompok.apply.cv_user',
+                    name: 'kelompok.apply.cv_user',
+                    render: function(data) {
+                        return "<a href='storage/cv/" + data + "'>" + data +
+                            "</a>";
+                    }
+                }, {
+                    data: 'lowongan.name',
+                    name: 'lowongan.name',
+                }, {
+                    data: 'kelompok.apply.tipe_magang',
+                    name: 'kelompok.apply.tipe_magang',
                 }, {
                     data: 'kelompok.apply.status',
                     name: 'kelompok.apply.status',
@@ -45,6 +72,11 @@
                     data: 'action',
                     name: 'action',
                 }]
+            });
+
+            $('#select-tipe').on('change', function() {
+                var tipe = $(this).val();
+                table.column(4).search(tipe).draw()
             });
         });
     </script>

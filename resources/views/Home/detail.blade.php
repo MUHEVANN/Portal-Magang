@@ -10,11 +10,11 @@
 @section('content')
     <div class="min">
         <h1 class="text-black text-3xl font-bold mb-5">{{ $lowongan->name }}</h1>
-        <p>{{ $lowongan->desc }}</p>
+        <p>{!! $lowongan->desc !!}</p>
         <h3 class="my-2 font-bold text-xl">Keuntungan</h3>
-        <p>{{ $lowongan->benefit }}</p>
+        <p>{!! $lowongan->benefit !!}</p>
         <h3 class="my-2 font-bold text-xl">Kualifikasi</h3>
-        <p>{{ $lowongan->kualifikasi }}</p>
+        <p>{!! $lowongan->kualifikasi !!}</p>
     </div>
 @endsection
 {{-- <div x-data='{open: false}'> --}}

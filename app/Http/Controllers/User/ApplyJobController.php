@@ -30,60 +30,95 @@ class ApplyJobController extends Controller
         if ($user->is_active !== '1') {
             return redirect()->to('profile')->withErrors(['belum-verif' => "Akun anda belum diverifikasi, cek email anda"]);
         }
-        $validate = Validator::make($request->all(), [
-            'job_magang' => 'required',
-            'cv' => 'required|mimes:pdf',
-            'name' => 'required',
-            'email' => 'required',
-        ]);
-
-        if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate->messages())->withInput();
+        $existingApply = Apply::where('user_id', Auth::user()->id)
+            ->whereIn('status', ['menunggu'])
+            ->first();
+        if ($existingApply) {
+            return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
         }
-        // $existingApply = Apply::where('kelompok_id', Auth::user()->kelompok_id)
-        //     ->whereIn('status', ['mengunggu', 'lulus'])
-        //     ->get();
-        // if ($existingApply) {
-        //     return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
-        // }
-        $email = $request->email;
         $kelompok = Kelompok::create([
             'name' => Str::random(5)
         ]);
 
-        $carrer = new Apply();
+        // untuk carrer ketua dan mandiri
         $carr = Carrer::latest()->first();
-        for ($i = 0; $i < count($email); $i++) {
-            $user_acc = User::where('email', $email[$i])->first();
-            if (!$user_acc) {
-                $password = Str::random(10);
-                $new_user = new User();
-                $new_user->name = $request->name[$i];
-                $new_user->email = $request->email[$i];
-                $new_user->job_magang_id = $request->job_magang[$i];
-                $new_user->password = Hash::make($password);
-                $new_user->kelompok_id = $kelompok->id;
-                $new_user->save();
-                CreateUserFromApply::dispatch($new_user, $password);
-            } else {
-                $user_acc->kelompok_id = $kelompok->id;
-                $user_acc->job_magang_id = $request->job_magang[$i];
-                $user_acc->save();
-                AfterApply::dispatch($user_acc);
-            }
-        }
-        $ketua = User::where('email', Auth::user()->email)->first();
-        $ketua->jabatan = 1;
-        $ketua->save();
-
-        $carrer->kelompok_id = $kelompok->id;
+        $carrer = new Apply();
+        $carrer->user_id = auth()->user()->id;
+        $carrer->tgl_mulai = $request->tgl_mulai;
+        $carrer->tgl_selesai = $request->tgl_selesai;
         $carrer->carrer_id = $carr->id;
-        $cv_file = $request->file('cv');
+        $carrer->tipe_magang = $request->tipe_magang;
+        $cv_file = $request->file('cv_pendaftar');
         $cv_name = date('ymdhis') . '.' . $cv_file->getClientOriginalExtension();
         $cv_path = $cv_file->storeAs('public/cv', $cv_name);
         $carrer->cv_user = $cv_name;
         $carrer->save();
-        // dd($carrer->carrer_id);
+
+        // akun ketua dan mandiri
+        $pendaftar = User::where('email', Auth::user()->email)->first();
+        $pendaftar->job_magang_id = $request->job_magang_ketua;
+        $pendaftar->jabatan = 1;
+        // kelompok
+        if ($request->tipe_magang === 'kelompok') {
+            $pendaftar->kelompok_id = $kelompok->id;
+
+            $validate = Validator::make($request->all(), [
+                'job_magang' => 'required',
+                'cv' => 'required|mimes:pdf',
+                'name' => 'required',
+                'email' => 'required',
+            ]);
+
+            if ($validate->fails()) {
+                return redirect()->back()->withErrors($validate->messages())->withInput();
+            }
+
+
+            $email = $request->email;
+            for ($i = 0; $i < count($email); $i++) {
+                $user_acc = User::where('email', $email[$i])->first();
+                $cv_file = $request->file('cv_pendaftar')[$i];
+                $cv_name = date('ymdhis') . '.' . $cv_file->getClientOriginalExtension();
+                $cv_path = $cv_file->storeAs('public/cv', $cv_name);
+                if (!$user_acc) {
+                    $password = Str::random(10);
+                    // user baru
+                    $new_user = User::create([
+                        'name' => $request->name[$i],
+                        'email' => $request->email[$i],
+                        'job_magang_id' => $request->job_magang[$i],
+                        'password' => $password,
+                        'kelompok_id' => $kelompok->id,
+                    ]);
+                    CreateUserFromApply::dispatch($new_user, $password);
+                    // carrer
+                    $carrer = Apply::create([
+                        'user_id' => $new_user->id,
+                        'tgl_mulai' => $request->tgl_mulai,
+                        'tgl_selesai' => $request->tgl_selesai,
+                        'carrer_id' => $carr->id,
+                        'tipe_magang' => $request->tipe_magang,
+                        'cv_user' => $cv_name
+                    ]);
+                } else {
+                    $user_acc->kelompok_id = $kelompok->id;
+                    $user_acc->job_magang_id = $request->job_magang[$i];
+                    $user_acc->save();
+                    AfterApply::dispatch($user_acc);
+                    // carrer
+                    $carrer = Apply::create([
+                        'user_id' => $user_acc->id,
+                        'tgl_mulai' => $request->tgl_mulai,
+                        'tgl_selesai' => $request->tgl_selesai,
+                        'carrer_id' => $carr->id,
+                        'tipe_magang' => $request->tipe_magang,
+                        'cv_user' => $cv_name
+                    ]);
+                }
+            }
+        }
+        $pendaftar->save();
+        AfterApply::dispatch($pendaftar);
 
         return redirect()->to('home');
     }

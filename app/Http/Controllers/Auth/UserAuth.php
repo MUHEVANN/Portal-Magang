@@ -39,7 +39,6 @@ class UserAuth extends Controller
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "verif_code" => Str::random(60),
-            'job_magang_id' => 1,
         ]);
         $user->addRole('client');
         Auth::login($user);

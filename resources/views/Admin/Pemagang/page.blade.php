@@ -123,8 +123,8 @@
                         name: 'lowongan.name'
                     },
                     {
-                        data: 'type-magang',
-                        name: 'type-magang',
+                        data: 'kelompok.apply.tipe_magang',
+                        name: 'kelompok.apply.tipe_magang',
 
                     },
                     {
@@ -166,15 +166,7 @@
                         $('#email').val(response.result.email);
                         $('#password').val(response.result.password);
                         var selectedGender = response.result.gender;
-                        $('#gender option').each(function() {
-                            var optionValue = $(this).val();
-
-                            if (selectedGender === optionValue) {
-                                $(this).prop('selected', true);
-                            } else {
-                                $(this).prop('selected', false);
-                            }
-                        });
+                        $('#gender').val(response.result.gender);
                         $('#alamat').val(response.result.alamat);
                         $('#no_hp').val(response.result.no_hp);
                         var selectJob = response.result.job_magang_id;
@@ -207,13 +199,27 @@
                         },
                         success: function(response) {
                             $('#edit-modal').modal('hide');
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Your work has been saved',
+                            const Toast = Swal.mixin({
+                                width: 400,
+                                padding: 18,
+                                toast: true,
+                                position: 'bottom-end',
                                 showConfirmButton: false,
-                                timer: 1500
+                                timer: 1500,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter',
+                                        Swal.stopTimer)
+                                    toast.addEventListener('mouseleave',
+                                        Swal.resumeTimer)
+                                }
                             })
+
+                            Toast.fire({
+
+                                icon: 'success',
+                                title: response.success
+                            });
                             table.ajax.reload();
                             $('#name').val('');
                             $('#email').val('');
@@ -252,11 +258,28 @@
                             url: 'hapus-pemagang/' + id,
                             method: 'DELETE',
                             success: function(response) {
-                                swalWithBootstrapButtons.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                )
+                                $('#edit-modal').modal('hide');
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 18,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+
+                                    icon: 'success',
+                                    title: response.success
+                                });
                                 table.ajax.reload();
                             }
                         });

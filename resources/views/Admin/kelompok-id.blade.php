@@ -1,2 +1,2 @@
-<a href="{{ url('apply-user-detail-kelompok/' . $data->kelompok->id) }}" class="btn btn-primary detail-kelompok">Detail
+<a href="{{ url('apply-user-detail-kelompok/' . $data->kelompok->id) }}" class=" detail-kelompok">Detail
     Kelompok</a>

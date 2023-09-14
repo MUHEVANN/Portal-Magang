@@ -25,13 +25,5 @@ class DummySeed extends Seeder
         $batch = Carrer::create([
             'batch' => 'tidak ada'
         ]);
-        Lowongan::create([
-            'name' => 'kosong',
-            'desc' => 'tidak ada job',
-            'kualifikasi' => 'tidak ada',
-            'gambar' => 'tidak ada',
-            'benefit' => 'tidak ada',
-            'carrer_id' => $batch->id
-        ]);
     }
 }

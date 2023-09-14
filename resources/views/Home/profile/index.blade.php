@@ -36,6 +36,7 @@
                         <div class="mb-3">
                             <label for="gender">Gender</label>
                             <select name="gender" id="gender" class="form-control">
+                                <option value="">Gender</option>
                                 <option value="L">L</option>
                                 <option value="P">P</option>
                             </select>
@@ -82,7 +83,11 @@
                 type: "GET",
                 url: "profile-user",
                 success: function(response) {
-                    $('#image-preview').attr('src', "storage/profile/" + response.profile_image);
+                    console.log(response);
+                    response.profile_image === null ? $('#image-preview').attr('src',
+                        'images/profile.jpg') : $(
+                        '#image-preview').attr('src', "storage/profile/" + response.profile_image);
+
                     $('#name').val(response.name);
                     $('#email').val(response.email);
                     $('#password').val(response.password);
@@ -124,7 +129,6 @@
                     contentType: false,
                     success: function(response) {
                         console.log(response);
-
                         Swal.fire({
                             position: 'top-end',
                             icon: 'success',

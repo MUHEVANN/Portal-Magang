@@ -41,9 +41,13 @@
                     <span x-show="open" x
                         class="bg-white shadow-md  border-[1px] border-slate-100 absolute w-full mt-4 rounded-md">
                         <ul class="py-3 px-2 text-center">
-                            <li class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
-                                    src="{{ asset('assets/person.svg') }}" width="24" alt="person">
-                                <a href="#" class="px-1">Profile</a>
+                            <li class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1">
+                                <a href="{{ url('update-profile') }}" class="px-1" class="flex">
+                                    <div class="flex">
+                                        <img src="{{ asset('assets/person.svg') }}" width="24" alt="person">
+                                        <span class="d-inline">Profile</span>
+                                    </div>
+                                </a>
                             </li>
                             <li class="flex p-1 rounded hover:bg-slate-200 items-center cursor-pointer"> <img
                                     src="{{ asset('assets/logout.svg') }}" alt="log out">

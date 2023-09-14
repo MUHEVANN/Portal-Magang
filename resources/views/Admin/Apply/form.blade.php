@@ -14,13 +14,14 @@
         <div x-show.transition="current_pos == 1">
 
             <label for="tgl-mulai">Tanggal Mulai</label>
-            <input type="date" name="tgl-mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
+            <input type="date" name="tgl_mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
 
             <label for="tgl-selesai">Tanggal Selesai</label>
+
             <input type="date" name="tgl-selesai" id="tgl-selesai" class="input-style" id="tipe-magang">
             <button class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
-                x-on:click.prevent="next()">Berikutnya</button>
 
+                x-on:click.prevent="next()">Berikutnya</button>
         </div>
 
         <div x-show.transition="current_pos == 2">
@@ -36,16 +37,16 @@
                 </div>
             @endif
             <label for="tipe-magang">Tipe Magang</label> <br>
-            <select x-model='output' name="tipe-magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
+            <select x-model='output' name="tipe_magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
                 id="tipe-magang">
                 <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
-                <option value="sendiri">Sendiri</option>
+                <option value="mandiri">Mandiri</option>
                 <option value="kelompok">Kelompok</option>
             </select>
 
-            <label for="job">Job</label>
-            <select name="job_magang[]" id="" class="input-style">
-                <option class="text-slate-500" value="" selected disabled>--Pilih Job Magang--</option>
+            <label for="alamat">Job Magang Ketua</label> <br>
+            <select name="job_magang_ketua" id="">
+                <option value="">Pilih Job Magang</option>
                 @foreach ($lowongan as $item)
                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
@@ -53,6 +54,7 @@
             <div x-show="cek_output">
                 <button
                     class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50 w-full"
+
                     x-on:click.prevent='add_field' id='tambah-anggota'>Tambah Anggota</button>
 
                 <template x-for="(ar, idx) in fields">
@@ -94,6 +96,7 @@
                                 class="bg-[#000D3B] py-2 px-5 rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
                         </div>
                     </div>
+
                 </template>
 
             </div>
@@ -160,6 +163,15 @@
     <form action="{{ url('apply-form') }}" id="container" method="post" style="display: flex;flex-direction:column;"
         enctype="multipart/form-data">
         @csrf
+        <form-group style="display: flex">
+            <label for="name">Job Magang Ketua</label>
+            <select name="job_magang_ketua" id="">
+                <option value="">Pilih Job Magang</option>
+                @foreach ($lowongan as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </form-group>
         <form-group style="display: flex">
             <label for="name">Name Aggota</label>
             <input type="text" name="name[]" />
