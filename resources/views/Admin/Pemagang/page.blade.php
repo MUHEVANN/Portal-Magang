@@ -123,18 +123,18 @@
                         name: 'lowongan.name'
                     },
                     {
-                        data: 'kelompok.apply.tipe_magang',
-                        name: 'kelompok.apply.tipe_magang',
+                        data: 'apply.tipe_magang',
+                        name: 'apply.tipe_magang',
 
                     },
                     {
-                        data: 'kelompok.apply.carrer.batch',
-                        name: 'kelompok.apply.carrer.batch',
+                        data: 'apply.carrer.batch',
+                        name: 'apply.carrer.batch',
 
                     },
                     {
-                        data: 'kelompok.apply.status',
-                        name: 'kelompok.apply.status'
+                        data: 'apply.status',
+                        name: 'apply.status'
                     },
                     {
                         data: 'action',

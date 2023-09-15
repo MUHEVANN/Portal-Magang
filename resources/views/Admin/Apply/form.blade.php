@@ -18,9 +18,8 @@
 
             <label for="tgl-selesai">Tanggal Selesai</label>
 
-            <input type="date" name="tgl-selesai" id="tgl-selesai" class="input-style" id="tipe-magang">
+            <input type="date" name="tgl_selesai" id="tgl-selesai" class="input-style" id="tipe-magang">
             <button class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
-
                 x-on:click.prevent="next()">Berikutnya</button>
         </div>
 
@@ -39,7 +38,7 @@
             <label for="tipe-magang">Tipe Magang</label> <br>
             <select x-model='output' name="tipe_magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
                 id="tipe-magang">
-                <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
+                <option class="text-slate-500" value="">--Pilih Salah Satu--</option>
                 <option value="mandiri">Mandiri</option>
                 <option value="kelompok">Kelompok</option>
             </select>
@@ -54,7 +53,6 @@
             <div x-show="cek_output">
                 <button
                     class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50 w-full"
-
                     x-on:click.prevent='add_field' id='tambah-anggota'>Tambah Anggota</button>
 
                 <template x-for="(ar, idx) in fields">
@@ -84,17 +82,12 @@
                         @enderror
 
                         <label for="cv">CV</label>
-                        <input type="file" name="cv" class="input-style" id="cv" />
+                        <input type="file" name="cv[]" class="input-style" id="cv" />
                         <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
                         @error('cv')
                             {{ $message }}
                         @enderror
-                        <div class="flex justify-between items-center">
-                            <button x-on:click.prevent="previous()"
-                                class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
-                            <button type="submit"
-                                class="bg-[#000D3B] py-2 px-5 rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
-                        </div>
+
                     </div>
 
                 </template>
@@ -111,7 +104,7 @@
         </div>
         <div x-show.transition="current_pos==3">
             <label for="cv">CV</label>
-            <input type="file" name="cv" class="input-style" id="cv" />
+            <input type="file" name="cv_pendaftar" class="input-style" id="cv" />
             <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
             @error('cv')
                 {{ $message }}

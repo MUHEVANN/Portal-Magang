@@ -36,9 +36,6 @@ class ApplyJobController extends Controller
         if ($existingApply) {
             return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
         }
-        $kelompok = Kelompok::create([
-            'name' => Str::random(5)
-        ]);
 
         // untuk carrer ketua dan mandiri
         $carr = Carrer::latest()->first();
@@ -49,7 +46,7 @@ class ApplyJobController extends Controller
         $carrer->carrer_id = $carr->id;
         $carrer->tipe_magang = $request->tipe_magang;
         $cv_file = $request->file('cv_pendaftar');
-        $cv_name = date('ymdhis') . '.' . $cv_file->getClientOriginalExtension();
+        $cv_name = Str::random(10) . '.' . $cv_file->getClientOriginalExtension();
         $cv_path = $cv_file->storeAs('public/cv', $cv_name);
         $carrer->cv_user = $cv_name;
         $carrer->save();
@@ -60,11 +57,15 @@ class ApplyJobController extends Controller
         $pendaftar->jabatan = 1;
         // kelompok
         if ($request->tipe_magang === 'kelompok') {
+            $kelompok = Kelompok::create([
+                'name' => Str::random(5)
+            ]);
             $pendaftar->kelompok_id = $kelompok->id;
-
+            $pendaftar->save();
+            // dd($pendaftar);
             $validate = Validator::make($request->all(), [
                 'job_magang' => 'required',
-                'cv' => 'required|mimes:pdf',
+                'cv' => 'required',
                 'name' => 'required',
                 'email' => 'required',
             ]);
@@ -77,8 +78,12 @@ class ApplyJobController extends Controller
             $email = $request->email;
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
-                $cv_file = $request->file('cv_pendaftar')[$i];
-                $cv_name = date('ymdhis') . '.' . $cv_file->getClientOriginalExtension();
+                $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc)->first();
+                if ($cek_anggota_sudah_apply) {
+                    return redirect()->back()->withErrors(['gagal-apply' => 'Anggota sudah pernah apply']);
+                }
+                $cv_file = $request->file('cv')[$i];
+                $cv_name = Str::random(10) . '.' . $cv_file->getClientOriginalExtension();
                 $cv_path = $cv_file->storeAs('public/cv', $cv_name);
                 if (!$user_acc) {
                     $password = Str::random(10);
@@ -87,9 +92,10 @@ class ApplyJobController extends Controller
                         'name' => $request->name[$i],
                         'email' => $request->email[$i],
                         'job_magang_id' => $request->job_magang[$i],
-                        'password' => $password,
+                        'password' => Hash::make($password),
                         'kelompok_id' => $kelompok->id,
                     ]);
+                    // dd($new_user);
                     CreateUserFromApply::dispatch($new_user, $password);
                     // carrer
                     $carrer = Apply::create([
@@ -150,24 +156,23 @@ class ApplyJobController extends Controller
      */
     public function reject($id)
     {
-        $apply = Apply::find($id);
+        $apply = Apply::where('user_id', $id)->first();
         $apply->status = 'Ditolak';
         $apply->save();
-        foreach ($apply->kelompok->user as $user) {
-            // dd($apply->status);
-            StatusApplyJob::dispatch($user, $apply->status);
-        }
+        StatusApplyJob::dispatch($apply->user, $apply->status);
+
         return redirect()->to('dashboard')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function konfirm($id)
     {
-        $apply = Apply::find($id);
+        $apply = Apply::where('user_id', $id)->first();
         $apply->status = 'lulus';
         $apply->save();
-        foreach ($apply->kelompok->user as $user) {
-            StatusApplyJob::dispatch($user, $apply->status);
+        StatusApplyJob::dispatch($apply->user, $apply->status);
+        if ($apply) {
+            return response()->json(['success' => 'Apply job berhasil dikonfirmasi']);
         }
-        return redirect()->to('all-pemagang')->with(['success' => 'Apply job berhasil dikonfirmasi']);
+        return response()->json(['gagal' => 'Apply job gagal dikonfirmasi']);
     }
     public function destroy(string $id)
     {

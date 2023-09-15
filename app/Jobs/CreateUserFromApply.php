@@ -30,6 +30,7 @@ class CreateUserFromApply implements ShouldQueue
      */
     public function handle(): void
     {
+
         Mail::to($this->user->email)->send(new CreateUserFromApplyMail($this->user, $this->password));
     }
 }

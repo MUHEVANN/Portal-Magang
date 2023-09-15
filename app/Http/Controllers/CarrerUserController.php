@@ -19,6 +19,7 @@ class CarrerUserController extends Controller
 
     public function lulus()
     {
+
         $user = Apply::with('kelompok.user.lowongan', 'lowongan', 'carrer')->where('status', '!=', 'menunggu')->get();
         return view('Admin.lulus', compact('user'));
     }

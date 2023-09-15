@@ -19,9 +19,6 @@ class DummySeed extends Seeder
      */
     public function run(): void
     {
-        Kelompok::create([
-            'name' => 'tidak ada'
-        ]);
         $batch = Carrer::create([
             'batch' => 'tidak ada'
         ]);
