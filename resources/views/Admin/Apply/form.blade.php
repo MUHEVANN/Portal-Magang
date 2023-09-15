@@ -60,12 +60,14 @@
                         <span class="hover-underline  block w-fit ml-auto mb-5 cursor-pointer"
                             x-on:click="remove(idx)">remove</span>
                         <label for="name">Name Aggota ke-<span x-text="idx+1"></span></label>
-                        <input type="text" name="name[]" class="input-style" id="name" />
+                        <input type="text" name="name[]" class="input-style" id="name"
+                            placeholder="E.g. Fulan Nugroho" />
                         @foreach ($errors->get('name') as $error)
                             {{ $error }}
                         @endforeach
                         <label for="email">Email Anggota ke-<span x-text='idx+1'></span> </label>
-                        <input type="email" name="email[]" class="input-style" id="email" />
+                        <input type="email" name="email[]" class="input-style" id="email"
+                            placeholder="E.g. example@example.com" />
                         @error('email')
                             {{ $message }}
                         @enderror
@@ -83,16 +85,10 @@
 
                         <label for="cv">CV</label>
                         <input type="file" name="cv" class="input-style" id="cv" />
-                        <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
+                        <p class="text-slate-600">Masukan CV dan Portfolio.</p>
                         @error('cv')
                             {{ $message }}
                         @enderror
-                        <div class="flex justify-between items-center">
-                            <button x-on:click.prevent="previous()"
-                                class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 text-slate-950">Sebelumnya</button>
-                            <button type="submit"
-                                class="bg-[#000D3B] py-2 px-5 rounded hover:opacity-80 mt-5 my-3 ml-auto text-slate-50">Kirim</button>
-                        </div>
                     </div>
                 </template>
 
@@ -109,7 +105,7 @@
         <div x-show.transition="current_pos==3">
             <label for="cv">CV</label>
             <input type="file" name="cv" class="input-style" id="cv" />
-            <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
+            <p class="text-slate-600">Masukan CV dan Portfolio.</p>
             @error('cv')
                 {{ $message }}
             @enderror
@@ -124,25 +120,27 @@
 @endsection
 
 @section('sidebar')
-    <div class="w-full py-3 rounded-lg h-full bg-blue-900">
-        <section class="flex items-center text-white">
+    <div class="sidebar">
+        <div class="w-full py-3 rounded-lg h-full bg-blue-900">
+            <section class="flex items-center text-white">
 
-            <p class="indicator" :class="current_pos == 1 ? 'active' : 'text-white'">
-                1</p>
-            <span :class="current_pos == 1 ? 'font-bold' : ''">Tanggal Magang</span>
-        </section>
-        <section class="flex items-center text-white">
+                <p class="indicator" :class="current_pos == 1 ? 'active' : 'text-white'">
+                    1</p>
+                <span :class="current_pos == 1 ? 'font-bold' : ''">Tanggal Magang</span>
+            </section>
+            <section class="flex items-center text-white">
 
-            <p class="indicator" :class="current_pos == 2 ? 'active' : 'text-white'">
-                2</p>
-            <span :class="current_pos == 2 ? 'font-bold' : ''">Peserta Magang</span>
-        </section>
-        <section class="flex items-center text-white">
+                <p class="indicator" :class="current_pos == 2 ? 'active' : 'text-white'">
+                    2</p>
+                <span :class="current_pos == 2 ? 'font-bold' : ''">Anggota Peserta Magang</span>
+            </section>
+            <section class="flex items-center text-white">
 
-            <p class="indicator" :class="current_pos == 3 ? 'active' : 'text-white'">
-                3</p>
-            <span :class="current_pos == 3 ? 'font-bold' : ''">Berkas</span>
-        </section>
+                <p class="indicator" :class="current_pos == 3 ? 'active' : 'text-white'">
+                    3</p>
+                <span :class="current_pos == 3 ? 'font-bold' : ''">Berkas</span>
+            </section>
+        </div>
     </div>
 @endsection
 

@@ -17,19 +17,33 @@
 //         title: param
 //       })
 // }
+document.addEventListener('alpine:init', () => {
+  Alpine.store('ajax', {
+    
+    lowongan: '',
+    type: '',
+
+    init(){
+      this.getSorted();
+    },
+
+
+    async getSorted(param = 'terbaru'){
+      await (await fetch(`filters/${param}`)).json().then(res => {
+        this.lowongan = res;
+        console.log('get result', this.type, res)
+        return res;
+      })
+    }
+  })
+})
+
 
 document.addEventListener('alpine:init', () => {
   Alpine.data('home', () => ({
 
-    lowongan: {},
     filterType: false,
     sortedBy: false,
-    type: 'terbaru',
-
-    async getSorted(){
-      this.lowongan = await (await fetch(`filters/${type}`)).json();
-      console.log(this.lowongan);
-    }
   }));
 })
 

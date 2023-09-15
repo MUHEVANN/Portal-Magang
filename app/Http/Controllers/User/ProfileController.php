@@ -17,6 +17,11 @@ class ProfileController extends Controller
         return view('Home.profile.index', compact('user'));
     }
 
+    public function profile()
+    {
+        return view('Home.profile.profile');
+    }
+
     public function get_profile()
     {
         $user_id = Auth::user()->id;

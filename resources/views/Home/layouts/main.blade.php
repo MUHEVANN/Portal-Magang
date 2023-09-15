@@ -32,18 +32,20 @@
             @if (Auth::check())
                 <div x-data="{ open: false }" class="relative z-20">
                     <div class="flex items-center">
-                        <p x-on:click="open = ! open" class="cursor-pointer">Hello, <strong>{{ Auth::user()->name }}
-                            </strong></p>
+                        <p x-on:click="open = ! open" class="cursor-pointer">Hello,
+                            <strong>{{ Auth::user()->name }}
+                            </strong>
+                        </p>
                         <img src="{{ asset('assets/chevron.svg') }}" width="20" class='opacity-50'
                             x-bind:class="open ? 'rotate-180' : ''" alt="arrow down">
                     </div>
 
-                    <span x-show="open" x
+                    <span x-show="open" x-on:click.outside='open = !open'
                         class="bg-white shadow-md  border-[1px] border-slate-100 absolute w-full mt-4 rounded-md">
                         <ul class="py-3 px-2 text-center">
                             <li class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
                                     src="{{ asset('assets/person.svg') }}" width="24" alt="person">
-                                <a href="#" class="px-1">Profile</a>
+                                <a href="/update-profile" class="px-1">Profile</a>
                             </li>
                             <li class="flex p-1 rounded hover:bg-slate-200 items-center cursor-pointer"> <img
                                     src="{{ asset('assets/logout.svg') }}" alt="log out">
@@ -76,9 +78,7 @@
     <main class="bg-white">
         <div class="max-w-[1000px] py-16 mx-auto flex-col-reverse flex md:flex-row justify-start gap-5 px-5">
             @yield('content')
-            <div class="h-max w-full md:w-2/5 p-3 border-2 border-slate-100 rounded-md md:sticky top-5">
-                @yield('sidebar')
-            </div>
+            @yield('sidebar')
         </div>
     </main>
     <script src="{{ asset('js/main.js') }}"></script>

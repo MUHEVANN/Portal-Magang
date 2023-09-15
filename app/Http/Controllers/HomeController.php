@@ -30,6 +30,7 @@ class HomeController extends Controller
         } else {
             $query->orderBy('created_at', 'desc');
         }
+
         $lowongan = $query->get();
         return response()->json($lowongan);
     }
