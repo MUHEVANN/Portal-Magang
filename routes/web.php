@@ -34,7 +34,6 @@ use App\Http\Controllers\Admin\Table\ListPemagangController;
 Route::get('register', [UserAuth::class, 'register']);
 Route::post('register', [UserAuth::class, 'proccess_register']);
 
-
 // login
 Route::get('login', [UserAuth::class, 'login'])->name('login');
 Route::post('login', [UserAuth::class, 'proccess_login']);
@@ -71,11 +70,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan']);
     Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail']);
     // Profile
-    Route::middleware('role:client')->group(function () {
-        Route::post('/update-profile', [ProfileController::class, 'update_profile']);
-        Route::get('/update-profile', [ProfileController::class, 'index']);
-        Route::get('/profile-user', [ProfileController::class, 'get_profile']);
-    });
+    Route::post('/update-profile', [ProfileController::class, 'update_profile']);
+    Route::get('/update-profile', [ProfileController::class, 'index']);
+    Route::get('/profile-user', [ProfileController::class, 'get_profile']);
 
     // Admin
     Route::middleware('role:admin')->group(function () {

@@ -88,11 +88,27 @@
                             url: 'restore/' + id,
                             method: 'PUT',
                             success: function(response) {
-                                swalWithBootstrapButtons.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                )
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 18,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+
+                                    icon: 'success',
+                                    title: response.success
+                                });
                                 table.ajax.reload();
                             }
                         });
@@ -100,11 +116,27 @@
                         /* Read more about handling dismissals below */
                         result.dismiss === Swal.DismissReason.cancel
                     ) {
-                        swalWithBootstrapButtons.fire(
-                            'Cancelled',
-                            'Your imaginary file is safe :)',
-                            'error'
-                        )
+                        const Toast = Swal.mixin({
+                            width: 400,
+                            padding: 18,
+                            toast: true,
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter',
+                                    Swal.stopTimer)
+                                toast.addEventListener('mouseleave',
+                                    Swal.resumeTimer)
+                            }
+                        })
+
+                        Toast.fire({
+
+                            icon: 'error',
+                            title: 'Cancelled'
+                        });
                     }
                 })
             });

@@ -15,15 +15,8 @@ class ListPemagangController extends Controller
         $data = User::with('kelompok.apply.carrer', 'lowongan')->whereNotIn('job_magang_id', [1])->orderBy('created_at', 'asc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('type-magang', function ($data) {
-                $kelompok = Kelompok::with('user')->where('id', $data->kelompok_id)->first();
-                if (count($kelompok->user) > 1) {
-                    return 'Kelompok';
-                } else {
-                    return 'Mandiri';
-                }
-            })
             ->addColumn('action', function ($data) {
+
                 return view('Admin.updel-user')->with('data', $data);
             })
             ->make(true);
@@ -52,10 +45,6 @@ class ListPemagangController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        // $kelompok = Kelompok::with('user')->where('id', 5)->first();
-        // if ($kelompok->user->count() === 1) {
-        //     $kelompok->delete();
-        // } else {
-        // }
+        return response()->json(['success' => 'Berhasil Menghapus']);
     }
 }

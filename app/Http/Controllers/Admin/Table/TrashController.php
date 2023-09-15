@@ -35,5 +35,7 @@ class TrashController extends Controller
             return response()->json('id tidak ditemukan');
         }
         $user->restore();
+
+        return response()->json(['success' => $user->name . " berhasil dikembailkan"]);
     }
 }
