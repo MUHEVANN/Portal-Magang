@@ -148,7 +148,6 @@
             $('#select-batch').on('change', function(e) {
                 e.preventDefault();
                 table.ajax.reload();
-
             });
             $('#gambar').change(function() {
                 var input = this;

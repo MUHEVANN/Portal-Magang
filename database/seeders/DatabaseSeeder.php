@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             LaratrustSeeder::class,
+            DummySeed::class,
             AdminSeed::class
         ]);
     }

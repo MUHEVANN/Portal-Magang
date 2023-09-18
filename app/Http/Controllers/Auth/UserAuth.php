@@ -41,6 +41,7 @@ class UserAuth extends Controller
             "verif_code" => Str::random(60),
         ]);
         $user->addRole('client');
+        Session::put('user', $user);
         Auth::login($user);
         return redirect()->to('home')->with('success', 'Akun berhasil dibuat');
     }

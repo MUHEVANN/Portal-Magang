@@ -47,8 +47,8 @@
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'kelompok.apply.cv_user',
-                    name: 'kelompok.apply.cv_user',
+                    data: 'apply.cv_user',
+                    name: 'apply.cv_user',
                     render: function(data) {
                         return "<a href='storage/cv/" + data + "'>" + data +
                             "</a>";
@@ -57,11 +57,11 @@
                     data: 'lowongan.name',
                     name: 'lowongan.name',
                 }, {
-                    data: 'kelompok.apply.tipe_magang',
-                    name: 'kelompok.apply.tipe_magang',
+                    data: 'apply.tipe_magang',
+                    name: 'apply.tipe_magang',
                 }, {
-                    data: 'kelompok.apply.status',
-                    name: 'kelompok.apply.status',
+                    data: 'apply.status',
+                    name: 'apply.status',
                 }, {
                     data: 'jabatan',
                     name: 'jabatan',
