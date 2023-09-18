@@ -60,12 +60,14 @@
                         <span class="hover-underline  block w-fit ml-auto mb-5 cursor-pointer"
                             x-on:click="remove(idx)">remove</span>
                         <label for="name">Name Aggota ke-<span x-text="idx+1"></span></label>
-                        <input type="text" name="name[]" class="input-style" id="name" />
+                        <input type="text" name="name[]" class="input-style" id="name"
+                            placeholder="E.g. Fulan Nugroho" />
                         @foreach ($errors->get('name') as $error)
                             {{ $error }}
                         @endforeach
                         <label for="email">Email Anggota ke-<span x-text='idx+1'></span> </label>
-                        <input type="email" name="email[]" class="input-style" id="email" />
+                        <input type="email" name="email[]" class="input-style" id="email"
+                            placeholder="E.g. example@example.com" />
                         @error('email')
                             {{ $message }}
                         @enderror
@@ -87,6 +89,7 @@
                         @error('cv')
                             {{ $message }}
                         @enderror
+
 
                     </div>
 
@@ -120,25 +123,27 @@
 @endsection
 
 @section('sidebar')
-    <div class="w-full py-3 rounded-lg h-full bg-blue-900">
-        <section class="flex items-center text-white">
+    <div class="sidebar">
+        <div class="w-full py-3 rounded-lg h-full bg-blue-900">
+            <section class="flex items-center text-white">
 
-            <p class="indicator" :class="current_pos == 1 ? 'active' : 'text-white'">
-                1</p>
-            <span :class="current_pos == 1 ? 'font-bold' : ''">Tanggal Magang</span>
-        </section>
-        <section class="flex items-center text-white">
+                <p class="indicator" :class="current_pos == 1 ? 'active' : 'text-white'">
+                    1</p>
+                <span :class="current_pos == 1 ? 'font-bold' : ''">Tanggal Magang</span>
+            </section>
+            <section class="flex items-center text-white">
 
-            <p class="indicator" :class="current_pos == 2 ? 'active' : 'text-white'">
-                2</p>
-            <span :class="current_pos == 2 ? 'font-bold' : ''">Peserta Magang</span>
-        </section>
-        <section class="flex items-center text-white">
+                <p class="indicator" :class="current_pos == 2 ? 'active' : 'text-white'">
+                    2</p>
+                <span :class="current_pos == 2 ? 'font-bold' : ''">Anggota Peserta Magang</span>
+            </section>
+            <section class="flex items-center text-white">
 
-            <p class="indicator" :class="current_pos == 3 ? 'active' : 'text-white'">
-                3</p>
-            <span :class="current_pos == 3 ? 'font-bold' : ''">Berkas</span>
-        </section>
+                <p class="indicator" :class="current_pos == 3 ? 'active' : 'text-white'">
+                    3</p>
+                <span :class="current_pos == 3 ? 'font-bold' : ''">Berkas</span>
+            </section>
+        </div>
     </div>
 @endsection
 

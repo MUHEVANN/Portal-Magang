@@ -46,9 +46,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="desc">Deskripsi</label>
-                            <trix-editor id="desc"></trix-editor>
+                            <trix-editor class="trix-editor" id="desc"></trix-editor>
                             <span id="error-desc" class="text-danger"></span>
                         </div>
+
                         <div class="mb-3">
                             <label for="benefit">Benefit</label>
                             <trix-editor id="benefit"></trix-editor>
