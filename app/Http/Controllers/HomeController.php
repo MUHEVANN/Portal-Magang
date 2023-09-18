@@ -12,6 +12,7 @@ class HomeController extends Controller
     {
         $carrer = Carrer::latest()->first();
         $lowongan = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong'])->get();
+        // dd($lowongan);
         return view('Home.index', compact('lowongan'));
     }
 
@@ -20,10 +21,6 @@ class HomeController extends Controller
         $carrer = Carrer::latest()->first();
 
         $query = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong']);
-        // if ($request->has('terbaru')) {
-        // }
-        // if ($request->has('terlama')) {
-        // }
 
         if ($type == 'terlama') {
             $query->orderBy('created_at', 'asc');

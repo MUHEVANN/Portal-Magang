@@ -78,10 +78,16 @@
         </section>
 
         <section class="mt-5">
-            <a href='apply-form' x-on:click='apply = !apply'
-                class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Apply
-                Lowongan</a>
-            <a href="#" class="my-3 cursor-pointer hover-underline text-center block">Hubungi Kita</a>
+            @if (Auth::user()->is_active != 1)
+                <button disabled
+                    class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Apply
+                    Job</button>
+            @else
+                <a href='apply-form' x-on:click='apply = !apply'
+                    class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Apply
+                    Lowongan</a>
+                <a href="#" class="my-3 cursor-pointer hover-underline text-center block">Hubungi Kita</a>
+            @endif
         </section>
     </div>
 @endsection

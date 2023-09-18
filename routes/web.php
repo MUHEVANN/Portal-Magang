@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
     // logout
     Route::get('logout', [UserAuth::class, 'logout']);
     // client
-    Route::get('home', [HomeController::class, 'home']);
+    Route::get('/home', [HomeController::class, 'home']);
     Route::get('/apply-form', [ApplyJobController::class, 'formApply']);
     Route::post('/apply-form', [ApplyJobController::class, 'store']);
     Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan']);
