@@ -11,7 +11,7 @@
                 </select>
             </div>
             <div class="col-lg-3">
-                <select name="carrer_id" id="filter-job" class="form-control">
+                <select name="filter-job" id="filter-job" class="form-control">
                     <option value="">Pilih Lowongan</option>
                     @foreach ($job as $item)
                         <option value="{{ $item->name }}">{{ $item->name }}</option>
@@ -24,6 +24,13 @@
                     <option value="menunggu">Menunggu</option>
                     <option value="Lulus">Lulus</option>
                     <option value="Ditolak">Ditolak</option>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <select name="filter-tipe-magang" id="filter-tipe-magang" class="form-control">
+                    <option value="">Pilih Tipe Magang</option>
+                    <option value="mandiri">Mandiri</option>
+                    <option value="kelompok">Kelompok</option>
                 </select>
             </div>
         </div>
@@ -153,6 +160,10 @@
             $('#filter-status').on('change', function() {
                 var job = $(this).val();
                 table.column(5).search(job).draw();
+            })
+            $('#filter-tipe-magang').on('change', function() {
+                var tipe = $(this).val();
+                table.column(3).search(tipe).draw();
             })
             $('body').on('click', '.edit', function(e) {
                 e.preventDefault();

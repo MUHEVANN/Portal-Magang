@@ -12,7 +12,7 @@ class TrashController extends Controller
 {
     public function trash()
     {
-        $data = User::onlyTrashed()->with('kelompok.apply.carrer', 'lowongan')->where('name', '!=', 'Admin')->orderBy('created_at', 'asc')->get();
+        $data = User::onlyTrashed()->with('apply.carrer', 'lowongan')->where('name', '!=', 'Admin')->orderBy('created_at', 'asc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('type-magang', function ($data) {

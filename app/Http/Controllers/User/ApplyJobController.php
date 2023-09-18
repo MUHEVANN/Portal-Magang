@@ -169,10 +169,11 @@ class ApplyJobController extends Controller
         $apply->status = 'lulus';
         $apply->save();
         StatusApplyJob::dispatch($apply->user, $apply->status);
-        if ($apply) {
-            return response()->json(['success' => 'Apply job berhasil dikonfirmasi']);
-        }
-        return response()->json(['gagal' => 'Apply job gagal dikonfirmasi']);
+        // if ($apply) {
+        //     return response()->json(['success' => 'Apply job berhasil dikonfirmasi']);
+        // }
+        // return response()->json(['gagal' => 'Apply job gagal dikonfirmasi']);
+        return redirect()->to('/pendaftar')->with(['success' => 'success']);
     }
     public function destroy(string $id)
     {

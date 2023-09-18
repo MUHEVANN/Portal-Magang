@@ -19,7 +19,7 @@
         </div>
         <div class="my-5">
             {{-- <span x-on:click='getSorted'>click me</span> --}}
-            {{-- <template x-for='data in datas' :key="data.id">
+            <template x-for='data in datas' :key="data.id">
                 <div
                     class="p-2 my-2 pr-5 items-center border-2 border-slate-100 flex justify-between rounded cursor-pointer hover:bg-slate-50">
                     <div class="flex gap-3">
@@ -33,7 +33,7 @@
                     <a class="py-1 px-5 rounded-md text-right border-2 border-[#000D3B] hover:text-slate-100 hover:bg-[#000D3B]"
                         :href="'lowongan/detail/' + data.id">Detail</a>
                 </div>
-            </template> --}}
+            </template>
         </div>
     </section>
 @endsection

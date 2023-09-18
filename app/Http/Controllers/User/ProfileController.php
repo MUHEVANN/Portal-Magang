@@ -28,9 +28,8 @@ class ProfileController extends Controller
             'gender' => $user->gender,
             'alamat' => $user->alamat,
             'no_hp' => $user->no_hp,
-            'job_magang_id' => $user->job_magang_id === 1 ? 'Tidak Ada Job' : $user->lowongan->name,
+            'job_magang_id' => $user->job_magang_id === NULL ? 'Tidak Ada Job' : $user->lowongan->name,
             'profile_image' => $user->profile_image,
-            'lowongan_name' => $user->lowongan->name,
         ];
         return response()->json($response);
     }
