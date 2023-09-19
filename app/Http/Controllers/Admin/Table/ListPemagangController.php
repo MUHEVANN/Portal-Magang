@@ -12,11 +12,16 @@ class ListPemagangController extends Controller
 {
     public function index()
     {
-        $data = User::with('apply.carrer', 'lowongan')->whereNotIn('job_magang_id', ['NULL'])->orderBy('created_at', 'asc')->get();
+        $data = User::with(['apply' => function ($query) {
+            $query->select('user_id', 'carrer_id', 'status', 'tipe_magang');
+        }, 'apply.carrer', 'lowongan', 'kelompok'])->select('name', 'job_magang_id', 'id', 'kelompok_id')->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get();
+        // $data = User::with('apply.carrer', 'lowongan')->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('checkbox', function ($data) {
+                return view('Admin.checkbox')->with('data', $data);
+            })
             ->addColumn('action', function ($data) {
-
                 return view('Admin.updel-user')->with('data', $data);
             })
             ->make(true);

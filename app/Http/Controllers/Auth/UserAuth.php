@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\CodeChangePassword;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,11 @@ class UserAuth extends Controller
         if (!Auth::check()) {
             return view('Auth.login');
         }
+        $cekuser = Cache::get('user');
+        if ($cekuser) {
+            return $cekuser;
+        }
+        $user = Cache::put($cekuser, auth()->user(), 360000);
 
         return redirect()->back();
     }

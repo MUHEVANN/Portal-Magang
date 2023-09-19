@@ -11,14 +11,17 @@ class ApplyController extends Controller
 {
     public function index()
     {
-        $data = User::with('apply', 'lowongan', 'kelompok')->where('jabatan', 1)->whereHas('apply', function ($query) {
+        $data = User::with(['apply', 'lowongan', 'kelompok'])->whereHas('apply', function ($query) {
             $query->where('status', 'menunggu');
         })->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-                return $data->apply->tipe_magang === 'kelompok' ?  view('Admin.kelompok-id')->with('data', $data) :  view('Admin.status')->with('data', $data);
+                return view('Admin.status')->with('data', $data);
+            })
+            ->addColumn('checkbox', function ($data) {
+                return view('Admin.checkbox')->with('data', $data);
             })
             ->make(true);
     }

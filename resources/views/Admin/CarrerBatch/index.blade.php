@@ -51,6 +51,7 @@
                 }
             });
             var table = $('#myTable').DataTable({
+
                 processing: true,
                 serverside: true,
                 ajax: '/carrer-batch',

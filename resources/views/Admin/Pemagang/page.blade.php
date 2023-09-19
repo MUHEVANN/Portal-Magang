@@ -34,15 +34,19 @@
                 </select>
             </div>
         </div>
+        <div class="mb-3">
+            <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
+        </div>
         <table class="table" id="myTable">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th><input type="checkbox" name="" id="head-cb"></th>
                     <th>Nama</th>
                     <th>Job</th>
                     <th>Tipe Magang</th>
                     <th>Batch</th>
                     <th>Status</th>
+                    <th>kelompok id</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -111,17 +115,46 @@
                 }
             });
             var table = $('#myTable').DataTable({
+                order: [
+                    [6, 'asc']
+                ],
+                columnDefs: [{
+                    visible: false,
+                    targets: 6
+                }],
                 responsive: true,
                 processing: true,
                 serverside: true,
+                drawCallback: function(settings) {
+                    var api = this.api();
+                    var rows = api.rows({
+                        page: 'current'
+                    }).nodes();
+                    var last = null;
+
+                    api.column(6, {
+                            page: 'current'
+                        })
+                        .data()
+                        .each(function(group, i) {
+                            if (last !== group) {
+                                $(rows)
+                                    .eq(i)
+                                    .before(
+                                        '<tr class="group" style="background:#f9f9f9;"><td colspan="7">' +
+                                        group +
+                                        '</td></tr>'
+                                    );
+
+                                last = group;
+                            }
+                        });
+                },
                 ajax: 'list-pemagang',
                 columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
+                        data: 'checkbox',
+                        name: 'checkbox',
+                    }, {
                         data: 'name',
                         name: 'name'
                     },
@@ -142,6 +175,13 @@
                     {
                         data: 'apply.status',
                         name: 'apply.status'
+                    },
+                    {
+                        data: 'kelompok.name',
+                        name: 'kelompok.name',
+                        render: function(data) {
+                            return (data !== null) ? 'kelompok ' + data : 'mandiri';
+                        }
                     },
                     {
                         data: 'action',
@@ -243,6 +283,29 @@
                     });
                 });
             });
+            $('#head-cb').on('click', function() {
+                if ($('#head-cb').prop('checked') === true) {
+                    $('.child-cb').prop('checked', true);
+                    $('#hapus').prop('disabled', false);
+
+
+                } else {
+                    $('#hapus').prop('disabled', true);
+                    $('.child-cb').prop('checked', false);
+                }
+            });
+
+            $('#myTable tbody').on('click', '.child-cb', function() {
+                if ($(this).prop('checked') === false) {
+                    $('#head-cb').prop('checked', false);
+                }
+                let all_checkbox = $('#myTable tbody .child-cb:checked');
+                let active_checkbox = (all_checkbox.length > 0);
+                // console.log(all_checkbox.val());
+                $('#hapus').prop('disabled', !active_checkbox);
+            });
+
+
 
             $('body').on('click', '.hapus', function(e) {
                 e.preventDefault();
@@ -308,5 +371,74 @@
 
             });
         });
+
+        function hapus() {
+            var checkbox_checked = $('#myTable tbody .child-cb:checked');
+            let all_checked = [];
+            $.each(checkbox_checked, function(index, value) {
+                all_checked.push(value.value);
+            });
+            console.log(all_checked);
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    for (var i = 0; i < all_checked.length; i++) {
+                        $.ajax({
+                            method: 'DELETE',
+                            url: "hapus-pemagang/" + all_checked[i],
+                        })
+                    }
+
+                    const Toast = Swal.mixin({
+                        width: 400,
+                        padding: 18,
+                        toast: true,
+                        position: 'bottom-end',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter',
+                                Swal.stopTimer)
+                            toast.addEventListener('mouseleave',
+                                Swal.resumeTimer)
+                        }
+                    })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'berhasil konfirmasi'
+                    });
+
+                    $('#myTable').DataTable().ajax.reload();
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                    )
+                }
+            })
+
+
+
+        }
     </script>
 @endsection

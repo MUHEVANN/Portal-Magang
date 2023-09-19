@@ -15,14 +15,6 @@ class TrashController extends Controller
         $data = User::onlyTrashed()->with('apply.carrer', 'lowongan')->where('name', '!=', 'Admin')->orderBy('created_at', 'asc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('type-magang', function ($data) {
-                $kelompok = Kelompok::with('user')->where('id', $data->kelompok_id)->first();
-                if (count($kelompok->user) > 1) {
-                    return 'Kelompok';
-                } else {
-                    return 'Mandiri';
-                }
-            })
             ->addColumn('action', function ($data) {
                 return view('Admin.restore')->with('data', $data);
             })

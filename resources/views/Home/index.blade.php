@@ -18,14 +18,12 @@
             <img src="assets/magnify.svg" alt="kaca pembesar svg" class="absolute top-2 left-3" width="34">
         </div>
         <div class="my-5">
-
             <template x-for='data in $store.ajax.lowongan' :key="data.id">
 
                 <div
                     class="p-2 my-2 pr-5 items-center border-2 border-slate-100 flex justify-between rounded cursor-pointer hover:bg-slate-50">
                     <div class="flex gap-3">
-                        <img :src=" data.gambar" alt="" class="w-28">
-                        {{-- <img :src="'storage/lowongan/' + data.gambar" alt="" class="w-28"> --}}
+                        <img :src="'storage/lowongan/' + data.gambar" alt="" class="w-28">
                         <div class="justify-around flex-wrap flex flex-col">
                             <h1 class="text-[#000D3B] font-bold text-2xl" x-text='data.name'></h1>
                             <p class="text-slate-500 text-md" x-text='new Date(data.created_at).toLocaleDateString()'></p>

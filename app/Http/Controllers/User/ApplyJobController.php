@@ -36,6 +36,14 @@ class ApplyJobController extends Controller
         if ($existingApply) {
             return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
         }
+        $validate = Validator::make($request->all(), [
+            'job_magang_ketua' => 'required',
+            'cv_pendaftar' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->messages())->withInput();
+        }
 
         // untuk carrer ketua dan mandiri
         $carr = Carrer::latest()->first();
@@ -160,8 +168,7 @@ class ApplyJobController extends Controller
         $apply->status = 'Ditolak';
         $apply->save();
         StatusApplyJob::dispatch($apply->user, $apply->status);
-
-        return redirect()->to('dashboard')->with(['success' => 'Apply job berhasil dikonfirmasi']);
+        return redirect()->to('/pendaftar')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function konfirm($id)
     {

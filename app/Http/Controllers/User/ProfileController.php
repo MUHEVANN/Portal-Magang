@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -13,19 +14,20 @@ class ProfileController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
-        $user = User::with('lowongan')->find($user_id);
+        $cekuser = Cache::get('user_' . $user_id);
+        $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
+            return User::with('lowongan')->find($user_id);
+        });
         return view('Home.profile.index', compact('user'));
-    }
-
-    public function profile()
-    {
-        return view('Home.profile.profile');
     }
 
     public function get_profile()
     {
         $user_id = Auth::user()->id;
-        $user = User::with('lowongan')->find($user_id);
+        $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
+            return User::with('lowongan')->find($user_id);
+        });
+        // $user = User::with('lowongan')->find($user_id);
         $response = [
             'name' => $user->name,
             'email' => $user->email,
@@ -47,7 +49,7 @@ class ProfileController extends Controller
             $gambar = $request->file('profile_image');
             $gambar_name = date('ymdhis') . $gambar->getClientOriginalExtension();
             $gambar_path = $gambar->storeAs('public/profile', $gambar_name);
-            if (!$user->gambar === NULL) {
+            if ($user->gambar !== NULL) {
                 Storage::delete('public/profile/', $user->gambar);
             }
             $user->profile_image = $gambar_name;
@@ -61,7 +63,7 @@ class ProfileController extends Controller
         $user->gender = $request->gender;
         $user->no_hp = $request->no_hp;
         $user->save();
-
+        Cache::put('user_' . $user->id, $user, 3600);
         $image = asset('storage/profile/' . $user->profile_image);
 
         return response()->json(['message' => 'update profile berhasil', 'image' => $image]);

@@ -91,6 +91,7 @@
             var table = $('#myTable').DataTable({
                 processing: true,
                 serverside: true,
+                // scrollX: true,
                 ajax: {
                     url: 'lowongan',
                     data: function(d) {
@@ -142,7 +143,8 @@
                         data: 'action',
                         name: 'action'
                     }
-                ]
+                ],
+
             });
 
             $('#select-batch').on('change', function(e) {
