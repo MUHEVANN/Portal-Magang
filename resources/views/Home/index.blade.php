@@ -37,6 +37,8 @@
     </section>
 @endsection
 
+@section('script')
+@endsection
 @section('sidebar')
     <div class="sidebar">
         {{-- <section x-data="home" class="mb-3">

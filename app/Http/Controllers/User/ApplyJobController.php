@@ -38,7 +38,7 @@ class ApplyJobController extends Controller
         }
         $validate = Validator::make($request->all(), [
             'job_magang_ketua' => 'required',
-            'cv_pendaftar' => 'required',
+            'cv_pendaftar' => 'required|mimes:pdf',
         ]);
 
         if ($validate->fails()) {
@@ -70,10 +70,9 @@ class ApplyJobController extends Controller
             ]);
             $pendaftar->kelompok_id = $kelompok->id;
             $pendaftar->save();
-            // dd($pendaftar);
             $validate = Validator::make($request->all(), [
                 'job_magang' => 'required',
-                'cv' => 'required',
+                'cv_anggota' => 'required',
                 'name' => 'required',
                 'email' => 'required',
             ]);
@@ -90,7 +89,7 @@ class ApplyJobController extends Controller
                 if ($cek_anggota_sudah_apply) {
                     return redirect()->back()->withErrors(['gagal-apply' => 'Anggota sudah pernah apply']);
                 }
-                $cv_file = $request->file('cv')[$i];
+                $cv_file = $request->file('cv_anggota')[$i];
                 $cv_name = Str::random(10) . '.' . $cv_file->getClientOriginalExtension();
                 $cv_path = $cv_file->storeAs('public/cv', $cv_name);
                 if (!$user_acc) {

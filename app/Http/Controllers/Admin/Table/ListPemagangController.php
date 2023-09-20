@@ -34,15 +34,23 @@ class ListPemagangController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'gender' => $request->gender,
-            'job_magang_id' => $request->job_magang_id,
-        ]);
+        // $user->update([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => $request->password,
+        //     'alamat' => $request->alamat,
+        //     'no_hp' => $request->no_hp,
+        //     'gender' => $request->gender,
+        //     'job_magang_id' => $request->job_magang_id,
+        // ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->alamat = $request->alamat;
+        $user->no_hp = $request->no_hp;
+        $user->gender = $request->gender;
+        $user->job_magang_id = $request->job_magang_id;
+        $user->save();
         return response()->json(['success' => 'Berhasil Mengupdate']);
     }
 

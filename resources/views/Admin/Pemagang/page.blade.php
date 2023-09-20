@@ -37,7 +37,7 @@
         <div class="mb-3">
             <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
         </div>
-        <table class="table" id="myTable">
+        <table class="table table-hover" id="myTable">
             <thead>
                 <tr>
                     <th><input type="checkbox" name="" id="head-cb"></th>
@@ -141,7 +141,7 @@
                                 $(rows)
                                     .eq(i)
                                     .before(
-                                        '<tr class="group" style="background:#f9f9f9;"><td colspan="7">' +
+                                        '<tr class="group" style="background:#f9f9f9;cursor:pointer"><td colspan="7">' +
                                         group +
                                         '</td></tr>'
                                     );
@@ -149,6 +149,13 @@
                                 last = group;
                             }
                         });
+                },
+                rowGroup: {
+                    dataSrc: 'kelompok.name', // Kolom yang digunakan untuk mengelompokkan data
+                    startRender: function(rows, group) {
+                        return '<tr class="group"><td colspan="8">' + group + '</td></tr>';
+                    },
+                    endRender: null
                 },
                 ajax: 'list-pemagang',
                 columns: [{
@@ -179,9 +186,9 @@
                     {
                         data: 'kelompok.name',
                         name: 'kelompok.name',
-                        render: function(data) {
-                            return (data !== null) ? 'kelompok ' + data : 'mandiri';
-                        }
+                        // render: function(data) {
+                        //     return (data !== null) ? 'kelompok ' + data : 'mandiri';
+                        // }
                     },
                     {
                         data: 'action',
@@ -189,6 +196,23 @@
                     },
                 ]
             });
+            $('#myTable tbody').on('click', 'tr.group', function() {
+                var currentGroup = $(this);
+                var nextGroup = currentGroup.nextUntil('tr.group');
+
+                if (nextGroup.is(":visible")) {
+                    // Tutup grup
+                    currentGroup.data('group-start', 'closed');
+                    nextGroup.hide();
+                } else {
+                    // Buka grup
+                    currentGroup.data('group-start', 'open');
+                    nextGroup.show();
+                }
+            });
+
+            // Atur awalnya semua grup ditutup
+            $('tr.group').data('group-start', 'closed').next().hide();
             $('#filter-batch').on('change', function() {
                 var batch = $(this).val();
                 table.column(4).search(batch).draw();
@@ -233,7 +257,7 @@
                         });
                     }
                 });
-                $(".update").click(function(e) {
+                $("body").off('click', '.update').on('click', '.update', function(e) {
                     e.preventDefault();
                     $.ajax({
                         url: 'edit-pemagang/' + id,
@@ -297,6 +321,7 @@
 
             $('#myTable tbody').on('click', '.child-cb', function() {
                 if ($(this).prop('checked') === false) {
+
                     $('#head-cb').prop('checked', false);
                 }
                 let all_checkbox = $('#myTable tbody .child-cb:checked');

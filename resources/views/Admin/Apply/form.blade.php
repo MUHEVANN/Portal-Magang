@@ -12,7 +12,11 @@
     <form action="{{ url('apply-form') }}" class="bg-red lg:w-3/5" method="post" enctype="multipart/form-data">
         @csrf
         <div x-show.transition="current_pos == 1">
-
+            @if ($errors->has('cv_anggota'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('cv_anggota') }}
+                </div>
+            @endif
             <label for="tgl-mulai">Tanggal Mulai</label>
             <input type="date" name="tgl_mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
 
@@ -84,13 +88,11 @@
                         @enderror
 
                         <label for="cv">CV</label>
-                        <input type="file" name="cv[]" class="input-style" id="cv" />
+                        <input type="file" name="cv_anggota[]" class="input-style" id="cv" accept=".pdf" />
                         <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
-                        @error('cv')
+                        @error('cv_anggota')
                             {{ $message }}
                         @enderror
-
-
                     </div>
 
                 </template>
@@ -107,9 +109,9 @@
         </div>
         <div x-show.transition="current_pos==3">
             <label for="cv">CV</label>
-            <input type="file" name="cv_pendaftar" class="input-style" id="cv" />
+            <input type="file" name="cv_pendaftar" accept=".pdf" class="input-style" id="cv" />
             <p class="text-slate-600">Masukan CV anggotamu dengan dijadikan satu.</p>
-            @error('cv')
+            @error('cv_pendaftar')
                 {{ $message }}
             @enderror
             <div class="flex justify-between items-center">
@@ -146,6 +148,8 @@
         </div>
     </div>
 @endsection
+
+
 
 {{-- @if ($errors->has('sudah-Apply'))
     <div class="alert alert-danger">

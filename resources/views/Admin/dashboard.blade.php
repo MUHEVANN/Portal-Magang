@@ -14,7 +14,7 @@
                 </select>
             </div>
         </div>
-        <table class="table table-stiped " id="myTable">
+        <table class="table table-stiped table-hover" id="myTable">
             <thead>
                 <tr>
                     <th><input type="checkbox" name="" id="head-cb" /></th>
@@ -64,7 +64,7 @@
                                 $(rows)
                                     .eq(i)
                                     .before(
-                                        '<tr class="group" style="background:#f9f9f9;"><td colspan="8">' +
+                                        '<tr class="group" style="background:#f9f9f9;cursor:pointer;"><td colspan="8">' +
                                         group +
                                         '</td></tr>'
                                     );
@@ -72,6 +72,13 @@
                                 last = group;
                             }
                         });
+                },
+                rowGroup: {
+                    dataSrc: 'kelompok.name', // Kolom yang digunakan untuk mengelompokkan data
+                    startRender: function(rows, group) {
+                        return '<tr class="group"><td colspan="8">' + group + '</td></tr>';
+                    },
+                    endRender: null
                 },
                 columns: [{
                         data: 'checkbox',
@@ -116,6 +123,20 @@
                 order: [
                     [7, 'asc']
                 ],
+            });
+            $('#myTable tbody').on('click', 'tr.group', function() {
+                var currentGroup = $(this);
+                var nextGroup = currentGroup.nextUntil('tr.group');
+
+                if (nextGroup.is(":visible")) {
+                    // Tutup grup
+                    currentGroup.data('group-start', 'closed');
+                    nextGroup.hide();
+                } else {
+                    // Buka grup
+                    currentGroup.data('group-start', 'open');
+                    nextGroup.show();
+                }
             });
 
             $('#head-cb').on('click', function() {
