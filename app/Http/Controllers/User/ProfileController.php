@@ -55,10 +55,10 @@ class ProfileController extends Controller
             $user->profile_image = $gambar_name;
         }
         $user->name = $request->name;
-        if ($request->has('email')) {
-            $user->email = $request->email;
-            $user->is_active = 0;
-        }
+        // if ($request->has('email')) {
+        //     $user->is_active = 0;
+        // }
+        $user->email = $request->email;
         $user->alamat = $request->alamat;
         $user->gender = $request->gender;
         $user->no_hp = $request->no_hp;

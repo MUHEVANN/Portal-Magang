@@ -21,18 +21,10 @@
             <h1 class="my-5 text-3xl">Registrasi</h1>
             <form action="{{ url('register') }}" method="post">
                 @csrf
-                @if ($errors->any())
-                    <div class="text-red-600">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <label for="nama" class=" text-slate-900 mb-1">Nama</label> <br>
                 <div class="relative">
-                    <input type="nama" name="name" class="pl-11 bg-slate-200 py-2 mb-2 px-2 w-full"> <br>
+                    <input type="nama" name="name" class="pl-11 bg-slate-200 py-2 mb-2 px-2 w-full"
+                        value="{{ old('name') }}"> <br>
                     <img src="assets/person.svg" class="absolute w-6 top-2 left-3" alt="">
                 </div>
                 @if ($errors->any() && $errors->nama)
@@ -41,7 +33,8 @@
                 <br>
                 <label for="email" class=" text-slate-900 mb-1">Email</label> <br>
                 <div class="relative">
-                    <input type="email" name="email" class="pl-11 bg-slate-200 py-2 mb-2 px-2 w-full"> <br>
+                    <input type="email" name="email" class="pl-11 bg-slate-200 py-2 mb-2 px-2 w-full"
+                        value="{{ old('email') }}"> <br>
                     <img src="assets/email.svg" class="absolute w-6 top-2 left-3" alt="">
                 </div>
                 @if ($errors->any() && $errors->email)

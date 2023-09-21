@@ -15,16 +15,14 @@
 
 <body class="antialiased bg-slate-100 m-0 relative" x-cloak :class="apply ? 'overflow-hidden' : 'overflow-x-hidden'"
     x-data='apply'>
-    @if (Auth::user()->is_active == 0)
+    @if (Auth::check() && Auth::user()->is_active == 0)
         <p class="bg-yellow-300 text-center py-5 w-full">Akun anda belum terverifikasi,
             silahkan
             verifikasi dengan mengklik
-            tautan <a href="/email/verifikasi" class="underline">berikut</a>
+            tautan <button type="button" class="underline verif">berikut</button>
         </p>
     @endif
-    @if (session('success'))
-        <p class="text-green-500">{{ session('success') }}</p>
-    @endif
+
     <div class="bg-white">
         <header class="flex py-5 shadow-sm mx-5 lg:mx-auto max-w-[1080px] justify-between items-center">
             <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
@@ -84,6 +82,40 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '.verif', function(e) {
+                $.ajax({
+                    type: "GET",
+                    url: '/email/verifikasi',
+                    success: function(response) {
+                        const Toast = Swal.mixin({
+                            width: 400,
+                            padding: 10,
+                            toast: true,
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter',
+                                    Swal.stopTimer)
+                                toast.addEventListener('mouseleave',
+                                    Swal.resumeTimer)
+                            }
+                        })
+
+                        Toast.fire({
+
+                            icon: 'success',
+                            title: response.success
+                        })
+
+                    }
+                });
+            });
+        });
+    </script>
     @yield('script')
 </body>
 

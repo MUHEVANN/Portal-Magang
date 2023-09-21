@@ -26,7 +26,7 @@
                         <img :src="'storage/lowongan/' + data.gambar" alt="" class="w-28">
                         <div class="justify-around flex-wrap flex flex-col">
                             <h1 class="text-[#000D3B] font-bold text-2xl" x-text='data.name'></h1>
-                            <p class="text-slate-500 text-md" x-text='new Date(data.created_at).toLocaleDateString()'></p>
+                            {{-- <p class="text-slate-500 text-md" x-text='new Date(data.created_at).toLocaleDateString()'></p> --}}
                         </div>
                     </div>
                     <a class="py-1 px-5 rounded-md text-right border-2 border-[#000D3B] hover:text-slate-100 hover:bg-[#000D3B]"
@@ -80,11 +80,16 @@
         </section>
 
         <section class="mt-5">
-            @if (Auth::user()->is_active != 1)
+            @if (!Auth::check())
                 <button disabled
                     class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Apply
                     Job</button>
             @else
+                @if (Auth::user()->is_active === 0)
+                    <button disabled
+                        class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Apply
+                        Job</button>
+                @endif
                 <a href='apply-form' x-on:click='apply = !apply'
                     class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Apply
                     Lowongan</a>

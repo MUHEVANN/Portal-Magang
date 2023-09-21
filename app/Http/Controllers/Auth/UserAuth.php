@@ -27,7 +27,7 @@ class UserAuth extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => "required",
-            'email' => "required|email",
+            'email' => "required|email|unique:users",
             'password' => "required",
         ]);
 
@@ -39,7 +39,7 @@ class UserAuth extends Controller
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password),
-            "verif_code" => Str::random(60),
+            "verif_code" => Str::uuid(),
         ]);
         $user->addRole('client');
         Session::put('user', $user);

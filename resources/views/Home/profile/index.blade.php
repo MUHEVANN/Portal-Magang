@@ -14,7 +14,8 @@
             <img src="" alt="user profile" class="rounded-full object-cover w-40 h-40 mb-3" id="image-preview">
             <div class="mb-3">
                 <label for="job_magang_id">Profile</label>
-                <input type="file" id="profile_image" name="profile_image" class="input-style">
+                <input type="file" id="profile_image" name="profile_image" class="input-style"
+                    accept=".jpg,.png,.svg,.jpeg">
             </div>
 
             <div class="mb-3">

@@ -52,10 +52,13 @@ Route::get('/', function () {
     return redirect('home');
 });
 
+
+Route::get('/home', [HomeController::class, 'home']);
+Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail']);
+Route::get('/filters/{type}', [HomeController::class, 'filter'])->name('filters');
 Route::middleware('auth')->group(function () {
 
     // filter ajax
-    Route::get('/filters/{type}', [HomeController::class, 'filter'])->name('filters');
 
     // Auth verif
     Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
@@ -64,11 +67,9 @@ Route::middleware('auth')->group(function () {
     // logout
     Route::get('logout', [UserAuth::class, 'logout']);
     // client
-    Route::get('/home', [HomeController::class, 'home']);
     Route::get('/apply-form', [ApplyJobController::class, 'formApply']);
     Route::post('/apply-form', [ApplyJobController::class, 'store']);
     Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan']);
-    Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail']);
     // Profile
     Route::post('/update-profile', [ProfileController::class, 'update_profile']);
     Route::get('/update-profile', [ProfileController::class, 'index']);

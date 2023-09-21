@@ -70,18 +70,25 @@ class ApplyJobController extends Controller
             ]);
             $pendaftar->kelompok_id = $kelompok->id;
             $pendaftar->save();
-            $validate = Validator::make($request->all(), [
+            $validate_anggota = Validator::make($request->all(), [
                 'job_magang' => 'required',
-                'cv_anggota' => 'required',
                 'name' => 'required',
                 'email' => 'required',
             ]);
 
-            if ($validate->fails()) {
-                return redirect()->back()->withErrors($validate->messages())->withInput();
+            if ($validate_anggota->fails()) {
+                return redirect()->back()->withErrors($validate_anggota->messages())->withInput();
             }
 
-
+            $files = $request->file('cv_anggota');
+            foreach ($files as $file) {
+                $validateCV = Validator::make(['cv_anggota' => $file], [
+                    'cv_anggota' => 'required|mimes:pdf'
+                ]);
+                if ($validateCV->fails()) {
+                    return redirect()->back()->withErrors($validateCV->messages());
+                }
+            }
             $email = $request->email;
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
@@ -129,6 +136,8 @@ class ApplyJobController extends Controller
                     ]);
                 }
             }
+        } else {
+            $pendaftar->kelompok_id = 1;
         }
         $pendaftar->save();
         AfterApply::dispatch($pendaftar);
