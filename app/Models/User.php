@@ -67,6 +67,6 @@ class User extends Authenticatable implements LaratrustUser
     }
     public function apply()
     {
-        return $this->hasOne(Apply::class);
+        return $this->hasOne(Apply::class, 'user_id', 'id');
     }
 }

@@ -11,7 +11,7 @@
                 </select>
             </div>
             <div class="col-lg-3">
-                <select name="carrer_id" id="filter-job" class="form-control">
+                <select name="filter-job" id="filter-job" class="form-control">
                     <option value="">Pilih Lowongan</option>
                     @foreach ($job as $item)
                         <option value="{{ $item->name }}">{{ $item->name }}</option>
@@ -24,6 +24,13 @@
                     <option value="menunggu">Menunggu</option>
                     <option value="Lulus">Lulus</option>
                     <option value="Ditolak">Ditolak</option>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <select name="filter-tipe-magang" id="filter-tipe-magang" class="form-control">
+                    <option value="">Pilih Tipe Magang</option>
+                    <option value="mandiri">Mandiri</option>
+                    <option value="kelompok">Kelompok</option>
                 </select>
             </div>
         </div>
@@ -123,18 +130,18 @@
                         name: 'lowongan.name'
                     },
                     {
-                        data: 'kelompok.apply.tipe_magang',
-                        name: 'kelompok.apply.tipe_magang',
+                        data: 'apply.tipe_magang',
+                        name: 'apply.tipe_magang',
 
                     },
                     {
-                        data: 'kelompok.apply.carrer.batch',
-                        name: 'kelompok.apply.carrer.batch',
+                        data: 'apply.carrer.batch',
+                        name: 'apply.carrer.batch',
 
                     },
                     {
-                        data: 'kelompok.apply.status',
-                        name: 'kelompok.apply.status'
+                        data: 'apply.status',
+                        name: 'apply.status'
                     },
                     {
                         data: 'action',
@@ -153,6 +160,10 @@
             $('#filter-status').on('change', function() {
                 var job = $(this).val();
                 table.column(5).search(job).draw();
+            })
+            $('#filter-tipe-magang').on('change', function() {
+                var tipe = $(this).val();
+                table.column(3).search(tipe).draw();
             })
             $('body').on('click', '.edit', function(e) {
                 e.preventDefault();

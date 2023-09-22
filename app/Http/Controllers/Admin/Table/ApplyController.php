@@ -11,9 +11,7 @@ class ApplyController extends Controller
 {
     public function index()
     {
-        $data = User::with('apply', 'lowongan', 'kelompok')->where('jabatan', 1)->whereHas('kelompok', function ($query) {
-            $query->where('id', '!=', 1);
-        })->whereHas('apply', function ($query) {
+        $data = User::with('apply', 'lowongan', 'kelompok')->where('jabatan', 1)->whereHas('apply', function ($query) {
             $query->where('status', 'menunggu');
         })->get();
 
@@ -27,15 +25,21 @@ class ApplyController extends Controller
 
     public function detail_kelompok($id)
     {
-        $data = User::with('apply')->where('kelompok_id', $id)->get();
+        $data = User::with('apply')->where('kelompok_id', $id)->whereHas('apply', function ($query) {
+            $query->where('status', 'menunggu');
+        })->get();
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('checkbox', function ($data) {
+                return view('Admin.checkbox')->with('data', $data);
+            })
             ->addColumn('action', function ($data) {
                 return view('Admin.status')->with('data', $data);
             })
             ->addColumn('cv_user', function ($data) {
                 return  view('Admin.cv')->with('data', $data);
             })
+            ->rawColumns(['checkbox'])
             ->make(true);
     }
     public function detail_page($id)
