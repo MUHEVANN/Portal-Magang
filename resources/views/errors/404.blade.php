@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>404 NOT FOUND</title>
 </head>
-
 <body>
     <h1>404 NOT FOUND</h1>
 </body>
-
 </html>

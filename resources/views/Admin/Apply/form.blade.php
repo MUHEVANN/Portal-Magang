@@ -53,16 +53,9 @@
                     {{ $errors->first('sudah-lulus') }}
                 </div>
             @endif
-            <label for="tipe-magang">Tipe Magang</label> <br>
-            <select x-model='tipe_magang' name="tipe_magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
-                id="tipe-magang">
-                <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
-                <option value="mandiri">Mandiri</option>
-                <option value="kelompok">Kelompok</option>
-            </select>
 
-            <label for="alamat">Job Magang Ketua</label> <br>
-            <select name="job_magang_ketua" id="">
+            <label for="alamat">Job Ketua</label> <br>
+            <select name="job_magang_ketua" id="job_ketua" x-model="job_lead" class="input-style">
                 <option value="">Pilih Job Magang</option>
                 @foreach ($lowongan as $item)
                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -102,7 +95,7 @@
             <label for="tipe-magang">Tipe Magang</label> <br>
             <select x-model='tipe_magang' name="tipe_magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
                 id="tipe-magang">
-                <option class="text-slate-500" value="">--Pilih Salah Satu--</option>
+                <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
                 <option value="mandiri">Mandiri</option>
                 <option value="kelompok">Kelompok</option>
             </select>
