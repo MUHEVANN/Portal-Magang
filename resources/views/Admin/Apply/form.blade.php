@@ -35,7 +35,7 @@
             <input type="date" x-model='start_date' name="tgl_mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
 
             <label for="tgl-selesai">Tanggal Selesai</label>
-            <input type="date" x-model='end_date' name="tgl-selesai" id="tgl-selesai" class="input-style"
+            <input type="date" x-model='end_date' name="tgl_selesai" id="tgl-selesai" class="input-style"
                 id="tipe-magang">
             <button class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
                 x-on:click.prevent="next()">Berikutnya</button>
@@ -62,7 +62,7 @@
                 @endforeach
             </select>
             <label for="cv">CV Ketua</label>
-            <input type="file" name="cv" class="input-style" x-model="cv_lead" id="cv" />
+            <input type="file" name="cv_pendaftar" class="input-style" x-model="cv_lead" id="cv" />
             <p class="text-slate-600">Masukan CV dan Portfolio.</p>
             {{-- indicator Alert --}}
             <li x-show="cv_lead.length > 0" class="flex items-center pb-2 pt-2">
