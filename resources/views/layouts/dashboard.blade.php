@@ -272,6 +272,7 @@
                                             <span class="align-middle">Log Out</span>
                                         </a>
                                     </li>
+
                                 </ul>
                             </li>
                             <!--/ User -->
@@ -341,8 +342,7 @@
     <script src="{{ asset('template/assets/js/dashboards-analytics.js') }}"></script>
 
     @yield('script')
-
-    <!-- Place this tag in your head or just before your close body tag. -->
+    <!-- Place this tag in you r head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 

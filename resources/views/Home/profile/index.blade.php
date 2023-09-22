@@ -21,6 +21,7 @@
             <div class="mb-3">
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name" class="input-style">
+                <p class="error-name"></p>
             </div>
             <div class="mb-3">
                 <label for="name">Email</label>
@@ -79,6 +80,7 @@
                         $('#alamat').val(response.alamat);
                         $('#no_hp').val(response.no_hp);
                         $('#job_magang_id').val(response.job_magang_id);
+
                     }
                 });
                 $('#profile_image').change(function() {
@@ -108,7 +110,9 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            console.log(response);
+                            if (!response.success) {
+                                $('.error-name').text(response.error.name);
+                            }
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'success',

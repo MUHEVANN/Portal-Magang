@@ -5,15 +5,21 @@ namespace App\Http\Controllers\Admin\Table;
 use App\Http\Controllers\Controller;
 use App\Models\Kelompok;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class ApplyController extends Controller
 {
     public function index()
     {
-        $data = User::with(['apply', 'lowongan', 'kelompok'])->whereHas('apply', function ($query) {
-            $query->where('status', 'menunggu');
-        })->get();
+        // $data = User::with(['apply', 'lowongan', 'kelompok'])->whereHas('apply', function ($query) {
+        //     $query->where('status', 'menunggu');
+        // })->get();
+        $data = Cache::remember('all-pemagang', 3500, function () {
+            return User::with(['apply', 'lowongan', 'kelompok'])->whereHas('apply', function ($query) {
+                $query->where('status', 'menunggu');
+            })->get();
+        });
 
         return DataTables::of($data)
             ->addIndexColumn()

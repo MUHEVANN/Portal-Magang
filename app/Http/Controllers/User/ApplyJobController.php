@@ -13,6 +13,7 @@ use App\Models\Kelompok;
 use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -140,6 +141,7 @@ class ApplyJobController extends Controller
             $pendaftar->kelompok_id = 1;
         }
         $pendaftar->save();
+        Cache::forget('all-pemagang');
         AfterApply::dispatch($pendaftar);
 
         return redirect()->to('home');

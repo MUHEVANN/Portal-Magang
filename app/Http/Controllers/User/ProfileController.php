@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -43,6 +44,12 @@ class ProfileController extends Controller
 
     public function update_profile(Request $request)
     {
+        $validate = Validator::make(['name' => $request->name], [
+            'name' => 'max:50|string'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->messages()]);
+        }
         $user_id = Auth::user()->id;
         $user = User::find($user_id);
         if ($request->hasFile('profile_image')) {
@@ -66,6 +73,6 @@ class ProfileController extends Controller
         Cache::put('user_' . $user->id, $user, 3600);
         $image = asset('storage/profile/' . $user->profile_image);
 
-        return response()->json(['message' => 'update profile berhasil', 'image' => $image]);
+        return response()->json(['success' => 'update profile berhasil', 'image' => $image]);
     }
 }

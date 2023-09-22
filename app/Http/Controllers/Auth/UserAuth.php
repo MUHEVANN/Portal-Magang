@@ -52,11 +52,11 @@ class UserAuth extends Controller
         if (!Auth::check()) {
             return view('Auth.login');
         }
-        $cekuser = Cache::get('user');
-        if ($cekuser) {
-            return $cekuser;
-        }
-        $user = Cache::put($cekuser, auth()->user(), 360000);
+        // $cekuser = Cache::get('user');
+        // if ($cekuser) {
+        //     return $cekuser;
+        // }
+        // $user = Cache::put($cekuser, auth()->user(), 360000);
 
         return redirect()->back();
     }
@@ -70,15 +70,18 @@ class UserAuth extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-        $user = User::where('email', $request->email)->first();
 
+
+        $user = User::where('email', $request->email)->first();
+        $remember = $request->has('remember');
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 Session::put('user', $user);
-                Auth::login($user);
+                Auth::login($user, $remember);
                 if ($user->hasRole('admin')) {
                     return redirect()->to('all-pemagang');
                 } else {
+                    Session::put('user', $user);
                     return redirect()->to('home');
                 }
             } else {

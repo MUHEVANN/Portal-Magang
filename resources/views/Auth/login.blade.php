@@ -13,7 +13,7 @@
 </head>
 
 <body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center ">
-    <div class="bg-white h-[60vh] w-[45vw] flex items-center shadow-sm rounded-md ">
+    <div class="bg-white h-[60vh] w-[45vw] flex items-center shadow-sm rounded-md">
         {{-- <img src="images/Login.png" class="bg-center w-96 h-auto rounded-lg object-fill p-5" alt="login jetorbit logo"> --}}
 
         <section class="p-10  sm:w-[25rem]">
@@ -26,6 +26,7 @@
             <form action="{{ url('login') }}" method="post">
                 @csrf
                 {{-- <label for="email" class=" text-slate-900 mb-1">Email</label> <br> --}}
+
                 <div class="relative">
                     <input type="email" name="email" class="pl-11 border-b-2 py-2 mb-2 px-2 w-full"
                         placeholder="email"> <br>
@@ -51,12 +52,15 @@
                 @if ($errors->any() && $errors->password)
                     <p class="text-red-600">{{ $errors->first('password') }}</p>
                 @endif
-                <span class="block text-sm  text-gray-700">Dengan ini kamu setuju</span>
+                <div class="flex items-center mt-5 gap-x-2">
+                    <input type="checkbox" name='remember' class="">
+                    <span class="text-[14px]"> Remember
+                        me</span>
+                </div>
                 <br>
                 <div class="flex justify-center">
-
                     <button type="submit"
-                        class=" text-pink-100 cursor-pointer bg-[#001D86] mt-9 my-6 py-2 px-10 rounded-full">Login</button>
+                        class=" text-pink-100 cursor-pointer bg-[#001D86] mt-2 my-6 py-2 px-20 rounded-lg">Login</button>
                 </div>
                 {{-- <button type="submit"
                     class=" text-pink-100 cursor-pointer bg-[#001D86] mt-9 my-6 py-2 px-4 w-full">Login</button> --}}
