@@ -25,8 +25,8 @@ class UserAuth extends Controller
     public function proccess_register(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => "required",
-            'email' => "required|email",
+            'name' => "required|unique:users",
+            'email' => "required|email|unique:users",
             'password' => "required",
         ]);
 

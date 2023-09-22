@@ -23,36 +23,36 @@
         </p>
     @endif
     @if (session('success'))
-        <p class="text-green-500">{{ session('success') }}</p>
+        <p x-effect="showAlert(<?= session('success') ?>)"></p>
+        {{-- <p class="text-green-500">{{ session('success') }}</p> --}}
     @endif
     <div class="bg-white">
         <header class="flex py-5 shadow-sm mx-5 lg:mx-auto max-w-[1080px] justify-between items-center">
             <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
 
             @if (Auth::check())
-                <div x-data="{ open: false }" class="relative z-20">
-                    <div class="flex items-center">
-                        <p x-on:click="open = ! open" class="cursor-pointer">Hello,
-                            <strong>{{ Auth::user()->name }}
-                            </strong>
-                        </p>
-                        <img src="{{ asset('assets/chevron.svg') }}" width="20" class='opacity-50'
-                            x-bind:class="open ? 'rotate-180' : ''" alt="arrow down">
+                <div x-data="{ open: false }" class="relative z-20" x-on:click.outside='open = false'>
+                    <div x-on:click="open = ! open" class="flex cursor-pointer items-center gap-2">
+                        <strong>{{ Auth::user()->name }}</strong>
+
+                        <img class="rounded-full object-cover w-8 h-8"
+                            src="/storage/profile/{{ Auth::user()->profile_image }}" alt="">
+                        <img src="{{ asset('assets/chevron.svg') }}" alt="" :class="open ? 'rotate-180' : ''">
                     </div>
 
-                    <span x-show="open" x-on:click.outside='open = !open'
-                        class="bg-white shadow-md  border-[1px] border-slate-100 absolute w-full mt-4 rounded-md">
-                        <ul class="py-3 px-2 text-center">
-                            <li class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
+                    <span x-show="open"
+                        class="bg-white shadow-md border-[1px] border-slate-100 w-max right-0 absolute mt-4 rounded-md">
+                        <div class="py-3 px-2 text-center">
+                            <a href="/update-profile"
+                                class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
                                     src="{{ asset('assets/person.svg') }}" width="24" alt="person">
-                                <a href="/update-profile" class="px-1">Profile</a>
-                            </li>
-                            <li class="flex p-1 rounded hover:bg-slate-200 items-center cursor-pointer"> <img
-                                    src="{{ asset('assets/logout.svg') }}" alt="log out">
-                                <a href="/logout" class="px-1 text-red-500">Logout</a>
-                            </li>
-                        </ul>
-
+                                <p class="px-1">Profile</p>
+                            </a>
+                            <a href="/logout" class="flex p-1 rounded hover:bg-slate-200 items-center cursor-pointer">
+                                <img src="{{ asset('assets/logout.svg') }}" alt="log out">
+                                <p class="px-1 text-red-500">Logout</p>
+                            </a>
+                        </div>
                     </span>
                 </div>
             @else
@@ -76,12 +76,35 @@
     </div>
 
     <main class="bg-white">
-        <div class="max-w-[1000px] py-16 mx-auto flex-col-reverse flex md:flex-row justify-start gap-5 px-5">
+        <div class="py-16 container-width">
             @yield('content')
             @yield('sidebar')
         </div>
     </main>
+    <footer class="bg-[#000D3B]">
+        <div class="flex flex-col px-5 sm:flex-row max-w-[1000px] mx-auto items-center text-white justify-between">
+            <img src="{{ asset('images/jetorbit-logo-white.png') }}" class="w-40 sm:h-40 mt-7 sm:mt-0 object-contain"
+                alt="">
+
+            <ul class="list-contents sm:my-0 my-10">
+                <li><a href="#" class="list-menu">Kontak</a></li>
+                <li><a href="#" class="list-menu">Layanan</a></li>
+                <li><a href="#" class="list-menu">Bantuan</a></li>
+            </ul>
+            <ul class="list-contents sm:mb-0 mb-7">
+                <li><a href="#"><img class="svg-social" src="{{ asset('assets/socials/facebook.svg') }}"
+                            alt="facebook"></a></li>
+                <li><a href="#"><img class="svg-social" src="{{ asset('assets/socials/twitter.svg') }}"
+                            alt="twitter"></a></a>
+                </li>
+                <li><a href="#"><img class="svg-social" src="{{ asset('assets/socials/instagram.svg') }}"
+                            alt="instagram"></a></a></li>
+            </ul>
+        </div>
+    </footer>
     <script src="{{ asset('js/main.js') }}"></script>
+    @yield('script')
+
 </body>
 
 </html>

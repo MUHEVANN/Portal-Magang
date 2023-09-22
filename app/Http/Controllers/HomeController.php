@@ -16,7 +16,7 @@ class HomeController extends Controller
         return view('Home.index', compact('lowongan'));
     }
 
-    public function filter(string $type)
+    public function filter(string $type = '')
     {
         $carrer = Carrer::latest()->first();
 
@@ -24,7 +24,7 @@ class HomeController extends Controller
 
         if ($type == 'terlama') {
             $query->orderBy('created_at', 'asc');
-        } else {
+        } else if ($type == 'terbaru') {
             $query->orderBy('created_at', 'desc');
         }
 

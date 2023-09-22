@@ -33,9 +33,9 @@ class ProfileController extends Controller
             'gender' => $user->gender,
             'alamat' => $user->alamat,
             'no_hp' => $user->no_hp,
-            'job_magang_id' => $user->job_magang_id === 1 ? 'Tidak Ada Job' : $user->lowongan->name,
+            'job_magang_id' => $user->job_magang_id === null ? 'Tidak Ada Job' : $user->lowongan->name,
             'profile_image' => $user->profile_image,
-         
+
         ];
         return response()->json($response);
     }
@@ -54,10 +54,7 @@ class ProfileController extends Controller
             $user->profile_image = $gambar_name;
         }
         $user->name = $request->name;
-        if ($request->has('email')) {
-            $user->email = $request->email;
-            $user->is_active = 0;
-        }
+        $user->email = $request->email;
         $user->alamat = $request->alamat;
         $user->gender = $request->gender;
         $user->no_hp = $request->no_hp;

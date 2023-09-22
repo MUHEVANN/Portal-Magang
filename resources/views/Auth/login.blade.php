@@ -49,7 +49,7 @@
                 @endif
                 <br>
                 <button type="submit"
-                    class=" text-pink-100 cursor-pointer bg-[#001D86] mt-9 my-6 py-2 px-4 w-full">Login</button>
+                    class=" text-pink-100 cursor-pointer rounded bg-[#001D86] mt-9 my-6 py-2 px-4 w-full">Login</button>
                 <a class="text-center cursor-pointer block hover:underline" href="register">Register</a>
             </form>
         </section>
