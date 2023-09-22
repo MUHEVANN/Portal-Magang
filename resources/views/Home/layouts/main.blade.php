@@ -33,9 +33,10 @@
                 <div x-data="{ open: false }" class="relative z-20" x-on:click.outside='open = false'>
                     <div x-on:click="open = ! open" class="flex cursor-pointer items-center gap-2">
                         <strong>{{ Auth::user()->name }}</strong>
-
+                        {{-- {{ dd(Auth::user()->profile_image) }} --}}
                         <img class="rounded-full object-cover w-8 h-8"
-                            src="/storage/profile/{{ Auth::user()->profile_image }}" alt="">
+                            src=" {{ Auth::user()->profile_image === null ? asset('images/profile.jpg') : asset('storage/profile/' . Auth::user()->profile_image) }}"
+                            alt="user profile">
                         <img src="{{ asset('assets/chevron.svg') }}" alt="" :class="open ? 'rotate-180' : ''">
                     </div>
 
@@ -102,6 +103,9 @@
         </div>
     </footer>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @yield('script')
 
 </body>

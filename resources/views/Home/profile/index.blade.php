@@ -59,74 +59,75 @@
                     class="py-2 bg-gray-300 px-5 rounded w-full sm:w-fit block hover:opacity-80 mt-5 my-3 mr-auto text-slate-950 update">Update</button>
             </div>
         </form>
-    @section('script')
-        <script>
-            $(document).ready(function() {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    type: "GET",
-                    url: "profile-user",
-                    success: function(response) {
-                        console.log(response);
-                        response.profile_image === null ? $('#image-preview').attr('src',
-                            'images/profile.jpg') : $('#image-preview').attr('src', "storage/profile/" +
-                            response.profile_image);
-                        $('#name').val(response.name);
-                        $('#email').val(response.email);
-                        $('#password').val(response.password);
-                        $('#gender').val(response.gender);
-                        $('#alamat').val(response.alamat);
-                        $('#no_hp').val(response.no_hp);
-                        $('#job_magang_id').val(response.job_magang_id);
+    </div>
+@endsection
 
-                    }
-                });
-                $('#profile_image').change(function() {
-                    var input = this;
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-                            $('#image-preview').attr('src', e.target.result);
-                        };
-                        reader.readAsDataURL(input.files[0]);
-                    }
-                });
-                $('body').on('click', '.update', function(e) {
-                    e.preventDefault();
-                    var formData = new FormData();
-                    formData.append('name', $('#name').val());
-                    formData.append('email', $('#email').val());
-                    formData.append('gender', $('#gender').val());
-                    formData.append('alamat', $('#alamat').val());
-                    formData.append('no_hp', $('#no_hp').val());
-                    formData.append('profile_image', $('#profile_image')[0].files[0]);
-
-                    $.ajax({
-                        type: "POST",
-                        url: "update-profile",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            if (!response.success) {
-                                $('.error-name').text(response.error.name);
-                            }
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Your work has been saved',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        }
-                    });
-                })
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
-        </script>
-    @endsection
-</div>
+            $.ajax({
+                type: "GET",
+                url: "profile-user",
+                success: function(response) {
+                    console.log(response);
+                    response.profile_image === null ? $('#image-preview').attr('src',
+                        'images/profile.jpg') : $('#image-preview').attr('src', "storage/profile/" +
+                        response.profile_image);
+                    $('#name').val(response.name);
+                    $('#email').val(response.email);
+                    $('#password').val(response.password);
+                    $('#gender').val(response.gender);
+                    $('#alamat').val(response.alamat);
+                    $('#no_hp').val(response.no_hp);
+                    $('#job_magang_id').val(response.job_magang_id);
+
+                }
+            });
+            $('#profile_image').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image-preview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+            $('body').on('click', '.update', function(e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('name', $('#name').val());
+                formData.append('email', $('#email').val());
+                formData.append('gender', $('#gender').val());
+                formData.append('alamat', $('#alamat').val());
+                formData.append('no_hp', $('#no_hp').val());
+                formData.append('profile_image', $('#profile_image')[0].files[0]);
+
+                $.ajax({
+                    type: "POST",
+                    url: "update-profile",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (!response.success) {
+                            $('.error-name').text(response.error.name);
+                        }
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+            })
+        });
+    </script>
 @endsection
