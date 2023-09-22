@@ -26,11 +26,11 @@
                 {{ $message }}
             @enderror
 
-            @error('cv')
-                {{ $message }}
-            @enderror
-
-
+            @if ($errors->has('cv_anggota'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('cv_anggota') }}
+                </div>
+            @endif
             <label for="tgl-mulai">Tanggal Mulai</label>
             <input type="date" x-model='start_date' name="tgl_mulai" id="tgl-mulai" class="input-style" id="tipe-magang">
 

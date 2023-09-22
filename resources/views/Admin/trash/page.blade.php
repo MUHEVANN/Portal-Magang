@@ -44,8 +44,8 @@
                         name: 'lowongan.name'
                     },
                     {
-                        data: 'type-magang',
-                        name: 'type-magang',
+                        data: 'apply.tipe_magang',
+                        name: 'apply.tipe_magang',
 
                     },
                     {

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\CodeChangePassword;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +26,7 @@ class UserAuth extends Controller
     public function proccess_register(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => "required|unique:users",
+            'name' => "required",
             'email' => "required|email|unique:users",
             'password' => "required",
         ]);
@@ -38,7 +39,7 @@ class UserAuth extends Controller
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password),
-            "verif_code" => Str::random(60),
+            "verif_code" => Str::uuid(),
         ]);
         $user->addRole('client');
         Session::put('user', $user);
@@ -51,6 +52,11 @@ class UserAuth extends Controller
         if (!Auth::check()) {
             return view('Auth.login');
         }
+        // $cekuser = Cache::get('user');
+        // if ($cekuser) {
+        //     return $cekuser;
+        // }
+        // $user = Cache::put($cekuser, auth()->user(), 360000);
 
         return redirect()->back();
     }
@@ -64,15 +70,18 @@ class UserAuth extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
-        $user = User::where('email', $request->email)->first();
 
+
+        $user = User::where('email', $request->email)->first();
+        $remember = $request->has('remember');
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 Session::put('user', $user);
-                Auth::login($user);
+                Auth::login($user, $remember);
                 if ($user->hasRole('admin')) {
                     return redirect()->to('all-pemagang');
                 } else {
+                    Session::put('user', $user);
                     return redirect()->to('home');
                 }
             } else {

@@ -23,5 +23,9 @@ class AdminSeed extends Seeder
             'is_active' => "1",
         ]);
         $user->addRole('admin');
+
+        Kelompok::create([
+            'name' => 'Mandiri'
+        ]);
     }
 }

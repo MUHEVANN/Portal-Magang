@@ -169,6 +169,13 @@
                             <div data-i18n="Tables" class="">Riwayat Hapus </div>
                         </a>
                     </li>
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Account</span></li>
+                    <li class="menu-item">
+                        <a href="{{ url('logout') }}" class="menu-link">
+                            <i class='bx bx-log-out menu-icon tf-icons text-danger'></i>
+                            <div data-i18n="Tables" class="text-danger">Logout</div>
+                        </a>
+                    </li>
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -265,6 +272,7 @@
                                             <span class="align-middle">Log Out</span>
                                         </a>
                                     </li>
+
                                 </ul>
                             </li>
                             <!--/ User -->
@@ -321,7 +329,7 @@
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="sweetalert2.all.min.js"></script>
+    {{-- <script src="sweetalert2.all.min.js"></script> --}}
     <!-- endbuild -->
 
     <!-- Vendors JS -->
@@ -334,8 +342,7 @@
     <script src="{{ asset('template/assets/js/dashboards-analytics.js') }}"></script>
 
     @yield('script')
-
-    <!-- Place this tag in your head or just before your close body tag. -->
+    <!-- Place this tag in you r head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 

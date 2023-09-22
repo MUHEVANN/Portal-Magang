@@ -13,6 +13,7 @@ use App\Models\Kelompok;
 use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -36,6 +37,14 @@ class ApplyJobController extends Controller
             ->first();
         if ($existingApply) {
             return redirect()->back()->withErrors(['sudah-Apply' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami']);
+        }
+        $validate = Validator::make($request->all(), [
+            'job_magang_ketua' => 'required',
+            'cv_pendaftar' => 'required|mimes:pdf',
+        ]);
+
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->messages())->withInput();
         }
 
         // untuk carrer ketua dan mandiri
@@ -63,19 +72,25 @@ class ApplyJobController extends Controller
             ]);
             $pendaftar->kelompok_id = $kelompok->id;
             $pendaftar->save();
-            // dd($pendaftar);
-            $validate = Validator::make($request->all(), [
+            $validate_anggota = Validator::make($request->all(), [
                 'job_magang' => 'required',
-                'cv' => 'required',
                 'name' => 'required',
                 'email' => 'required|unique:users',
             ]);
 
-            if ($validate->fails()) {
-                return redirect()->back()->withErrors($validate->messages())->withInput();
+            if ($validate_anggota->fails()) {
+                return redirect()->back()->withErrors($validate_anggota->messages())->withInput();
             }
 
-
+            $files = $request->file('cv_anggota');
+            foreach ($files as $file) {
+                $validateCV = Validator::make(['cv_anggota' => $file], [
+                    'cv_anggota' => 'required|mimes:pdf'
+                ]);
+                if ($validateCV->fails()) {
+                    return redirect()->back()->withErrors($validateCV->messages());
+                }
+            }
             $email = $request->email;
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
@@ -83,7 +98,7 @@ class ApplyJobController extends Controller
                 if ($cek_anggota_sudah_apply) {
                     return redirect()->back()->withErrors(['gagal-apply' => 'Anggota sudah pernah apply']);
                 }
-                $cv_file = $request->file('cv')[$i];
+                $cv_file = $request->file('cv_anggota')[$i];
                 $cv_name = Str::random(10) . '.' . $cv_file->getClientOriginalExtension();
                 $cv_path = $cv_file->storeAs('public/cv', $cv_name);
                 if (!$user_acc) {
@@ -123,8 +138,11 @@ class ApplyJobController extends Controller
                     ]);
                 }
             }
+        } else {
+            $pendaftar->kelompok_id = 1;
         }
         $pendaftar->save();
+        Cache::forget('all-pemagang');
         AfterApply::dispatch($pendaftar);
 
         return redirect()->to('home');
@@ -161,8 +179,7 @@ class ApplyJobController extends Controller
         $apply->status = 'Ditolak';
         $apply->save();
         StatusApplyJob::dispatch($apply->user, $apply->status);
-
-        return redirect()->to('dashboard')->with(['success' => 'Apply job berhasil dikonfirmasi']);
+        return redirect()->to('/pendaftar')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function konfirm($id)
     {

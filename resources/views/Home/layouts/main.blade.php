@@ -4,27 +4,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Laravel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="antialiased bg-slate-100 m-0 relative" x-cloak :class="apply ? 'overflow-hidden' : 'overflow-x-hidden'"
     x-data='apply'>
-    @if (Auth::user()->is_active == 0)
+    @if (Auth::check() && Auth::user()->is_active == 0)
         <p class="bg-yellow-300 text-center py-5 w-full">Akun anda belum terverifikasi,
             silahkan
             verifikasi dengan mengklik
-            tautan <a href="/email/verifikasi" class="underline">berikut</a>
+            tautan <button type="button" class="underline verif">berikut</button>
         </p>
     @endif
     @if (session('success'))
-        <p x-effect="showAlert(<?= session('success') ?>)"></p>
-        {{-- <p class="text-green-500">{{ session('success') }}</p> --}}
+        <p class="text-green-500">{{ session('success') }}</p>
     @endif
     <div class="bg-white">
         <header class="flex py-5 shadow-sm mx-5 lg:mx-auto max-w-[1080px] justify-between items-center">

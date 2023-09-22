@@ -22,7 +22,7 @@ class DashboardController extends Controller
     {
         $apply = Apply::select('status');
         $job = Lowongan::whereNotIn('name', ['admin', 'kosong'])->get();
-        $carrer = Carrer::get();
+        $carrer = Carrer::whereNotIn('batch', ['tidak ada'])->get();
         return view('Admin.pemagang.page', compact('carrer', 'job', 'apply'));
     }
 

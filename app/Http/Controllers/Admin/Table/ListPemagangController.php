@@ -12,11 +12,17 @@ class ListPemagangController extends Controller
 {
     public function index()
     {
-        $data = User::with('apply.carrer', 'lowongan')->whereNotIn('job_magang_id', ['NULL'])->orderBy('created_at', 'asc')->get();
+        // $data = User::with(['apply' => function ($query) {
+        //     $query->select('user_id', 'carrer_id', 'status', 'tipe_magang');
+        // }, 'apply.carrer', 'lowongan', 'kelompok'])->select('name', 'job_magang_id', 'id', 'kelompok_id')->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get();
+
+        $data = User::with('apply.carrer', 'lowongan', 'kelompok')->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('checkbox', function ($data) {
+                return view('Admin.checkbox')->with('data', $data);
+            })
             ->addColumn('action', function ($data) {
-
                 return view('Admin.updel-user')->with('data', $data);
             })
             ->make(true);
@@ -29,15 +35,23 @@ class ListPemagangController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'gender' => $request->gender,
-            'job_magang_id' => $request->job_magang_id,
-        ]);
+        // $user->update([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => $request->password,
+        //     'alamat' => $request->alamat,
+        //     'no_hp' => $request->no_hp,
+        //     'gender' => $request->gender,
+        //     'job_magang_id' => $request->job_magang_id,
+        // ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->alamat = $request->alamat;
+        $user->no_hp = $request->no_hp;
+        $user->gender = $request->gender;
+        $user->job_magang_id = $request->job_magang_id;
+        $user->save();
         return response()->json(['success' => 'Berhasil Mengupdate']);
     }
 

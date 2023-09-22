@@ -62,7 +62,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="gambar">Gambar</label>
-                            <input type="file" name="gambar" id="gambar" class="form-control">
+                            <input type="file" name="gambar" id="gambar" class="form-control"
+                                accept=".png,.jpg,.jpeg,.svg">
                             <span id="error-gambar" class="text-danger"></span>
                         </div>
 
@@ -91,6 +92,7 @@
             var table = $('#myTable').DataTable({
                 processing: true,
                 serverside: true,
+                // scrollX: true,
                 ajax: {
                     url: 'lowongan',
                     data: function(d) {
@@ -142,7 +144,8 @@
                         data: 'action',
                         name: 'action'
                     }
-                ]
+                ],
+
             });
 
             $('#select-batch').on('change', function(e) {

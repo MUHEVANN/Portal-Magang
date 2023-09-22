@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('lowongan/{id}', [tes::class, 'update']);
+Route::get('/update-profile', [ProfileController::class, 'index']);

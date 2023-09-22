@@ -21,15 +21,6 @@
             <h1 class="my-5 text-3xl">Registrasi</h1>
             <form action="{{ url('register') }}" method="post" @submit="match()">
                 @csrf
-                @if ($errors->any())
-                    <div class="text-red-600">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <label for="nama" class=" text-slate-900 mb-1">Nama</label> <br>
                 <div class="relative">
                     <input type="nama" name="name" value="{{ old('name') }}"

@@ -17,7 +17,6 @@ class VerifUserEmail extends Controller
             $cek = Auth::user();
             $user = User::where('email', $cek->email)->first();
             $user->update([
-                'verif_code' => NULL,
                 'is_active' => "1",
             ]);
             Session::put('user', Auth::user());
@@ -31,6 +30,6 @@ class VerifUserEmail extends Controller
     {
         $user = Auth::user();
         EmailUser::dispatch($user);
-        return redirect()->back()->with(['success' => 'Kami telah mengirimkan verifikasi cek email ada']);
+        return response()->json(['success' => 'Kami telah mengirimkan verifikasi cek email ada']);
     }
 }

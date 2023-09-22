@@ -12,7 +12,7 @@
 <body class="bg-slate-100">
     <div class="container bg-white p-5 m-10 overflow-hidden shadow-md w-[720px] rounded-md">
 
-        <img src="{{ asset('images/login.png') }}" class="h-48 object-cover flex justify-center w-full"
+        <img src="{{ asset('storage/lowongan/230903010539.jpg') }}" class="h-48 object-cover flex justify-center w-full"
             alt="jetorbit logo">
         <div class="my-10">
             <h3>
