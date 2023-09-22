@@ -58,13 +58,9 @@
                         me</span>
                 </div>
                 <br>
-                <div class="flex justify-center">
-                    <button type="submit"
-                        class=" text-pink-100 cursor-pointer bg-[#001D86] mt-2 my-6 py-2 px-20 rounded-lg">Login</button>
-                </div>
-                {{-- <button type="submit"
-                    class=" text-pink-100 cursor-pointer bg-[#001D86] mt-9 my-6 py-2 px-4 w-full">Login</button> --}}
-                {{-- <a class="text-center cursor-pointer block hover:underline" href="register">Register</a> --}}
+                <button type="submit"
+                    class=" text-pink-100 cursor-pointer rounded bg-[#001D86] mt-9 my-6 py-2 px-4 w-full">Login</button>
+                <a class="text-center cursor-pointer block hover:underline" href="register">Register</a>
             </form>
         </section>
         <img src="images/login2.svg" class="bg-center w-96 h-auto rounded-lg  object-fill p-5"

@@ -19,13 +19,10 @@
 @endsection
 @section('sidebar')
     <div class="sidebar">
-        <button x-on:click='apply = !apply'
-            class="bg-[#000D3B] py-2 px-5 hover:underline rounded hover:opacity-80 w-full text-slate-50">Apply
-            Lowongan</button>
         <a href="#" class="my-3 cursor-pointer hover:underline text-center block">Hubungi Kita</a>
         <div class="mt-8">
             <p class="text-slate-700">Dipublis pada</p>
-            <h3 class="font-bold text-md">{{ $lowongan->created_at }}</h3>
+            <h3 class="font-bold text-md">{{ date('d F Y', strtotime($lowongan->created_at)) }}</h3>
         </div>
     </div>
 @endsection

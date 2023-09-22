@@ -1,5 +1,13 @@
-{{-- @extends('errors::minimal')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', __('Not Found'))
-@section('code', '404')
-@section('message', __('Not Found')) --}}salah bro
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>404 NOT FOUND</title>
+</head>
+<body>
+    <h1>404 NOT FOUND</h1>
+</body>
+</html>

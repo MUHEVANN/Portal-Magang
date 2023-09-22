@@ -51,7 +51,7 @@
 }
 
 
-/* TRiX EDITOR */
+/* TRiX EDITOR CSS*/
 
 ul{
     list-style:disc;
@@ -61,3 +61,35 @@ ol{
     list-style:decimal;
     list-style-position: inside;
 }
+
+
+/* scrollbar css style */
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #d3edff;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #002872;
+  }
+
+  .container-width{
+    @apply max-w-[1000px] mx-auto flex-col-reverse flex md:flex-row justify-start gap-5 px-5;
+  }
+
+  .list-contents{
+    @apply flex list-none gap-10 sm:gap-5;
+  }
+
+  .list-menu{
+    @apply underline hover:no-underline;
+  }
+  .svg-social{
+    @apply bg-[#000D3B] rounded w-7 h-7 cursor-pointer opacity-75 hover:opacity-100;
+  }
