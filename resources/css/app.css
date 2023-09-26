@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400;700&family=Offside&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Monda:wght@400;700&family=Offside&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -18,78 +18,76 @@
     padding-left: 2.5rem;
 }
 
-
-*{
+* {
     font-family: "monda";
 }
 
-.ornament{
+.ornament {
     @apply rounded-full absolute -z-10;
 }
 
-.indicator{
-    @apply  text-center inline-block py-2 px-4 my-3 m-5 border-[1px] border-white rounded-full;
+.indicator {
+    @apply text-center inline-block py-2 px-4 my-3 m-5 border-[1px] border-white rounded-full;
 }
 
-.active{
-    @apply text-black bg-slate-200; 
+.active {
+    @apply text-black bg-slate-200;
 }
 
-.input-style{
+.input-style {
     @apply py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm;
 }
 
-.hover-underline{
+.hover-underline {
     @apply hover:no-underline underline;
 }
 
-.sidebar{
+.sidebar {
     @apply h-max w-full md:w-2/5 p-3 border-2 border-slate-100 rounded-md md:sticky top-5;
 }
-.trix ol{
-    list-style-type:disc;
+.trix ol {
+    list-style-type: disc;
 }
-
 
 /* TRiX EDITOR CSS*/
 
-ul{
-    list-style:disc;
+ul {
+    list-style: disc;
     list-style-position: inside;
 }
-ol{
-    list-style:decimal;
+ol {
+    list-style: decimal;
     list-style-position: inside;
 }
-
 
 /* scrollbar css style */
 
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
+    width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
     background: #d3edff;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 20px;
     background: #002872;
-  }
+}
 
-  .container-width{
+.container-width {
     @apply max-w-[1000px] mx-auto flex-col-reverse flex md:flex-row justify-start gap-5 px-5;
-  }
+}
 
-  .list-contents{
+.list-contents {
     @apply flex list-none gap-10 sm:gap-5;
-  }
+}
 
-  .list-menu{
+.list-menu {
     @apply underline hover:no-underline;
-  }
-  .svg-social{
+}
+.svg-social {
     @apply bg-[#000D3B] rounded w-7 h-7 cursor-pointer opacity-75 hover:opacity-100;
-  }
+}

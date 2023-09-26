@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Table;
 use App\Http\Controllers\Controller;
 use App\Models\Carrer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -12,7 +13,9 @@ class BatchController extends Controller
 {
     public function index()
     {
-        $data = Carrer::where('batch', '!=', 'tidak ada')->with('lowongan.user')->withCount('lowongan')->get();
+        $data = Cache::remember('batch', 3000, function () {
+            return Carrer::select('id', 'batch')->where('batch', '!=', 'tidak ada')->with('lowongan.user')->withCount('lowongan')->get();
+        });
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {

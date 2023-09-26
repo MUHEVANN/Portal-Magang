@@ -12,11 +12,8 @@ class ApplyController extends Controller
 {
     public function index()
     {
-        // $data = User::with(['apply', 'lowongan', 'kelompok'])->whereHas('apply', function ($query) {
-        //     $query->where('status', 'menunggu');
-        // })->get();
-        $data = Cache::remember('all-pemagang', 3500, function () {
-            return User::with(['apply', 'lowongan', 'kelompok'])->whereHas('apply', function ($query) {
+        $data = Cache::remember('pendaftar', 3000, function () {
+            return User::with('apply', 'lowongan', 'kelompok')->whereHas('apply', function ($query) {
                 $query->where('status', 'menunggu');
             })->get();
         });

@@ -75,7 +75,7 @@
         <span class="bg-[#f0f1f3] w-28 h-28 ornament left-28 -top-20"></span>
     </div>
 
-    <main class="bg-white">
+    <main class="bg-white min-h-[70vh]">
         <div class="py-16 container-width">
             @yield('content')
             @yield('sidebar')
@@ -107,7 +107,42 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @yield('script')
+    <script>
+        $(document).ready(function() {
+            $waktu = date().now();
+            $('.verif').click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/email/verifikasi') }}",
 
+                    success: function(response) {
+                        const Toast = Swal.mixin({
+                            width: 400,
+                            padding: 18,
+                            toast: true,
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter',
+                                    Swal.stopTimer)
+                                toast.addEventListener('mouseleave',
+                                    Swal.resumeTimer)
+                            }
+                        })
+
+                        Toast.fire({
+
+                            icon: 'success',
+                            title: response.success
+                        })
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

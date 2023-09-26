@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Lowongan;
-use Database\Factories\LowonganFactory;
+use App\Models\Carrer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class LowonganSeeder extends Seeder
+class CarrerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Lowongan::factory()->count(1000)->create();
+        Carrer::factory()->count(100)->create();
     }
 }

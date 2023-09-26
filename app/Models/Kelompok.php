@@ -11,6 +11,7 @@ class Kelompok extends Model
     protected $table = 'kelompok';
     protected $fillable = ['name'];
 
+
     public function user()
     {
         return $this->hasMany(User::class, 'kelompok_id', 'id');

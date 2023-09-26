@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Carrer;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
     public function home(Request $request)
     {
-        $carrer = Carrer::latest()->first();
-        $lowongan = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong']);
+        $carrer = Cache::remember('carrer', 3000, function () {
+            return Carrer::latest()->first();
+        });
+        // $carrer = Carrer::latest()->first();
+        $lowongan = Lowongan::select('name', 'created_at', 'gambar', 'carrer_id')->where('carrer_id', $carrer->id);
         if ($request->search) {
             $lowongan->where('name', 'LIKE', '%' . $request->search . '%');
         }
@@ -23,7 +27,7 @@ class HomeController extends Controller
     {
         $carrer = Carrer::latest()->first();
 
-        $query = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong']);
+        $query = Lowongan::where('carrer_id', $carrer->id);
 
         if ($type == 'terlama') {
             $query->orderBy('created_at', 'asc');

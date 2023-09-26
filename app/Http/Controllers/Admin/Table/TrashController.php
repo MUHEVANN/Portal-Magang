@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kelompok;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class TrashController extends Controller
@@ -27,7 +28,7 @@ class TrashController extends Controller
             return response()->json('id tidak ditemukan');
         }
         $user->restore();
-
+        Cache::forget('pendaftar');
         return response()->json(['success' => $user->name . " berhasil dikembailkan"]);
     }
 }

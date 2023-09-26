@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Carrer;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -15,7 +16,6 @@ class LowonganController extends Controller
     public function index(Request $request)
     {
         $batch_id = $request->batch_id;
-
         $query = Lowongan::where('name', '!=', 'kosong');
         if ($batch_id) {
             $query->where('carrer_id', $batch_id);
@@ -65,6 +65,12 @@ class LowonganController extends Controller
             'gambar' => $gambar_name,
             'carrer_id' => $carrer->id
         ]);
+        // $batch_id = $request->batch_id;
+        // $query =  Lowongan::where('name', '!=', 'kosong');
+        // if ($batch_id) {
+        //     $query->where('carrer_id', $batch_id);
+        // }
+        // Cache::put('lowongan', $query->get(), 3000);
         if ($lowongan) {
             return response()->json(['success' => 'Berhasil menambah lowongan']);
         } else {
@@ -100,9 +106,15 @@ class LowonganController extends Controller
     //     $lowongan->save();
     // }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $lowongan = Lowongan::find($id);
         $lowongan->delete();
+        $batch_id = $request->batch_id;
+        $query =  Lowongan::where('name', '!=', 'kosong');
+        if ($batch_id) {
+            $query->where('carrer_id', $batch_id);
+        }
+        Cache::put('lowongan', $query->get(), 3000);
     }
 }

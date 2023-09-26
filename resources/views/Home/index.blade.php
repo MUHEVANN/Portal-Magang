@@ -29,10 +29,10 @@
                     <div
                         class="p-2 my-2 sm:items-center border-2 border-slate-100 flex flex-col sm:flex-row sm:justify-between rounded cursor-pointer hover:bg-slate-50">
                         <div class="flex gap-3">
-                            <img :src=" data.gambar" alt="" class="w-28">
-                            {{-- <img :src="'storage/lowongan/' + data.gambar" alt="" class="w-28"> --}}
+                            {{-- <img :src=" data.gambar" alt="" class="w-28"> --}}
+                            <img :src="'storage/lowongan/' + data.gambar" alt="" class="w-28">
                             <div class="justify-around flex-wrap flex flex-col">
-                                <h1 class="text-[#000D3B] font-bold text-lg md:text-2xl" x-text='data.name'></h1>
+                                <h1 class="text-[#000D3B] font-bold text-lg md:text-xl" x-text='data.name'></h1>
                                 <p class="text-slate-500 text-md" x-text='new Date(data.created_at).toLocaleDateString()'>
                                 </p>
                             </div>
@@ -73,14 +73,15 @@
                     class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Apply
                     Job</button>
             @else
-                @if (Auth::user()->is_active === 0)
+                @if (Auth::user()->is_active != 0)
+                    <a href='apply-form' x-on:click='apply = !apply'
+                        class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Apply
+                        Lowongan</a>
+                @else
                     <button disabled
                         class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Apply
                         Job</button>
                 @endif
-                <a href='apply-form' x-on:click='apply = !apply'
-                    class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Apply
-                    Lowongan</a>
             @endif
             <a href="#" class="my-3 cursor-pointer hover-underline text-center block">Hubungi Kita</a>
         </section>
