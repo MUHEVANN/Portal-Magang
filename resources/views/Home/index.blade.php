@@ -20,6 +20,7 @@
                 x-on:keyup="$store.reactive.fetchSearch($el)" placeholder="E.g. Java Developer">
             <img src="assets/magnify.svg" alt="magnify icon" class="absolute top-2 left-3" width="34">
         </div>
+
         <p x-text="search"></p>
         <div class="my-5">
             <p x-show="$store.reactive.isEmpty()" class="text-center font-xl mt-10" x-text="$store.reactive.placeholder">
@@ -29,7 +30,6 @@
                     <div
                         class="p-2 my-2 sm:items-center border-2 border-slate-100 flex flex-col sm:flex-row sm:justify-between rounded cursor-pointer hover:bg-slate-50">
                         <div class="flex gap-3">
-                            {{-- <img :src=" data.gambar" alt="" class="w-28"> --}}
                             <img :src="'storage/lowongan/' + data.gambar" alt="" class="w-28">
                             <div class="justify-around flex-wrap flex flex-col">
                                 <h1 class="text-[#000D3B] font-bold text-lg md:text-xl" x-text='data.name'></h1>

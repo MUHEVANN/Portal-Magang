@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Api\Admin\CarrerBatch;
 use App\Http\Controllers\Api\Admin\DaftarPendaftar;
+use App\Http\Controllers\Api\Admin\DaftarPendaftarMenunggu;
 use App\Http\Controllers\Api\Admin\DaftarPengguna;
 use App\Http\Controllers\Api\Admin\Trashed;
 use App\Http\Controllers\Api\Auth\UserAuthApi;
@@ -51,11 +52,15 @@ Route::middleware('auth:sanctum')->group(function () {
         // lowongan
         Route::post('/lowongan/{id}', [JobMagangApi::class, 'update']);
         Route::delete('/lowongan/{id}', [JobMagangApi::class, 'delete']);
+        Route::get('/lowongan', [JobMagangApi::class, 'index']);
         // pendaftar
         Route::get('/pendaftar', [DaftarPendaftar::class, 'index']);
-        Route::get('/pendaftar-reject/{id}', [DaftarPendaftar::class, 'reject']);
-        Route::get('/pendaftar-konfirm/{id}', [DaftarPendaftar::class, 'konfirm']);
+        Route::put('/pendaftar/{id}', [DaftarPendaftar::class, 'update']);
         Route::get('/pendaftar-dikonfirmasi', [DaftarPendaftar::class, 'pendaftar_konfirmasi']);
+        Route::get('/pendaftar-reject/{id}', [DaftarPendaftarMenunggu::class, 'reject']);
+        Route::get('/pendaftar-konfirm/{id}', [DaftarPendaftarMenunggu::class, 'konfirm']);
+        Route::get('/pendaftar-baru', [DaftarPendaftarMenunggu::class, 'index']);
+        Route::delete('/pendaftar-baru/{id}', [DaftarPendaftarMenunggu::class, 'destroy']);
         // trash
         Route::get('/pengguna/only-trash', [Trashed::class, 'index']);
         Route::get('/pengguna/restore/{id}', [Trashed::class, 'restore']);
@@ -64,8 +69,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::get('/lowongan', [JobMagangApi::class, 'index']);
 Route::get('/lowongan/filter', [JobMagangApi::class, 'filter']);
+Route::get('/lowongan/user', [JobMagangApi::class, 'getJobUser']);
 Route::get('/lowongan/{id}', [JobMagangApi::class, 'show']);
 
 Route::post('/register', [UserAuthApi::class, 'register']);

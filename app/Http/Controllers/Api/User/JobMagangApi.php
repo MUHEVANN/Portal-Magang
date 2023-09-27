@@ -13,13 +13,41 @@ use Illuminate\Support\Facades\Storage;
 
 class JobMagangApi extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $job = Cache::remember('job', 3000, function () {
-            return Lowongan::select('id', 'name', 'gambar', 'created_at', 'updated_at', 'carrer_id')->with('carrer')->get();
+        $query = Lowongan::with('carrer');
+        $batch_id = $request->batch_id;
+        $query->when($request->has('batch_id'), function ($query) use ($batch_id) {
+            return $query->where('carrer_id', $batch_id);
+        });
+        $job = Cache::remember('job_' . $batch_id, 3000, function () use ($query) {
+            return $query->get();
+        });
+        $data = [
+            'job' => $job,
+            'total job' => $job->count()
+        ];
+
+        return $this->successMessage($data, 'Berhasil get job');
+    }
+
+    public function getJobUser(Request $request)
+    {
+        $carrer = Carrer::latest()->first();
+        $query = Lowongan::select('id', 'name', 'gambar', 'created_at', 'updated_at', 'carrer_id')->where('carrer_id', $carrer->id);
+        $waktu = $request->waktu;
+
+        $query->when($waktu === 'terlama', function ($query) {
+            return $query->orderBy('created_at', 'desc');
+        }, function ($query) {
+            return $query->orderBy('created_at', 'asc');
         });
 
-        return $this->successMessage($job, 'Berhasil get job');
+        $job =  Cache::remember('job' . $waktu, 3000, function () use ($query) {
+            return $query->get();
+        });
+
+        return $this->successMessage($job, 'success');
     }
 
     public function show($id)
@@ -80,5 +108,11 @@ class JobMagangApi extends Controller
         $data = $query->get();
 
         return $this->successMessage($data, 'success');
+    }
+
+    public function filter_batch(Request $request)
+    {
+        $carrer = Lowongan::where();
+        return $this->successMessage($carrer, 'success filter berdasarkan batch');
     }
 }

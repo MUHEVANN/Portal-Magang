@@ -17,8 +17,20 @@ class CarrerBatch extends Controller
      */
     public function index()
     {
-        $carrer = Carrer::get();
-        return $this->successMessage($carrer, 'Success get carrer');
+        $carrer = Carrer::with('lowongan.user')->withCount('lowongan')->get();
+        $data = [];
+        foreach ($carrer as $carr) {
+            $user = 0;
+            foreach ($carr->lowongan as $lowongan) {
+                $user += $lowongan->user->count();
+            }
+            $data[] = [
+                'batch' => $carr->batch,
+                'total lowongan' => $carr->lowongan_count,
+                'total peserta' => $user
+            ];
+        }
+        return $this->successMessage($data, 'Success get carrer');
     }
 
     /**
