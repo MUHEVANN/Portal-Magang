@@ -65,4 +65,20 @@ class JobMagangApi extends Controller
         Cache::forget('job_' . $id);
         return $this->successMessage('berhasil menghapus', 'Berhasil menghapus');
     }
+
+    public function filter(Request $request)
+    {
+        $carrer = Carrer::latest()->first();
+        $query = Lowongan::where('carrer_id', $carrer->id);
+        $waktu = $request->waktu;
+        // dd($waktu);
+        $query->when($waktu === 'terlama', function ($query) {
+            return $query->orderBy('created_at', 'desc');
+        }, function ($query) {
+            return $query->orderBy('created_at', 'asc');
+        });
+        $data = $query->get();
+
+        return $this->successMessage($data, 'success');
+    }
 }

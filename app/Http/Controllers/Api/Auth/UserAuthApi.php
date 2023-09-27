@@ -77,4 +77,11 @@ class UserAuthApi extends Controller
         ];
         return $this->successMessage($data, 'Register Berhasil');
     }
+
+    public function logout()
+    {
+        Session::forget('user');
+        Auth::logout();
+        return $this->successMessage('Logout success', 'success');
+    }
 }
