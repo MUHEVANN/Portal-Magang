@@ -19,7 +19,7 @@ class HomeController extends Controller
         if ($request->search) {
             $lowongan->where('name', 'LIKE', '%' . $request->search . '%');
         }
-        $lowongan->get();
+        $lowongan->paginate(10);
         return view('Home.index', compact('lowongan'));
     }
 
