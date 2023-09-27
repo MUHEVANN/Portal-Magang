@@ -20,9 +20,9 @@ class Verification extends Controller
                 'is_active' => "1",
             ]);
             Session::put('user', Auth::user());
-            return redirect()->to('/home')->with('success', 'Akun berhasil diverifikasi');
+            return $this->successMessage('berhasil verifikasi', 'berhasil verif');
         } else {
-            return redirect()->to('register')->with('error', 'Akun gagal diverifikasi');
+            return $this->errorMessage('gagal', 'verifikasi gagal', 400);
         }
     }
 
@@ -30,6 +30,6 @@ class Verification extends Controller
     {
         $user = Auth::user();
         EmailUser::dispatch($user);
-        return response()->json(['success' => 'Kami telah mengirimkan verifikasi cek email ada']);
+        return $this->successMessage('berhasil', 'kami telah mengirimkan link verifikasi ke email anda');
     }
 }
