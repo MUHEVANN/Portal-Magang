@@ -92,6 +92,10 @@ class ApplyJobController extends Controller
                 }
             }
             $email = $request->email;
+
+
+
+
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
                 $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc)->first();
@@ -181,6 +185,7 @@ class ApplyJobController extends Controller
         $apply->save();
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('pendaftar');
+        Cache::forget('all-pemagang');
         return redirect()->to('/pendaftar')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function konfirm($id)
@@ -189,7 +194,7 @@ class ApplyJobController extends Controller
         $apply->status = 'lulus';
         $apply->save();
         StatusApplyJob::dispatch($apply->user, $apply->status);
-        Cache::forget('pendaftar');
+        Cache::forget('all-pemagang');
         return redirect()->to('/pendaftar')->with(['success' => 'success']);
     }
     public function destroy(string $id)

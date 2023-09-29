@@ -23,6 +23,7 @@ class ApplyControllerApi extends Controller
     public function apply(Request $request)
     {
         // dd($request->all());
+        // dd($request->all());
         $user = User::where('email', Auth::user()->email)->first();
         if ($user->is_active !== '1') {
             return $this->errorMessage('Gagal total', "Akun anda belum diverifikasi, cek email anda", 400);
@@ -82,6 +83,15 @@ class ApplyControllerApi extends Controller
             if (count($email) > 4) {
                 return $this->errorMessage('Gagal', 'max 5 anggota', 400);
             }
+            for ($i = 0; $i < count($email); $i++) {
+                $user_acc = User::where('email', $email[$i])->first();
+                if ($user_acc) {
+                    $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc->id)->first();
+                    if ($cek_anggota_sudah_apply) {
+                        return $this->errorMessage('Gagal', 'Salah satu anggotamu sudah pernah apply', 400);
+                    }
+                }
+            }
 
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
@@ -110,10 +120,7 @@ class ApplyControllerApi extends Controller
                         'cv_user' => $cv_name
                     ]);
                 } else {
-                    $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc->id)->first();
-                    if ($cek_anggota_sudah_apply) {
-                        return $this->errorMessage('Gagal', 'Salah satu anggotamu sudah pernah apply', 400);
-                    }
+
                     $user_acc->kelompok_id = $kelompok->id;
                     $user_acc->job_magang_id = $request->job_magang[$i];
                     $user_acc->save();

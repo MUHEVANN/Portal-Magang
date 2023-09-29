@@ -7,6 +7,7 @@ use App\Http\Resources\CarrerResource;
 use App\Models\Carrer;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -17,7 +18,9 @@ class CarrerBatch extends Controller
      */
     public function index()
     {
-        $carrer = Carrer::with('lowongan.user')->withCount('lowongan')->get();
+        $carrer = Cache::remember('carrer', 30000, function () {
+            return Carrer::with('lowongan.user')->withCount('lowongan')->get();
+        });
         $data = [];
         foreach ($carrer as $carr) {
             $user = 0;
@@ -55,6 +58,8 @@ class CarrerBatch extends Controller
                 'batch' => $request->batch
             ]);
             $carrerResource = new CarrerResource($carrer);
+            Cache::forget('carrer');
+            Cache::put('carrer_' . $carrer->id, $carrer);
             return $this->successMessage($carrerResource, 'berhasil menambah batch');
         } catch (QueryException $e) {
             return $this->errorMessage('ada masalah dengan server', $e, 500);
@@ -67,6 +72,10 @@ class CarrerBatch extends Controller
     public function show(string $id)
     {
         $carrer = Carrer::find($id);
+        if (!$carrer) {
+            return $this->errorMessage('error', 'ID tidak ditemukan');
+        }
+        Cache::put('carrer_' . $carrer->id, $carrer);
         return $this->successMessage($carrer, 'berhasil show carrer');
     }
 
@@ -95,6 +104,8 @@ class CarrerBatch extends Controller
             $carrer = Carrer::find($id);
             $carrer->update($data);
             $carrerResource = new CarrerResource($carrer);
+            Cache::forget('carrer_' . $id);
+            Cache::forget('carrer');
             return $this->successMessage($carrerResource, 'success update');
         } catch (QueryException $e) {
             return $this->errorMessage('gagal terhubung dengan server', [], 500);
@@ -111,7 +122,8 @@ class CarrerBatch extends Controller
             return $this->errorMessage('gagal', 'id tidak ditemukan', 400);
         }
         $carrer->delete();
-
+        Cache::forget('carrer_' . $id);
+        Cache::forget('carrer');
         return $this->successMessage($carrer->batch . " berhasil dihapus", 'berhasil dihapus');
     }
 }

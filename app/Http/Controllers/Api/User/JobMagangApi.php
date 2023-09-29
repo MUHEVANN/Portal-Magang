@@ -51,7 +51,7 @@ class JobMagangApi extends Controller
 
     public function show($id)
     {
-        $job = Cache::remember('job', 3000, function () use ($id) {
+        $job = Cache::remember('job_' . $id, 3000, function () use ($id) {
             return Lowongan::with('carrer')->find($id);
         });
         if (!$job) {
@@ -59,42 +59,6 @@ class JobMagangApi extends Controller
         }
         return $this->successMessage($job, 'Berhasil get job');
     }
-
-    public function update(Request $request, $id)
-    {
-        try {
-            $job = Lowongan::find($id);
-            $carr = Carrer::latest()->first()->id;
-            $gambar_file = $request->file('gambar');
-            $gambar_name = Str::uuid() . "." . $gambar_file->getClientOriginalExtension();
-            $gambar_file->storeAs('public/lowongan', $gambar_name);
-            Storage::delete('public/lowongan/' . $job->gambar);
-            $data = [
-                'name' => $request->name,
-                'gambar' => $request->gambar,
-                'desc' => $request->desc,
-                'benefit' => $request->benefit,
-                'kualifikasi' => $request->kualifikasi,
-                'carrer_id' => $carr,
-                'gambar' => $gambar_name,
-            ];
-            $job->update($data);
-            Cache::forget('job');
-            Cache::forget('job_terlama');
-            return $this->successMessage($job, 'Berhasil mengupdate lowongan');
-        } catch (QueryException $e) {
-            return $this->errorMessage('gagal', $e, 500);
-        }
-    }
-    public function delete($id)
-    {
-        $job = Lowongan::find($id);
-        $job->delete();
-        Cache::forget('job');
-        Cache::forget('job_terlama');
-        return $this->successMessage('berhasil menghapus', 'Berhasil menghapus');
-    }
-
 
     public function store(Request $request)
     {
@@ -134,5 +98,41 @@ class JobMagangApi extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+    public function update(Request $request, $id)
+    {
+        try {
+            $job = Lowongan::find($id);
+            $carr = Carrer::latest()->first()->id;
+            $gambar_file = $request->file('gambar');
+            $gambar_name = Str::uuid() . "." . $gambar_file->getClientOriginalExtension();
+            $gambar_file->storeAs('public/lowongan', $gambar_name);
+            Storage::delete('public/lowongan/' . $job->gambar);
+            $data = [
+                'name' => $request->name,
+                'gambar' => $request->gambar,
+                'desc' => $request->desc,
+                'benefit' => $request->benefit,
+                'kualifikasi' => $request->kualifikasi,
+                'carrer_id' => $carr,
+                'gambar' => $gambar_name,
+            ];
+            $job->update($data);
+            Cache::forget('job');
+            Cache::forget('job_terlama');
+            Cache::forget('job_' . $id);
+            return $this->successMessage($job, 'Berhasil mengupdate lowongan');
+        } catch (QueryException $e) {
+            return $this->errorMessage('gagal', $e, 500);
+        }
+    }
+    public function delete($id)
+    {
+        $job = Lowongan::find($id);
+        $job->delete();
+        Cache::forget('job');
+        Cache::forget('job_terlama');
+        Cache::forget('job_' . $id);
+        return $this->successMessage('berhasil menghapus', 'Berhasil menghapus');
     }
 }
