@@ -80,8 +80,7 @@ class UserAuthApi extends Controller
 
     public function logout()
     {
-        Session::forget('user');
-        Auth::logout();
+        Auth::user()->tokens()->delete();
         return $this->successMessage('Logout success', 'success');
     }
 }

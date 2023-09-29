@@ -28,7 +28,7 @@ class DaftarPendaftarMenunggu extends Controller
             });
         });
 
-        $user = Cache::remember('user_' . $tipe_magang, 300, function () use ($query) {
+        $user = Cache::remember('user_', 300, function () use ($query) {
             return $query->get();
         });
         $data = new PendaftarMenunggu($user);
@@ -44,7 +44,7 @@ class DaftarPendaftarMenunggu extends Controller
         $apply->status = 'Ditolak';
         $apply->save();
         StatusApplyJob::dispatch($apply->user, $apply->status);
-        Cache::forget('pendaftar');
+        Cache::forget('user_');
         return $this->successMessage("rejected", "user dengan id " . $apply->user->id . " berhasil direject");
     }
     public function konfirm($id)
@@ -53,7 +53,7 @@ class DaftarPendaftarMenunggu extends Controller
         $apply->status = 'lulus';
         $apply->save();
         StatusApplyJob::dispatch($apply->user, $apply->status);
-        Cache::forget('pendaftar');
+        Cache::forget('user_');
         return $this->successMessage("konfirmed", "user dengan id " . $apply->user->id . " berhasil dikonfirm");
     }
 

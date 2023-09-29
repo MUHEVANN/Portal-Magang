@@ -79,7 +79,7 @@ class ApplyControllerApi extends Controller
                 }
             }
             $email = $request->email;
-            if (count($email) > 5) {
+            if (count($email) > 4) {
                 return $this->errorMessage('Gagal', 'max 5 anggota', 400);
             }
 

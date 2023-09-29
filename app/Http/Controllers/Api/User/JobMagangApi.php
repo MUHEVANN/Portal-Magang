@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class JobMagangApi extends Controller
 {
@@ -20,7 +21,7 @@ class JobMagangApi extends Controller
         $query->when($request->has('batch_id'), function ($query) use ($batch_id) {
             return $query->where('carrer_id', $batch_id);
         });
-        $job = Cache::remember('job_' . $batch_id, 3000, function () use ($query) {
+        $job = Cache::remember('job', 3000, function () use ($query) {
             return $query->get();
         });
         $data = [
@@ -39,8 +40,6 @@ class JobMagangApi extends Controller
 
         $query->when($waktu === 'terlama', function ($query) {
             return $query->orderBy('created_at', 'desc');
-        }, function ($query) {
-            return $query->orderBy('created_at', 'asc');
         });
 
         $job =  Cache::remember('job' . $waktu, 3000, function () use ($query) {
@@ -52,7 +51,7 @@ class JobMagangApi extends Controller
 
     public function show($id)
     {
-        $job = Cache::remember('job_' . $id, 3000, function () use ($id) {
+        $job = Cache::remember('job', 3000, function () use ($id) {
             return Lowongan::with('carrer')->find($id);
         });
         if (!$job) {
@@ -80,7 +79,8 @@ class JobMagangApi extends Controller
                 'gambar' => $gambar_name,
             ];
             $job->update($data);
-            Cache::forget('job_' . $id);
+            Cache::forget('job');
+            Cache::forget('job_terlama');
             return $this->successMessage($job, 'Berhasil mengupdate lowongan');
         } catch (QueryException $e) {
             return $this->errorMessage('gagal', $e, 500);
@@ -90,29 +90,49 @@ class JobMagangApi extends Controller
     {
         $job = Lowongan::find($id);
         $job->delete();
-        Cache::forget('job_' . $id);
+        Cache::forget('job');
+        Cache::forget('job_terlama');
         return $this->successMessage('berhasil menghapus', 'Berhasil menghapus');
     }
 
-    public function filter(Request $request)
-    {
-        $carrer = Carrer::latest()->first();
-        $query = Lowongan::where('carrer_id', $carrer->id);
-        $waktu = $request->waktu;
-        // dd($waktu);
-        $query->when($waktu === 'terlama', function ($query) {
-            return $query->orderBy('created_at', 'desc');
-        }, function ($query) {
-            return $query->orderBy('created_at', 'asc');
-        });
-        $data = $query->get();
 
-        return $this->successMessage($data, 'success');
-    }
-
-    public function filter_batch(Request $request)
+    public function store(Request $request)
     {
-        $carrer = Lowongan::where();
-        return $this->successMessage($carrer, 'success filter berdasarkan batch');
+        try {
+            $carr_id = Carrer::latest()->first()->id;
+            $validate = Validator::make($request->all(), [
+                'name' => 'required|unique:job_magang',
+                'gambar' => 'required|mimes:jpg,png,jpeg,svg',
+                'desc' => 'required',
+                'kualifikasi' => 'required',
+                'benefit' => 'required',
+            ], [
+                'name.required' => 'Nama tidak boleh kosong',
+                'desc.required' => 'Descripsi tidak boleh kosong',
+                'kualifikasi.required' => 'Kualifikasi tidak boleh kosong',
+                'benefit.required' => 'Benefit tidak boleh kosong',
+                'gambar.required' => 'Gambar tidak boleh kosong',
+                'gambar.mimes' => 'Gambar harus bertipe jpg/png/jpeg/svg',
+            ]);
+
+            if ($validate->fails()) {
+                return $this->errorMessage('gagal', $validate->messages(), 400);
+            }
+            $gambar_file = $request->file('gambar');
+            $gambar_name = Str::uuid() . "." . $gambar_file->getClientOriginalExtension();
+            $gambar_file->storeAs('public/lowongan', $gambar_name);
+            $data = Lowongan::create([
+                'name' => $request->name,
+                'desc' => $request->desc,
+                'kualifikasi' => $request->kualifikasi,
+                'benefit' => $request->benefit,
+                'gambar' => $gambar_name,
+                'carrer_id' => $carr_id
+            ]);
+            Cache::forget('job');
+            return $this->successMessage($data, 'Berhasil membuat lowongan');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

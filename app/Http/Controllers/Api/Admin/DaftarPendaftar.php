@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class DaftarPendaftar extends Controller
 {
+    // semua pendaftar
     public function index(Request $request)
     {
         // initial
@@ -43,12 +44,38 @@ class DaftarPendaftar extends Controller
         });
         $apply = $query->get();
         $data = new AllPendaftar($apply);
-        return $this->successMessage($data, 'berhasil get pendaftar yang belum dikonfirmasi');
+        return $this->successMessage($data, 'berhasil get semua pendaftar');
     }
-    public function pendaftar_konfirmasi()
+
+    // yang sudah dikonfirmasi
+    public function pendaftar_konfirmasi(Request $request)
     {
-        $apply = Apply::whereNotIn('status', ['menunggu'])->get();
-        return $this->successMessage($apply, 'berhasil get pendaftar yang belum dikonfirmasi');
+        // initial
+        $carrer_id = $request->carrer_id;
+        $job_id = $request->job_id;
+        $status = $request->status;
+        $tipe_magang = $request->tipe_magang;
+        // 
+        $query = Apply::with('user.lowongan', 'carrer')->whereNotIn('status', ['menunggu']);
+        $query->when($request->has('carrer_id'), function ($query) use ($carrer_id) {
+            return $query->where('carrer_id', $carrer_id);
+        });
+
+        $query->when($request->has('job_id'), function ($query) use ($job_id) {
+            return $query->whereHas('user', function ($query) use ($job_id) {
+                $query->where('job_magang_id', $job_id);
+            });
+        });
+
+        $query->when($request->has('status'), function ($query) use ($status) {
+            return $query->where('status', $status);
+        });
+
+        $query->when($request->has('tipe_magang'), function ($query) use ($tipe_magang) {
+            return $query->where('tipe_magang', $tipe_magang);
+        });
+        $apply = $query->get();
+        return $this->successMessage($apply, 'berhasil get pendaftar yang sudah dikonfirmasi');
     }
 
     public function update(Request $request, $id)
@@ -87,5 +114,14 @@ class DaftarPendaftar extends Controller
         $user->update($data);
 
         return $this->successMessage($user, 'success update pendaftar');
+    }
+    public function search(Request $request)
+    {
+        $term = $request->query('search');
+        $apply = Apply::with('user.lowongan', 'carrer')->whereHas("user", function ($query) use ($term) {
+            $query->where('name', 'LIKE', "%" . $term . "%");
+        })->get();
+        $data = new AllPendaftar($apply);
+        return $this->successMessage($data, 'success pencarian data apply');
     }
 }

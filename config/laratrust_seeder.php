@@ -13,8 +13,7 @@ return [
 
     'roles_structure' => [
         'admin' => [
-            'users' => 'c,r,u,d',
-            'payments' => 'c,r,u,d',
+            'admin' => 'c,r,u,d',
             'profile' => 'r,u',
         ],
         'client' => [

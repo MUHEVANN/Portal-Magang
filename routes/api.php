@@ -29,9 +29,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('lowongan/{id}', [tes::class, 'update']);
-Route::get('/update-profile', [ProfileController::class, 'index']);
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [UserAuthApi::class, 'logout']);
     // Auth verif
@@ -40,8 +37,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
     // profile
     Route::get('/profile', [ProfileControllerApi::class, 'profile']);
-    Route::post('/profile', [ProfileControllerApi::class, 'update']);
+    Route::put('/profile', [ProfileControllerApi::class, 'update']);
     Route::post('/apply', [ApplyControllerApi::class, 'apply']);
+    // search apply
+    Route::get('/pendaftar/search', [DaftarPendaftar::class, 'search']);
 
     Route::middleware('role:admin')->group(function () {
         // pengguna
@@ -50,7 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/daftar-pengguna/{id}', [DaftarPengguna::class, 'update']);
         Route::delete('/daftar-pengguna/{id}', [DaftarPengguna::class, 'delete']);
         // lowongan
-        Route::post('/lowongan/{id}', [JobMagangApi::class, 'update']);
+        Route::post('/lowongan', [JobMagangApi::class, 'store']);
+        Route::put('/lowongan/{id}', [JobMagangApi::class, 'update']);
         Route::delete('/lowongan/{id}', [JobMagangApi::class, 'delete']);
         Route::get('/lowongan', [JobMagangApi::class, 'index']);
         // pendaftar
