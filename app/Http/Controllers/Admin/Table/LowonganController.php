@@ -45,6 +45,7 @@ class LowonganController extends Controller
             'desc' => 'required',
             'benefit' => 'required',
             'kualifikasi' => 'required',
+            'deadline' => 'required',
             'gambar' => 'required|mimes:jpg,jpeg,png',
         ]);
 
@@ -62,6 +63,7 @@ class LowonganController extends Controller
             'desc' => $request->desc,
             'benefit' => $request->benefit,
             'kualifikasi' => $request->kualifikasi,
+            'deadline' => $request->deadline,
             'gambar' => $gambar_name,
             'carrer_id' => $carrer->id
         ]);

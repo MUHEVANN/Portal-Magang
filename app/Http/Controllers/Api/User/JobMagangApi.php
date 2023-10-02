@@ -35,7 +35,7 @@ class JobMagangApi extends Controller
     public function getJobUser(Request $request)
     {
         $carrer = Carrer::latest()->first();
-        $query = Lowongan::select('id', 'name', 'gambar', 'created_at', 'updated_at', 'carrer_id')->where('carrer_id', $carrer->id);
+        $query = Lowongan::select('id', 'name', 'gambar', 'created_at', 'updated_at', 'carrer_id', 'deadline')->where('carrer_id', $carrer->id);
         $waktu = $request->waktu;
 
         $query->when($waktu === 'terlama', function ($query) {
@@ -70,11 +70,13 @@ class JobMagangApi extends Controller
                 'desc' => 'required',
                 'kualifikasi' => 'required',
                 'benefit' => 'required',
+                'deadline' => 'required'
             ], [
                 'name.required' => 'Nama tidak boleh kosong',
                 'desc.required' => 'Descripsi tidak boleh kosong',
                 'kualifikasi.required' => 'Kualifikasi tidak boleh kosong',
                 'benefit.required' => 'Benefit tidak boleh kosong',
+                'deadline.required' => 'deadline tidak boleh kosong',
                 'gambar.required' => 'Gambar tidak boleh kosong',
                 'gambar.mimes' => 'Gambar harus bertipe jpg/png/jpeg/svg',
             ]);
@@ -91,7 +93,8 @@ class JobMagangApi extends Controller
                 'kualifikasi' => $request->kualifikasi,
                 'benefit' => $request->benefit,
                 'gambar' => $gambar_name,
-                'carrer_id' => $carr_id
+                'carrer_id' => $carr_id,
+                'deadline' => $request->deadline
             ]);
             Cache::forget('job');
             return $this->successMessage($data, 'Berhasil membuat lowongan');
@@ -116,6 +119,7 @@ class JobMagangApi extends Controller
                 'kualifikasi' => $request->kualifikasi,
                 'carrer_id' => $carr,
                 'gambar' => $gambar_name,
+                'deadline' => $request->deadline,
             ];
             $job->update($data);
             Cache::forget('job');

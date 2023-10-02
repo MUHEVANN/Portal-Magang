@@ -9,7 +9,7 @@ class Lowongan extends Model
 {
     use HasFactory;
     protected $table = 'job_magang';
-    protected $fillable = ['name', 'desc', 'benefit', 'kualifikasi', 'gambar', 'carrer_id'];
+    protected $fillable = ['name', 'desc', 'benefit', 'kualifikasi', 'gambar', 'carrer_id', 'deadline'];
     public function user()
     {
         return $this->hasMany(User::class, 'job_magang_id', 'id');
