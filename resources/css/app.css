@@ -18,12 +18,11 @@
     padding-left: 2.5rem;
 }
 
-
-*{
+* {
     font-family: "monda";
 }
 
-.ornament{
+.ornament {
     @apply rounded-full absolute -z-10;
 }
 
@@ -35,44 +34,42 @@
     @apply text-center inline-block py-1 cursor-pointer hover:text-gray-50 hover:bg-[#202f66] px-3 border-[1px] text-[#202f66] border-[#202f66] rounded-full
 }
 
-.active{
-    @apply text-black bg-slate-200; 
+.active {
+    @apply text-black bg-slate-200;
 }
 
-.input-style{
+.input-style {
     @apply py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm;
 }
 
-.hover-underline{
+.hover-underline {
     @apply hover:no-underline underline;
 }
 
 .sidebar{
     @apply h-max w-full md:w-2/5 p-3 border-[1px] border-slate-300 rounded-md md:sticky top-24;
 }
-.trix ol{
-    list-style-type:disc;
+.trix ol {
+    list-style-type: disc;
 }
-
 
 /* TRiX EDITOR CSS*/
 
-ul{
-    list-style:disc;
+ul {
+    list-style: disc;
     list-style-position: inside;
 }
-ol{
-    list-style:decimal;
+ol {
+    list-style: decimal;
     list-style-position: inside;
 }
-
 
 /* scrollbar css style */
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 7px;
 }
-  
+
 /* Track */
 ::-webkit-scrollbar-track {
     background: #d3edff;
@@ -80,6 +77,7 @@ ol{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
+    border-radius: 20px;
     background: #002872;
 }
 

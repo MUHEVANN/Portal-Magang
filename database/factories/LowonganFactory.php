@@ -24,7 +24,7 @@ class LowonganFactory extends Factory
     {
         return [
             'name' => fake()->name,
-            'carrer_id' => Carrer::latest()->first()->id,
+            'carrer_id' => fake()->numberBetween(1, 100),
             'desc' => fake()->realTextBetween(50, 100),
             'benefit' => fake()->realTextBetween(30, 70),
             'kualifikasi' => fake()->realTextBetween(25, 40),

@@ -138,12 +138,13 @@
     @yield('script')
     <script>
         $(document).ready(function() {
+            $waktu = date().now();
             $('.verif').click(function(e) {
-
                 e.preventDefault();
                 $.ajax({
+                    type: "GET",
                     url: "{{ url('/email/verifikasi') }}",
-                    method: 'GET',
+
                     success: function(response) {
                         const Toast = Swal.mixin({
                             width: 400,
@@ -165,11 +166,11 @@
 
                             icon: 'success',
                             title: response.success
-                        });
+                        })
                     }
-                })
-            })
-        })
+                });
+            });
+        });
     </script>
 </body>
 

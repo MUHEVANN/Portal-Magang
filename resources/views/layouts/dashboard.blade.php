@@ -342,6 +342,20 @@
     <script src="{{ asset('template/assets/js/dashboards-analytics.js') }}"></script>
 
     @yield('script')
+    {{-- <script>
+        $(document).ready(function() {
+            $('menu-item').click(function() {
+                var url = $(this).attr('href');
+                $.ajax({
+                    method: 'GET',
+                    url: url,
+                    success: function(data) {
+                        $('#content').html(response);
+                    }
+                });
+            });
+        });
+    </script> --}}
     <!-- Place this tag in you r head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

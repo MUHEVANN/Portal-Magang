@@ -23,6 +23,7 @@
                     <th>desc</th>
                     <th>Benefit</th>
                     <th>Kualifikasi</th>
+                    <th>Deadline</th>
                     <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
@@ -59,6 +60,11 @@
                             <label for="kualifikasi">Kualifikasi</label>
                             <trix-editor id="kualifikasi"></trix-editor>
                             <span id="error-kualifikasi" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deadline">Deadline</label>
+                            <input type="date" id="deadline" class="form-control">
+                            <span id="error-deadline" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="gambar">Gambar</label>
@@ -131,6 +137,10 @@
                         }
                     },
                     {
+                        data: 'deadline',
+                        name: 'deadline',
+                    },
+                    {
                         data: 'gambar',
                         name: 'gambar',
                         render: function(data) {
@@ -174,6 +184,7 @@
                     formData.append('desc', $('#desc').val());
                     formData.append('benefit', $('#benefit').val());
                     formData.append('kualifikasi', $('#kualifikasi').val());
+                    formData.append('deadline', $('#deadline').val());
                     formData.append('gambar', $('#gambar')[0].files[0]);
                     $.ajax({
                         type: "POST",
@@ -189,8 +200,10 @@
                                 $('#error-kualifikasi').text(response.error
                                     .kualifikasi);
                                 $('#error-gambar').text(response.error.gambar);
+                                $('#error-deadline').text(response.error.deadline);
                             } else {
                                 $('#name').val('');
+                                $('#deadline').val('');
                                 $('#desc').val('');
                                 $('#benefit').val('');
                                 $('#kualifikasi').val('');
@@ -245,6 +258,7 @@
                         $('#desc').val(response.desc);
                         $('#kualifikasi').val(response.kualifikasi);
                         $('#benefit').val(response.benefit);
+                        $('#deadline').val(response.deadline);
                         $('#image-preview').attr('src', '/storage/lowongan/' + response.gambar);
                     },
                 });
@@ -253,6 +267,7 @@
                     e.preventDefault();
                     var formData = new FormData();
                     formData.append('name', $('#name').val());
+                    formData.append('deadline', $('#deadline').val());
                     formData.append('desc', $('#desc').val());
                     formData.append('benefit', $('#benefit').val());
                     formData.append('kualifikasi', $('#kualifikasi').val());
@@ -271,12 +286,14 @@
                                 $('#error-kualifikasi').text(response.error
                                     .kualifikasi);
                                 $('#error-gambar').text(response.error.gambar);
+                                $('#error-deadline').text(response.error.deadline);
                             } else {
                                 $('#name').val('');
                                 $('#desc').val('');
                                 $('#benefit').val('');
                                 $('#kualifikasi').val('');
                                 $('#gambar').val('');
+                                $('#deadline').val('');
                                 $('#image-preview').attr('src', '');
                                 $('#tambah-modal').modal('hide');
                                 const Toast = Swal.mixin({
@@ -311,6 +328,7 @@
                 $('#desc').val('');
                 $('#benefit').val('');
                 $('#kualifikasi').val('');
+                $('#deadline').val('');
                 $('#image-preview').attr('src', '');
             });
             $('body').on('click', '.hapus', function(e) {

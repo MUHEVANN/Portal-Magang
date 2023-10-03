@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('job_magang', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('carrer_id');
+            $table->date('deadline');
             $table->string('name');
             // $table->date('deadline');
             $table->text('desc');

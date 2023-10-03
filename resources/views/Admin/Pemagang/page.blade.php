@@ -232,6 +232,7 @@
             $('body').on('click', '.edit', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                // console.log(id);
                 $.ajax({
                     url: '/edit-pemagang/' + id,
                     method: 'GET',
@@ -251,7 +252,6 @@
                             if (selectJob === parseInt(optionVal)) {
                                 $(this).prop('selected', true);
                             } else {
-                                console.log('cek');
                                 $(this).prop('selected', false);
                             }
                         });

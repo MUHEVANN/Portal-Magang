@@ -10,8 +10,14 @@ class Carrer extends Model
     use HasFactory;
     protected $table = 'carrers';
     protected $fillable = ['batch'];
+
     public function lowongan()
     {
         return $this->hasMany(Lowongan::class, 'carrer_id', 'id');
+    }
+
+    public function apply()
+    {
+        return $this->hasMany(Apply::class, 'id', 'carrer_id');
     }
 }
