@@ -167,7 +167,7 @@ class UserAuth extends Controller
         }
         $password = $request->password_lama;
         $new_password = $request->password_baru;
-        if (Auth::attempt('password', $password)) {
+        if (Auth::attempt(['password', $password])) {
             $id = auth()->user()->id;
             $user = User::find($id);
             $user->password = $new_password;
