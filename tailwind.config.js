@@ -7,8 +7,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'title' : ['Offside', 'sans-serif']
-      }
+        'title' : ['Nanum Myeongjo', 'serif']
+      },
+      screens: {
+        sml: '465px',
+      },
     },
   },
   plugins: [],

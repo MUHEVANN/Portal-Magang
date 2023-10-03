@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Laravel</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
+    <title>Jetorbit Intern</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="antialiased bg-slate-100 m-0 relative" x-cloak :class="apply ? 'overflow-hidden' : 'overflow-x-hidden'"
-    x-data='apply'>
+
+<body class="antialiased bg-slate-100 m-0 relative h-full" x-cloak
+    :class="isOpen ? 'overflow-hidden' : 'overflow-x-hidden'" x-data='apply'>
+    <span class="absolute bg-slate-900 sml:hidden z-[11] opacity-50 top-0 h-full w-full"
+        :class="isOpen ? 'block' : 'hidden'" x-on:click="isOpen = !isOpen"></span>
     @if (Auth::check() && Auth::user()->is_active == 0)
         <p class="bg-yellow-300 text-center py-5 w-full">Akun anda belum terverifikasi,
             silahkan
@@ -23,21 +23,23 @@
         </p>
     @endif
     @if (session('success'))
-        <p class="text-green-500">{{ session('success') }}</p>
+        <p class="text-green-500" x-init='$nextTick(() => {
+            verified("<?= session('success') ?>")
+            })'></p>
     @endif
-    <div class="bg-white">
-        <header class="flex py-5 shadow-sm mx-5 lg:mx-auto max-w-[1080px] justify-between items-center">
+    <div class="bg-white sticky shadow-sm top-0 z-10">
+        <header class="flex py-5 mx-5 lg:mx-auto max-w-[1080px] justify-between items-center">
             <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
 
             @if (Auth::check())
-                <div x-data="{ open: false }" class="relative z-20" x-on:click.outside='open = false'>
-                    <div x-on:click="open = ! open" class="flex cursor-pointer items-center gap-2">
+                <div x-data="{ open: false }" class="hidden sml:block relative z-20" x-on:click.outside='open = false'>
+                    <div x-on:click="open = ! open" class="flex cursor-pointer transition items-center gap-2">
                         <strong>{{ Auth::user()->name }}</strong>
-                        {{-- {{ dd(Auth::user()->profile_image) }} --}}
                         <img class="rounded-full object-cover w-8 h-8"
                             src=" {{ Auth::user()->profile_image === null ? asset('images/profile.jpg') : asset('storage/profile/' . Auth::user()->profile_image) }}"
                             alt="user profile">
-                        <img src="{{ asset('assets/chevron.svg') }}" alt="" :class="open ? 'rotate-180' : ''">
+                        <img src="{{ asset('assets/chevron.svg') }}" alt="" class="transition"
+                            :class="open ? 'rotate-180' : ''">
                     </div>
 
                     <span x-show="open"
@@ -55,14 +57,38 @@
                         </div>
                     </span>
                 </div>
+                <img src="{{ asset('assets/menu.svg') }}" alt="" class="sml:hidden"
+                    x-on:click="isOpen = !isOpen">
             @else
-                <div class="flex justify-center items-center gap-11">
+                <div class="flex justify-center items-center gap-4">
                     <a href="register" class="hover:underline">register</a>
-                    <a href="login" class="hover:underline bg-[#001D86] text-white rounded-full px-6 py-1">login</a>
+                    <a href="login" class="hover:underline bg-[#001D86] text-white rounded-full px-5 py-1">login</a>
                 </div>
             @endif
+
         </header>
     </div>
+
+    @if (Auth::check())
+        <div class="fixed top-0 right-0 w-8/12 h-screen z-[12] sml:hidden bg-slate-50" x-show="isOpen"
+            x-transition:enter="translate-x-10 ease-in"x-transition:leave="translate-x-10 ease-out">
+            <img src="{{ asset('assets/close.svg') }}" alt="" x-click.away="isOpen = false"
+                class="my-5 ml-auto mr-5" x-on:click="isOpen = !isOpen">
+            <ul>
+                <li
+                    class="list-none text-center flex flex-col items-center gap-3 border-[1px] bg-slate-50 border-slate-200 m-2 p-2 rounded">
+                    <img class="rounded-full object-cover w-11 h-11"
+                        src=" {{ Auth::user()->profile_image === null ? asset('images/profile.jpg') : asset('storage/profile/' . Auth::user()->profile_image) }}"
+                        alt="user profile">
+                    <strong>{{ Auth::user()->name }}</strong>
+
+                </li>
+                <li class="list-none text-center mt-7 hover-underline"><a href="/update-profile"> Edit Profile</a></li>
+                <li class="list-none text-center mt-7 hover-underline text-red-500"><a href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    @endif
 
     <div class="text-center h-full relative overflow-hidden">
         <div class="my-10 mx-5 lg:mx-auto max-w-[1080px]">
@@ -75,11 +101,14 @@
         <span class="bg-[#f0f1f3] w-28 h-28 ornament left-28 -top-20"></span>
     </div>
 
-    <main class="bg-white">
-        <div class="py-16 container-width">
+    <main class="bg-[#fcfcfc]">
+        <div class="py-16">
+            @yield('content')
+        </div>
+        {{-- <div class="py-16 container-width">
             @yield('content')
             @yield('sidebar')
-        </div>
+        </div> --}}
     </main>
     <footer class="bg-[#000D3B]">
         <div class="flex flex-col px-5 sm:flex-row max-w-[1000px] mx-auto items-center text-white justify-between">
@@ -107,7 +136,41 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @yield('script')
+    <script>
+        $(document).ready(function() {
+            $('.verif').click(function(e) {
 
+                e.preventDefault();
+                $.ajax({
+                    url: "{{ url('/email/verifikasi') }}",
+                    method: 'GET',
+                    success: function(response) {
+                        const Toast = Swal.mixin({
+                            width: 400,
+                            padding: 18,
+                            toast: true,
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter',
+                                    Swal.stopTimer)
+                                toast.addEventListener('mouseleave',
+                                    Swal.resumeTimer)
+                            }
+                        })
+
+                        Toast.fire({
+
+                            icon: 'success',
+                            title: response.success
+                        });
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 
 </html>

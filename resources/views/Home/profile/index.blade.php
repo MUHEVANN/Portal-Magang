@@ -1,7 +1,7 @@
 @extends('Home.layouts.main')
 
 @section('jumbotron')
-    <div class="flex items-center gap-3 cursor-pointer hover:underline">
+    <div class="flex items-center gap-3 cursor-pointer hover:underline w-fit">
         <img src="{{ asset('assets/chevron.svg') }}" class="bg-slate-300 text-center rounded-full p-1 rotate-90"
             alt="">
         <a href="/">Kembali</a>
@@ -10,8 +10,8 @@
 
 
 @section('content')
-    <div class="mx-auto sm:w-7/12 p-5 rounded-md border-2 border-slate-100">
-        <h1 class="text-slate-800 text-2xl font-extrabold mb-5">Profilku</h1>
+    <div class="mx-auto sm:w-7/12 p-5 rounded-md border-[1px] bg-white shadow-sm border-slate-100">
+        <h1 class="sub-title">Profilku</h1>
         <form>
             <img src="" alt="user profile" class="rounded-full object-cover w-40 h-40 mb-3" id="image-preview">
             <div class="mb-3">
@@ -29,14 +29,11 @@
                 <label for="name">Email</label>
                 <input type="email" name="email" id="email" class="input-style">
             </div>
-            {{-- <div class="mb-3">
-                <label for="name">Password</label>
-                <input type="password" name="password" id="password" class="input-style" disabled>
-            </div> --}}
+            <a href="/changePassword" class="btn-style my-5 block text-center w-full">Ubah Password</a>
             <div class="mb-3">
                 <label for="gender">Gender</label>
                 <select name="gender" id="gender" class="input-style">
-                    <option value="">pilih gender</option>
+                    <option>pilih gender</option>
                     <option value="L">Laki-laki</option>
                     <option value="P">Perempuan</option>
                 </select>
@@ -51,7 +48,7 @@
             </div>
             <div class="mb-3">
                 <label for="job_magang_id">Job Magang</label>
-                <input type="text" name="job_magang_id" id="job_magang_id" class="input-style">
+                <input type="text" disabled name="job_magang_id" id="job_magang_id" class="opactiy-5 input-style">
             </div>
 
             <div class="modal-footer">
@@ -95,6 +92,7 @@
                     reader.onload = function(e) {
                         $('#image-preview').attr('src', e.target.result);
                     };
+
                     reader.readAsDataURL(input.files[0]);
                 }
             });

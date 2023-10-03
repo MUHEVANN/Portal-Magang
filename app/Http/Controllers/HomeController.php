@@ -11,11 +11,11 @@ class HomeController extends Controller
     public function home(Request $request)
     {
         $carrer = Carrer::latest()->first();
-        $lowongan = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong']);
-        if ($request->search) {
-            $lowongan->where('name', 'LIKE', '%' . $request->search . '%');
-        }
-        $lowongan->get();
+        // $lowongan = Lowongan::where('carrer_id', $carrer->id)->whereNotIn('name', ['kosong']);
+        // if ($request->search) {
+        //     $lowongan->where('name', 'LIKE', '%' . $request->search . '%');
+        // }
+        $lowongan = Lowongan::where("carrer_id", $carrer->id)->paginate(15);
         return view('Home.index', compact('lowongan'));
     }
 

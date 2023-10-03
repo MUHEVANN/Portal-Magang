@@ -106,6 +106,7 @@ class UserAuth extends Controller
     }
     public function code_changePassword(Request $request)
     {
+
         $validate = Validator::make($request->all(), [
             'email' => 'required',
         ]);

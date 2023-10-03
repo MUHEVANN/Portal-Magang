@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400;700&family=Offside&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400;700&family=Offside&family=Nanum+Myeongjo&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -31,6 +31,10 @@
     @apply  text-center inline-block py-2 px-4 my-3 m-5 border-[1px] border-white rounded-full;
 }
 
+.paginate-indicator{
+    @apply text-center inline-block py-1 cursor-pointer hover:text-gray-50 hover:bg-[#202f66] px-3 border-[1px] text-[#202f66] border-[#202f66] rounded-full
+}
+
 .active{
     @apply text-black bg-slate-200; 
 }
@@ -44,7 +48,7 @@
 }
 
 .sidebar{
-    @apply h-max w-full md:w-2/5 p-3 border-2 border-slate-100 rounded-md md:sticky top-5;
+    @apply h-max w-full md:w-2/5 p-3 border-[1px] border-slate-300 rounded-md md:sticky top-24;
 }
 .trix ol{
     list-style-type:disc;
@@ -67,29 +71,54 @@ ol{
 
 ::-webkit-scrollbar {
     width: 10px;
-  }
+}
   
-  /* Track */
-  ::-webkit-scrollbar-track {
+/* Track */
+::-webkit-scrollbar-track {
     background: #d3edff;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
     background: #002872;
-  }
+}
 
-  .container-width{
-    @apply max-w-[1000px] mx-auto flex-col-reverse flex md:flex-row justify-start gap-5 px-5;
-  }
+.container-width{
+    @apply max-w-[1000px] mx-auto flex md:flex-row justify-start gap-5 px-5;
+}
 
-  .list-contents{
+.list-contents{
     @apply flex list-none gap-10 sm:gap-5;
-  }
+}
 
-  .list-menu{
+.list-menu{
     @apply underline hover:no-underline;
-  }
-  .svg-social{
+}
+.svg-social{
     @apply bg-[#000D3B] rounded w-7 h-7 cursor-pointer opacity-75 hover:opacity-100;
-  }
+}
+
+.sub-title{
+    @apply text-slate-800 text-2xl font-extrabold mb-5;
+}
+
+.btn-style{
+    @apply bg-[#000D3B] py-2 px-3 lg:px-5 rounded hover:opacity-80 my-3 ml-auto text-slate-50 cursor-pointer;
+}
+
+.active-list{
+    @apply text-[#2b4297] bg-white hover:text-blue-700 font-semibold hover:bg-blue-400;
+}
+
+/* pangination styles */
+.pagination-list{
+    @apply inline-flex -space-x-px text-sm list-none;
+}
+
+.pagination-list li{
+    @apply cursor-pointer;
+}
+
+.pagination-list li:hover p{
+    @apply hover:bg-gray-100 hover:text-gray-500;
+}
