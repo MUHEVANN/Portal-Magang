@@ -66,6 +66,7 @@
                             <input type="date" id="deadline" class="form-control">
                             <span id="error-deadline" class="text-danger"></span>
                         </div>
+
                         <div class="mb-3">
                             <label for="gambar">Gambar</label>
                             <input type="file" name="gambar" id="gambar" class="form-control"

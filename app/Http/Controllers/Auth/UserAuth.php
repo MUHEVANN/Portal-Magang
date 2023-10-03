@@ -153,4 +153,26 @@ class UserAuth extends Controller
             return redirect('/')->with(['success' => "Password berhasil diganti"]);
         }
     }
+
+    public function ganti_password(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'password_lama' => 'required',
+            'password_baru' => 'required',
+            'confirm_password' => 'required|same:password'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->messages()]);
+        }
+        $password = $request->password_lama;
+        $new_password = $request->password_baru;
+        if (Auth::attempt('password', $password)) {
+            $id = auth()->user()->id;
+            $user = User::find($id);
+            $user->password = $new_password;
+            $user->save();
+            return response()->json(['success' => 'password berhasil diganti']);
+        }
+    }
 }
