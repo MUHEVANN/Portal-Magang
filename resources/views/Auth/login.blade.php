@@ -65,7 +65,6 @@
         </section>
         <img src="images/login2.svg" class="bg-center w-96 h-auto rounded-lg  object-fill p-5"
             alt="login jetorbit logo">
-
     </div>
 </body>
 

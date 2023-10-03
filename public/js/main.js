@@ -240,6 +240,8 @@ document.addEventListener('alpine:init', () => {
           this.showAlert('Tanggal tidak boleh kosong!','');
           return;
         } 
+
+        // console.log(this.email_invalid, this.cv_invalid);
         // enter the second steps
         if(this.current_pos == 2){
           
@@ -273,9 +275,9 @@ document.addEventListener('alpine:init', () => {
               }
             }
 
-            console.log(this.cv_invalid, this.fields, this.fields.length);
+            // console.log(this.cv_invalid, this.fields, this.fields.length);
             // check if leader upload valid PDF format for his members
-            if(this.cv_invalid.indexOf(true,1) != -1){
+            if(this.cv_invalid.indexOf(true) != -1){
               return this.showAlert("CV tidak sesuai, <br> Mohon coba lagi!", this.$event);
             }
 
@@ -284,11 +286,12 @@ document.addEventListener('alpine:init', () => {
               return this.showAlert("Email tidak sesuai, <br> Mohon coba lagi!", this.$event);
             }
           }
-
+          
         }
-
+      
         // check if "next()" function get click for next step or submit
         if(this.current_pos >= 2){
+          // this.$event.preventDefault();
           return console.log('stuck');
         } else{
           this.current_pos++;
@@ -321,6 +324,7 @@ document.addEventListener('alpine:init', () => {
 
       // remove specific form field
       remove(idx){
+        this.email_invalid = [false,false,false,false,false];
         this.cv_invalid = [false,false,false,false,false];
         this.fields.forEach((item, i) => {
           if(i != idx){
@@ -335,7 +339,6 @@ document.addEventListener('alpine:init', () => {
       validateCV(idx){
         if(this.fields[idx]?.cv == undefined) return;
         let  splitted = this.fields[idx].cv.split('.');
-        idx++;
 
         if(splitted[splitted.length - 1] == 'pdf' && splitted != ''){
           this.cv_invalid[idx] = false;
