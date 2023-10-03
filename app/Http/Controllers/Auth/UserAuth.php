@@ -173,6 +173,8 @@ class UserAuth extends Controller
             $user->password = $new_password;
             $user->save();
             return response()->json(['success' => 'password berhasil diganti']);
+        } else {
+            return response()->json(['error' => 'Password tidak sama']);
         }
     }
 }

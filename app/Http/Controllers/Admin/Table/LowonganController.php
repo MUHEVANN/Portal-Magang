@@ -20,7 +20,9 @@ class LowonganController extends Controller
         if ($batch_id) {
             $query->where('carrer_id', $batch_id);
         }
-        $data = $query->get();
+        $data = Cache::remember('job', 3000, function () use ($query) {
+            return $query->get();
+        });
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
@@ -41,12 +43,20 @@ class LowonganController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:job_magang',
+            'gambar' => 'required|mimes:jpg,png,jpeg,svg',
             'desc' => 'required',
-            'benefit' => 'required',
             'kualifikasi' => 'required',
-            'deadline' => 'required',
-            'gambar' => 'required|mimes:jpg,jpeg,png',
+            'benefit' => 'required',
+            'deadline' => 'required'
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'desc.required' => 'Descripsi tidak boleh kosong',
+            'kualifikasi.required' => 'Kualifikasi tidak boleh kosong',
+            'benefit.required' => 'Benefit tidak boleh kosong',
+            'deadline.required' => 'deadline tidak boleh kosong',
+            'gambar.required' => 'Gambar tidak boleh kosong',
+            'gambar.mimes' => 'Gambar harus bertipe jpg/png/jpeg/svg',
         ]);
 
         if ($validate->fails()) {
@@ -67,12 +77,7 @@ class LowonganController extends Controller
             'gambar' => $gambar_name,
             'carrer_id' => $carrer->id
         ]);
-        // $batch_id = $request->batch_id;
-        // $query =  Lowongan::where('name', '!=', 'kosong');
-        // if ($batch_id) {
-        //     $query->where('carrer_id', $batch_id);
-        // }
-        // Cache::put('lowongan', $query->get(), 3000);
+        Cache::forget('job');
         if ($lowongan) {
             return response()->json(['success' => 'Berhasil menambah lowongan']);
         } else {
@@ -83,7 +88,7 @@ class LowonganController extends Controller
     public function show($id)
     {
         $lowongan = Lowongan::find($id);
-        return view('Admin.Lowongan.show');
+        return view('Admin.Lowongan.show', compact('lowongan'));
     }
     public function edit($id)
     {
@@ -91,22 +96,6 @@ class LowonganController extends Controller
         return response()->json($lowongan);
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $lowongan = Lowongan::find($id);
-    //     if ($request->hasFile('gambar')) {
-    //         $gambar = $request->file('gambar');
-    //         $gambar_name = date('ymhdis') . "." . $gambar->getClientOriginalExtension();
-    //         $gambar_path = $gambar->storeAs('public/lowongan', $gambar_name);
-    //         Storage::delete('public/lowongan/' . $lowongan->gambar);
-    //         $lowongan->gambar = $gambar_name;
-    //     }
-    //     $lowongan->name = $request->name;
-    //     $lowongan->desc = $request->desc;
-    //     $lowongan->kualifikasi = $request->kualifikasi;
-    //     $lowongan->benefit = $request->benefit;
-    //     $lowongan->save();
-    // }
 
     public function destroy(Request $request, $id)
     {

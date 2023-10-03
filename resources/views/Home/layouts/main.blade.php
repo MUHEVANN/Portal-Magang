@@ -109,7 +109,7 @@
     @yield('script')
     <script>
         $(document).ready(function() {
-            $waktu = date().now();
+            // $waktu = date().now();
             $('.verif').click(function(e) {
                 e.preventDefault();
                 $.ajax({

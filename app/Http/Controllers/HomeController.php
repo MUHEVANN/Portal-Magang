@@ -11,15 +11,19 @@ class HomeController extends Controller
 {
     public function home(Request $request)
     {
-        $carrer = Cache::remember('carrer', 3000, function () {
-            return Carrer::latest()->first();
-        });
-        // $carrer = Carrer::latest()->first();
-        $lowongan = Lowongan::select('name', 'created_at', 'gambar', 'carrer_id')->where('carrer_id', $carrer->id);
+
+        // $carrer = Cache::remember('carrer', 3000, function () {
+        //     return Carrer::latest()->first();
+        // });
+        // dd(date('y-m-d'));
+
+        $carrer = Carrer::latest()->first();
+        $lowongan = Lowongan::select('name', 'created_at', 'gambar', 'carrer_id', 'deadline')->where('deadline', '>=', date('y-m-d'))->where('carrer_id', $carrer->id);
         if ($request->search) {
             $lowongan->where('name', 'LIKE', '%' . $request->search . '%');
         }
-        $lowongan->paginate(10);
+        $lowongan = $lowongan->paginate(10);
+        // dd($lowongan);
         return view('Home.index', compact('lowongan'));
     }
 
@@ -27,7 +31,7 @@ class HomeController extends Controller
     {
         $carrer = Carrer::latest()->first();
 
-        $query = Lowongan::where('carrer_id', $carrer->id);
+        $query = Lowongan::where('deadline', '>=', date('y-m-d'))->where('carrer_id', $carrer->id);
 
         if ($type == 'terlama') {
             $query->orderBy('created_at', 'asc');
@@ -36,6 +40,7 @@ class HomeController extends Controller
         }
 
         $lowongan = $query->get();
+
         return response()->json($lowongan);
     }
 
