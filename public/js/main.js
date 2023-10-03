@@ -73,16 +73,13 @@ document.addEventListener('alpine:init', () => {
     // pagination var js
     paginate: function() {
 
-      console.log(this.end_to);
       if(this.search_type != '') return;
       let len = this.lowongan.length;
-
+      
       // check if job list length more than enough to make pagination
       if(len <= 10) return;
 
-      
-      let limit = len / 10;  
-      console.log(limit)
+      let limit = len / 10;
       // limit number of pages, if list length more then 5 
       if(limit < 5){
         let newPageList = [];
@@ -237,10 +234,8 @@ document.addEventListener('alpine:init', () => {
       next(){
         // validate date start and end 
         if(this.start_date == '' || this.end_date == ''){
-          this.showAlert('Tanggal tidak boleh kosong!','');
-          return;
-        } 
-
+          return this.showAlert('Tanggal tidak boleh kosong!','');
+        }
         // console.log(this.email_invalid, this.cv_invalid);
         // enter the second steps
         if(this.current_pos == 2){
@@ -260,7 +255,7 @@ document.addEventListener('alpine:init', () => {
             return this.showAlert('Masukan Tipe Magang yang akan dijalankan!', this.$event);
           }
           
-          // if 'kelompok' validate the form fields
+          // if 'kelompok', validate the form fields
           if(this.tipe_magang == 'kelompok'){
 
             // check if leader add members or not
@@ -290,11 +285,10 @@ document.addEventListener('alpine:init', () => {
         }
       
         // check if "next()" function get click for next step or submit
-        if(this.current_pos >= 2){
-          // this.$event.preventDefault();
-          return console.log('stuck');
-        } else{
+        if(this.current_pos < 2){
           this.current_pos++;
+        } else{
+           console.log('sent');
         }
       },
 
@@ -322,7 +316,7 @@ document.addEventListener('alpine:init', () => {
         return (this.tipe_magang == 'kelompok') ? true : false;
       },
 
-      // remove specific form field
+      // remove specific form field and
       remove(idx){
         this.email_invalid = [false,false,false,false,false];
         this.cv_invalid = [false,false,false,false,false];
@@ -332,13 +326,14 @@ document.addEventListener('alpine:init', () => {
           }
         });
         this.fields.splice(idx, 1);
+
         return;
       },
 
       // validate every CV form fields
       validateCV(idx){
         if(this.fields[idx]?.cv == undefined) return;
-        let  splitted = this.fields[idx].cv.split('.');
+        let splitted = this.fields[idx].cv.split('.');
 
         if(splitted[splitted.length - 1] == 'pdf' && splitted != ''){
           this.cv_invalid[idx] = false;
@@ -377,12 +372,6 @@ document.addEventListener('alpine:init', () => {
       // Call Function When verification email successfully and show alert at home page
       verified(param){
         return this.showAlert(param, '', 'success');
-      },
-
-
-      // change password security
-      send_code(){
-        console.log('hello world'); 
       },
 
       // card toast warning with prevent default

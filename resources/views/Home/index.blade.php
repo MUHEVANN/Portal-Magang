@@ -37,7 +37,10 @@
                                 {{-- <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar" class="w-28"> --}}
                                 <div
                                     class="justify-around flex-wrap p-3 pb-5 sm:p-0 content-between sml:w-3/6 sm:w-4/6 flex flex-col py-2">
-                                    <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl" x-text='data.name'></h1>
+                                    <div class="flex">
+                                        <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl" x-text='data.name'></h1>
+                                        <p x-text="data.deadline"></p>
+                                    </div>
                                     <p x-text="sortParagraph(data.desc)" class="w-4/5 text-slate-700 text-sm"></p>
                                     <p class="text-slate-400 text-sm" x-text='elapsedTime(data.created_at)'>
                                     </p>
