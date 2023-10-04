@@ -47,6 +47,7 @@ class BatchController extends Controller
         $batch = Carrer::create([
             'batch' => $request->batch
         ]);
+        Cache::forget('batch');
         return response()->json(['success' => 'Berhasil menambahkan batch'], 200);
     }
     public function edit($id)

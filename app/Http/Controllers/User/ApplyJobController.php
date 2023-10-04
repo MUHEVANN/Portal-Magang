@@ -160,11 +160,12 @@ class ApplyJobController extends Controller
         array_push($semua_pendaftar, $pendaftar);
         Cache::forget('all-pemagang');
         AfterApply::dispatch($pendaftar);
-        return $this->successMessage($semua_pendaftar, 'Berhasil Apply');
+        return redirect()->to('/home');
     }
 
     public function formApply()
     {
+
         $index = 0;
 
         $carrer_id = Carrer::latest()->first()->id;

@@ -159,7 +159,7 @@ class UserAuth extends Controller
         $validate = Validator::make($request->all(), [
             'password_lama' => 'required',
             'password_baru' => 'required',
-            'confirm_password' => 'required|same:password'
+            'confirm_password' => 'required|same:password_baru'
         ]);
 
         if ($validate->fails()) {
@@ -167,9 +167,9 @@ class UserAuth extends Controller
         }
         $password = $request->password_lama;
         $new_password = $request->password_baru;
-        if (Auth::attempt(['password', $password])) {
-            $id = auth()->user()->id;
-            $user = User::find($id);
+        $id = auth()->user()->id;
+        $user = User::find($id);
+        if (Hash::check($password, $user->password)) {
             $user->password = $new_password;
             $user->save();
             return response()->json(['success' => 'password berhasil diganti']);
