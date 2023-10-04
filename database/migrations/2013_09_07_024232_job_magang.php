@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('carrer_id');
             $table->date('deadline');
             $table->string('name');
+            // $table->date('deadline');
             $table->text('desc');
             $table->text('benefit');
             $table->text('kualifikasi');

@@ -30,7 +30,7 @@ class CreateUserFromApplyMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Terima Kasih Telah Mendaftar diJetorbit, Perikasa akun anda dan lakukan verifikasi untuk menggunakan akun',
+            subject: 'Akun Anda',
         );
     }
 
@@ -40,10 +40,11 @@ class CreateUserFromApplyMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Mail.Akun',
+            markdown: 'Mail.Akun',
             with: ['user' => $this->user, 'password' => $this->password]
         );
     }
+
 
     /**
      * Get the attachments for the message.

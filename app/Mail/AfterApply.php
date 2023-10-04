@@ -37,7 +37,7 @@ class AfterApply extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Mail.afterApply',
+            markdown: 'Mail.afterApply',
         );
     }
 

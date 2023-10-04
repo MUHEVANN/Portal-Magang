@@ -27,7 +27,7 @@ class StatusApply extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Status Apply',
+            subject: 'Hasil Pendaftaran',
         );
     }
 
@@ -36,8 +36,15 @@ class StatusApply extends Mailable
      */
     public function content(): Content
     {
+        $template_seleksi = '';
+        if($this->status == 'lulus'){
+            $template_seleksi = 'Mail.lulusSeleksi';
+        } else{
+            $template_seleksi = 'Mail.gagalSeleksi';
+        }
+
         return new Content(
-            view: 'Mail.statusApply',
+            markdown: $template_seleksi,
             with: ['status' => $this->status]
         );
     }

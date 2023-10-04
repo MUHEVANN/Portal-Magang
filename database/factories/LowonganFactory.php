@@ -24,8 +24,9 @@ class LowonganFactory extends Factory
     {
         return [
             'name' => fake()->name,
-            'carrer_id' => fake()->numberBetween(1, 100),
+            'carrer_id' => 1,
             'desc' => fake()->realTextBetween(50, 100),
+            'deadline' => fake()->dateTimeBetween('now', "+" . fake()->numberBetween(5, 30) . "days"),
             'benefit' => fake()->realTextBetween(30, 70),
             'kualifikasi' => fake()->realTextBetween(25, 40),
             'gambar' => fake()->imageUrl,

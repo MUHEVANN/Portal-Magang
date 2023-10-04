@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-mail::message>
+# Berhasil Daftar.
+ 
+Terima kasih sudah Apply lowongan di <strong>Jetorbit</strong>, Silahkan Tunggu Konfirmasi dari kami.
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    Terima kasih sudah Apply lowongan di Jetorbit, Silahkan Tunggu Konfirmasi dari kami
-</body>
-
-</html>
+Salam,<br>
+{{ config('app.name') }}
+</x-mail::message>

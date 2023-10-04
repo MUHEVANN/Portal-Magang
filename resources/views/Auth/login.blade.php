@@ -12,8 +12,8 @@
     @vite(['resources/css/app.css', 'resources/js/main.js'])
 </head>
 
-<body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center ">
-    <div class="bg-white h-[60vh] w-[45vw] flex items-center shadow-sm rounded-md">
+<body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center border-[2px] border-slate-400">
+    <div class="bg-white h-[30rem] w-[45rem] flex items-center shadow-sm rounded-md">
         {{-- <img src="images/Login.png" class="bg-center w-96 h-auto rounded-lg object-fill p-5" alt="login jetorbit logo"> --}}
 
         <section class="p-10  sm:w-[25rem]">
@@ -59,13 +59,12 @@
                 </div>
                 <br>
                 <button type="submit"
-                    class=" text-pink-100 cursor-pointer rounded bg-[#001D86] mt-9 my-6 py-2 px-4 w-full">Login</button>
+                    class=" text-pink-100 cursor-pointer rounded bg-[#001D86] mb-6 p-2 px-4 w-full">Login</button>
                 <a class="text-center cursor-pointer block hover:underline" href="register">Register</a>
             </form>
         </section>
         <img src="images/login2.svg" class="bg-center w-96 h-auto rounded-lg  object-fill p-5"
             alt="login jetorbit logo">
-
     </div>
 </body>
 

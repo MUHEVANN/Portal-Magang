@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,11 +9,29 @@
 </head>
 
 <body>
-    <h1>Ini adalah Email dan Password anda segera verifikasi dan ganti password anda!</h1>
+    <h1></h1>
     <div>
         <h1>Email &nbsp; {{ $user->email }}</h1>
         <h1>password &nbsp; {{ $password }}</h1>
     </div>
 </body>
 
-</html>
+</html> --}}
+
+
+<x-mail::message>
+# Akun dan Password
+ 
+Ini adalah Email dan Password anda,
+Sekarang Anda dapat melakukan verifikasi dan ganti password!
+ 
+<x-mail::table>
+| Email             | Password      |
+| -------------     |:-------------:|
+| {{ $user->email}} | {{$password}} |
+
+</x-mail::table>
+
+Thanks,<br>
+{{ config('app.name') }}
+</x-mail::message>

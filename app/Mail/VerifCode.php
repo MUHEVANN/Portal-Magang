@@ -27,7 +27,7 @@ class VerifCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verif Code',
+            subject: 'Link Verifikasi',
         );
     }
 
@@ -37,7 +37,7 @@ class VerifCode extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Verification.verif',
+            markdown: 'Verification.verif',
             with: ["user" => $this->user->verif_code],
         );
     }

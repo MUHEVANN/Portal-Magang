@@ -9,16 +9,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CodeChangePassword extends Mailable
+class OrderShipped extends Mailable
 {
     use Queueable, SerializesModels;
-    private $user;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user = $user;
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class CodeChangePassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Code Change Password',
+            subject: 'Order Shipped',
         );
     }
 
@@ -37,8 +37,7 @@ class CodeChangePassword extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'Mail.CodeChangePassword',
-            with: ['code' => $this->user]
+            markdown: 'verification.mail',
         );
     }
 
