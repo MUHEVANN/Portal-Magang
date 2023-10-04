@@ -120,21 +120,36 @@
                         data: 'description',
                         name: 'description',
                         render: function(data) {
-                            return data.substring(0, 20) + '...';
+                            var words = data.split(" ");
+                            var cutWords = words.slice(0, 3).join(" ");
+                            if (words.length > 3) {
+                                cutWords += " ...";
+                            }
+                            return cutWords;
                         }
                     },
                     {
                         data: 'benefit',
                         name: 'benefit',
                         render: function(data) {
-                            return data.substring(0, 20) + '...';
+                            var words = data.split(" ");
+                            var cutWords = words.slice(0, 3).join(" ");
+                            if (words.length > 3) {
+                                cutWords += " ...";
+                            }
+                            return cutWords;
                         }
                     },
                     {
                         data: 'kualifikasi',
                         name: 'kualifikasi',
                         render: function(data) {
-                            return data.substring(0, 20) + '...';
+                            var words = data.split(" ");
+                            var cutWords = words.slice(0, 3).join(" ");
+                            if (words.length > 3) {
+                                cutWords += " ...";
+                            }
+                            return cutWords;
                         }
                     },
                     {
@@ -280,14 +295,14 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            if (response.error) {
-                                $('#error-benefit').text(response.error.benefit);
-                                $('#error-name').text(response.error.name);
-                                $('#error-desc').text(response.error.desc);
-                                $('#error-kualifikasi').text(response.error
+                            if (response[0] === 'error') {
+                                $('#error-benefit').text(response[1].benefit);
+                                $('#error-name').text(response[1].name);
+                                $('#error-desc').text(response[1].desc);
+                                $('#error-kualifikasi').text(response[1]
                                     .kualifikasi);
-                                $('#error-gambar').text(response.error.gambar);
-                                $('#error-deadline').text(response.error.deadline);
+                                $('#error-gambar').text(response[1].gambar);
+                                $('#error-deadline').text(response[1].deadline);
                             } else {
                                 $('#name').val('');
                                 $('#desc').val('');

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Auth\UserAuthApi;
 use App\Http\Controllers\Api\User\ApplyControllerApi;
 use App\Http\Controllers\Api\User\JobMagangApi;
 use App\Http\Controllers\Api\User\ProfileControllerApi;
+use App\Http\Controllers\Auth\UserAuth;
 use App\Http\Controllers\tes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/apply', [ApplyControllerApi::class, 'apply']);
     // search apply
     Route::get('/pendaftar/search', [DaftarPendaftar::class, 'search']);
-
+    // change password
+    Route::post('/change-password', [UserAuth::class, 'ganti_password']);
     Route::middleware('role:admin')->group(function () {
         // pengguna
         Route::get('/daftar-pengguna', [DaftarPengguna::class, 'index']);
