@@ -105,22 +105,42 @@ class JobMagangApi extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $validate = Validator::make($request->all(), [
+                'name' => 'required|unique:job_magang',
+                'gambar' => 'mimes:jpg,png,jpeg,svg',
+                'desc' => 'required',
+                'kualifikasi' => 'required',
+                'benefit' => 'required',
+                'deadline' => 'required'
+            ], [
+                'name.required' => 'Nama tidak boleh kosong',
+                'desc.required' => 'Descripsi tidak boleh kosong',
+                'kualifikasi.required' => 'Kualifikasi tidak boleh kosong',
+                'benefit.required' => 'Benefit tidak boleh kosong',
+                'deadline.required' => 'deadline tidak boleh kosong',
+                'gambar.mimes' => 'Gambar harus bertipe jpg/png/jpeg/svg',
+            ]);
+
+            if ($validate->fails()) {
+                return $this->errorMessage('gagal', $validate->messages(), 400);
+            }
             $job = Lowongan::find($id);
             $carr = Carrer::latest()->first()->id;
-            $gambar_file = $request->file('gambar');
-            $gambar_name = Str::uuid() . "." . $gambar_file->getClientOriginalExtension();
-            $gambar_file->storeAs('public/lowongan', $gambar_name);
-            Storage::delete('public/lowongan/' . $job->gambar);
             $data = [
                 'name' => $request->name,
-                'gambar' => $request->gambar,
                 'desc' => $request->desc,
                 'benefit' => $request->benefit,
                 'kualifikasi' => $request->kualifikasi,
                 'carrer_id' => $carr,
-                'gambar' => $gambar_name,
                 'deadline' => $request->deadline,
             ];
+            if ($request->hasFile('gambar')) {
+                $gambar_file = $request->file('gambar');
+                $gambar_name = Str::uuid() . "." . $gambar_file->getClientOriginalExtension();
+                $gambar_file->storeAs('public/lowongan', $gambar_name);
+                Storage::delete('public/lowongan/' . $job->gambar);
+                $data['gambar'] = $gambar_name;
+            }
             $job->update($data);
             Cache::forget('job');
             Cache::forget('job_terlama');

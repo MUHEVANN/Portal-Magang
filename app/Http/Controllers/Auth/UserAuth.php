@@ -159,7 +159,7 @@ class UserAuth extends Controller
         $validate = Validator::make($request->all(), [
             'password_lama' => 'required',
             'password_baru' => 'required',
-            'confirm_password' => 'required|same:password_baru'
+            'confirm_password' => 'required|same:password_baru',
         ]);
 
         if ($validate->fails()) {
@@ -175,7 +175,7 @@ class UserAuth extends Controller
             $user->save();
             return response()->json(['success' => 'password berhasil diganti']);
         } else {
-            return response()->json(['fail' => 'password lama tidak sesuai']);
+            return response()->json(['error' => 'Password tidak sama']);
         }
     }
 }
