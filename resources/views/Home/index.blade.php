@@ -36,14 +36,15 @@
                                 </span>
                                 {{-- <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar" class="w-28"> --}}
                                 <div
-                                    class="justify-around flex-wrap p-3 pb-5 sm:p-0 content-between sml:w-3/6 sm:w-4/6 flex flex-col py-2">
-                                    <div class="flex">
-                                        <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl" x-text='data.name'></h1>
-                                        <p x-text="data.deadline"></p>
+                                    class="justify-around flex-wrap p-2 sm:p-0 content-between sml:w-3/6 sm:w-4/6 flex flex-col mx-2">
+                                    <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl" x-text='data.name'></h1>
+                                    <p x-html="sortParagraph(data.desc)" class="w-4/5 text-slate-700 text-sm"></p>
+
+                                    <div class="flex justify-between w-full mt-3 sml:mt-0 gap-2 sm:items-center">
+                                        <p class="text-green-600 text-sm text-limit" x-text='elapsedTime(data.updated_at)'>
+                                        </p>
+                                        <p x-text="dueTime(data.deadline)" class="text-sm text-slate-400 text-limit"></p>
                                     </div>
-                                    <p x-text="sortParagraph(data.desc)" class="w-4/5 text-slate-700 text-sm"></p>
-                                    <p class="text-slate-400 text-sm" x-text='elapsedTime(data.created_at)'>
-                                    </p>
                                 </div>
                             </div>
                     </template>

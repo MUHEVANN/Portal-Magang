@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
@@ -27,6 +27,13 @@
             verified("<?= session('success') ?>")
             })'></p>
     @endif
+
+    @if (session('error'))
+        <p class="text-green-500" x-init='$nextTick(() => {
+            verified("<?= session('error') ?>","error")
+            })'></p>
+    @endif
+
     <div class="bg-white sticky shadow-sm top-0 z-10">
         <header class="flex py-5 mx-5 lg:mx-auto max-w-[1080px] justify-between items-center">
             <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
@@ -61,8 +68,8 @@
                     x-on:click="isOpen = !isOpen">
             @else
                 <div class="flex justify-center items-center gap-4">
-                    <a href="register" class="hover:underline">register</a>
-                    <a href="login" class="hover:underline bg-[#001D86] text-white rounded-full px-5 py-1">login</a>
+                    <a href="/register" class="hover:underline">register</a>
+                    <a href="/login" class="hover:underline bg-[#001D86] text-white rounded-full px-5 py-1">login</a>
                 </div>
             @endif
 
@@ -90,7 +97,7 @@
         </div>
     @endif
 
-    <div class="text-center h-full relative overflow-hidden">
+    <div class="text-center h-full relative overflow-hidden" id="top">
         <div class="my-10 mx-5 lg:mx-auto max-w-[1080px]">
             @yield('jumbotron')
         </div>
@@ -101,7 +108,7 @@
         <span class="bg-[#f0f1f3] w-28 h-28 ornament left-28 -top-20"></span>
     </div>
 
-    <main class="bg-[#fcfcfc]">
+    <main class="bg-[#fcfcfc] pb-5">
         <div class="py-16">
             @yield('content')
         </div>
@@ -109,6 +116,10 @@
             @yield('content')
             @yield('sidebar')
         </div> --}}
+        <a href="#top" x-on:scroll.window="scrollPos()" :class="top_position ? 'hidden' : ''"
+            class="bg-[#e7e7e7] p-4 block w-14 h-14 sticky bottom-5 right-5 opacity-50 ml-auto backdrop-blur-3xl">
+            <img src="{{ asset('assets/chevron.svg') }}" class="rotate-180 w-full" alt="">
+        </a>
     </main>
     <footer class="bg-[#000D3B]">
         <div class="flex flex-col px-5 sm:flex-row max-w-[1000px] mx-auto items-center text-white justify-between">
@@ -131,6 +142,8 @@
             </ul>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/locale/id.js"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="

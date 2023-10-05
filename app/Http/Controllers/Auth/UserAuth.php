@@ -122,7 +122,7 @@ class UserAuth extends Controller
             $user->verif_code = Str::random(60);
             $user->save();
             CodeChangePassword::dispatch($user);
-            return redirect()->to('/changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
+            return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
         }
     }
 
@@ -159,7 +159,7 @@ class UserAuth extends Controller
         $validate = Validator::make($request->all(), [
             'password_lama' => 'required',
             'password_baru' => 'required',
-            'confirm_password' => 'required|same:password'
+            'confirm_password' => 'required|same:password_baru'
         ]);
 
         if ($validate->fails()) {
@@ -167,12 +167,15 @@ class UserAuth extends Controller
         }
         $password = $request->password_lama;
         $new_password = $request->password_baru;
-        if (Auth::attempt('password', $password)) {
-            $id = auth()->user()->id;
-            $user = User::find($id);
+
+        $id = auth()->user()->id;
+        $user = User::find($id);
+        if (Hash::check($password, $user->password)) {
             $user->password = $new_password;
             $user->save();
             return response()->json(['success' => 'password berhasil diganti']);
+        } else {
+            return response()->json(['fail' => 'password lama tidak sesuai']);
         }
     }
 }

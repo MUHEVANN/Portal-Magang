@@ -96,12 +96,12 @@
 
                 <hr class="my-5">
                 <label for="tipe-magang">Tipe Magang</label> <br>
-                <select x-model='tipe_magang' name="tipe_magang" class="py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm"
-                    id="tipe-magang">
+                <select x-model='tipe_magang' name="tipe_magang" class="input-style" id="tipe-magang">
                     <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
                     <option value="mandiri">Mandiri</option>
                     <option value="kelompok">Kelompok</option>
                 </select>
+                
                 {{-- <p x-text="fields"></p> --}}
                 <div x-show="cek_output">
                     <button :class="fields_len >= 5 ? 'cursor-not-allowed opacity-60' : ''"

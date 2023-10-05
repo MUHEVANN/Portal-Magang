@@ -149,41 +149,16 @@ document.addEventListener('alpine:init', () => {
     sortedBy: false,
     search:'',
   
-    // calculate elapse time for each job since it was created
+    // elapse time for each job since it was created
     elapsedTime(param){
-
-        let time = new Date(param);
-        const seconds = Math.floor((new Date() - time) / 1000);
-        
-        let interval = Math.floor(seconds / 31536000);
-        if (interval > 1) {
-          return interval + ' tahun yang lalu';
-        }
-      
-        interval = Math.floor(seconds / 2592000);
-        if (interval > 1) {
-          return interval + ' bulan yang lalu';
-        }
-      
-        interval = Math.floor(seconds / 86400);
-        if (interval > 1) {
-          return interval + ' hari yang lalu';
-        }
-      
-        interval = Math.floor(seconds / 3600);
-        if (interval > 1) {
-          return interval + ' jam yang lalu';
-        }
-      
-        interval = Math.floor(seconds / 60);
-        if (interval > 1) {
-          return interval + ' menit yang lalu';
-        }
-      
-        if(seconds < 10) return ' baru saja';
-      
-        return Math.floor(seconds) + ' detik yang lalu';
+        return moment(param).fromNow();
     },
+
+
+    dueTime(param = new Date()){
+      return 'Berakhir '+moment().to(param);
+    },
+
 
     // sorten the description of job lists
     sortParagraph(param){
@@ -225,6 +200,9 @@ document.addEventListener('alpine:init', () => {
 
       // sidebar
       isOpen: false,
+
+      // back to top
+      top_position: true,
 
       // placeholder for each cv members, max 5 and 4 for email member since leader already register
       email_invalid: [false,false,false,false,false],
@@ -283,7 +261,7 @@ document.addEventListener('alpine:init', () => {
           }
           
         }
-      
+
         // check if "next()" function get click for next step or submit
         if(this.current_pos < 2){
           this.current_pos++;
@@ -370,8 +348,8 @@ document.addEventListener('alpine:init', () => {
       },
 
       // Call Function When verification email successfully and show alert at home page
-      verified(param){
-        return this.showAlert(param, '', 'success');
+      verified(param, type = 'success'){
+        return this.showAlert(param, '', type);
       },
 
       // card toast warning with prevent default
@@ -394,19 +372,51 @@ document.addEventListener('alpine:init', () => {
             icon: icon,
             title: param
           })
+      },
+
+      scrollPos(){
+        this.top_position = (scrollY <= 200) ? true : false
       }
     }));
 })
 
 document.addEventListener('alpine:init', () => {
   Alpine.data('gates', () => ({
+
+    // login & register password var
     FirstPASS:'',
     SecondPASS:'',
     warningMsg: '',
 
+    // change password var
+    old_pass:'',
+    new_pass:'',
+    repeat_pass:'',
+
+    // forget password var
+    new_forget_pass: '',
+    repeat_new_forget_pass: '',
+    verify_email_pass: '',
+
+    valid_email_pass: false,
+    delay_send: 0,
+    
+    // change password error
+    old_pass_invalid:'',
+    new_pass_invalid:'',
+    repeat_pass_invalid:'',
+
+    statusResponse: '',
+    
+
     // toggle when user click eye icons to reveal the password
+    isVisible: false,
     isVisible1: false,
     isVisible2: false,
+
+    toggle() {
+        this.isVisible = !this.isVisible;
+    },
 
     toggle1() {
         this.isVisible1 = !this.isVisible1;
@@ -423,5 +433,90 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
+    async changePassword(){
+      this.$event.preventDefault();
+
+      await fetch('/ganti-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': this.$event.srcElement[0].value
+        },
+        url: '/ganti-password',
+        body: JSON.stringify({
+          'password_lama': this.old_pass,
+          'password_baru': this.new_pass,
+          'confirm_password': this.repeat_pass,
+        })
+      }).then(res => {
+
+        res.json().then(response => {
+
+          if(response.error){
+            this.old_pass_invalid = response.error['password_lama']
+            this.new_pass_invalid = response.error['password_baru']
+            this.repeat_pass_invalid = response.error['confirm_password']
+            return;
+          } 
+          if(response.fail){
+            this.old_pass_invalid = response.fail
+            return;
+          }
+          
+          this.old_pass_invalid = ""
+          this.new_pass_invalid = ""
+          this.repeat_pass_invalid =""
+          
+          window.location.href="/update-profile"
+
+          const Toast = Swal.mixin({
+              toast: true,
+              position: 'bottom-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+            
+            Toast.fire({
+              icon: 'success',
+              title: response.success
+            })
+
+            this.old_pass = ''
+            this.new_pass = ''
+            this.repeat_pass = ''
+            
+          });
+      }).catch(er => {
+        console.log(er);
+      })
+    },
+
+    validateUserEmail(){
+      let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+        if(regex.test(this.verify_email_pass)){
+          this.valid_email_pass = true;
+          return true;
+        } else{
+          this.valid_email_pass = false;
+          return false;
+        }
+    },
+
+    forgetPassword(){
+      console.log('submit');
+      if(!this.valid_email_pass){
+        this.$event.preventDefault();
+      }
+    }
+
   }));
 })
+
+// window.addEventListener("resize", () => {
+//   console.log(window.innerHeight);
+// })
