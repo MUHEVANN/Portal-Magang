@@ -32,16 +32,17 @@
                             class="my-2 sm:items-center bg-white hover:shadow border-[1px] border-slate-300 flex flex-col sm:flex-row sm:justify-between rounded cursor-pointer hover:bg-gray-50">
                             <div class="flex flex-col sml:flex-row gap-3 w-full">
                                 <span class="bg-slate-200 h-38 overflow-hidden transition rounded-l sml:w-3/6 sm:w-2/6">
-                                    <img :src="data.gambar" :alt="data.gambar" class="transition hover:scale-125">
+                                    {{-- <img :src="data.gambar" :alt="data.gambar" class="transition hover:scale-125"> --}}
+                                    <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar"
+                                        class="w-full h-full">
                                 </span>
-                                {{-- <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar" class="w-28"> --}}
                                 <div
-                                    class="justify-around flex-wrap p-3 pb-5 sm:p-0 content-between sml:w-3/6 sm:w-4/6 flex flex-col py-2">
-                                    <div class="flex">
+                                    class="justify-around flex-wrap p-3 pb-5 sm:p-0 content-between sml:w-3/6 sm:w-4/6 flex flex-col py-2 ">
+                                    <div class="flex justify-between items-center">
                                         <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl" x-text='data.name'></h1>
                                         <p x-text="data.deadline"></p>
                                     </div>
-                                    <p x-text="sortParagraph(data.desc)" class="w-4/5 text-slate-700 text-sm"></p>
+                                    <p x-html="sortParagraph(data.desc)" class="w-4/5 text-slate-700 text-sm"></p>
                                     <p class="text-slate-400 text-sm" x-text='elapsedTime(data.created_at)'>
                                     </p>
                                 </div>

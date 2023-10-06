@@ -12,7 +12,7 @@ class Apply extends Model
     protected $fillable = ['carrer_id', 'status', 'user_id', 'cv_user', 'tgl_mulai', 'tgl_selesai', 'tipe_magang'];
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
     public function carrer()
     {

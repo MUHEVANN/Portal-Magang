@@ -128,7 +128,13 @@
                         class="menu-item {{ config('app.url') . '/all-pemagang' === request()->url() ? 'active' : '' }}">
                         <a href="{{ url('all-pemagang') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Dashboard</div>
+                            <div data-i18n="Analytics">All Pemagang</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ config('app.url') . '/all-user' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('all-user') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">All User</div>
                         </a>
                     </li>
                     <li

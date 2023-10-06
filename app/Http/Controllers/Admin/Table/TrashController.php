@@ -13,14 +13,18 @@ class TrashController extends Controller
 {
     public function trash()
     {
-        $data = User::onlyTrashed()->with('apply.carrer', 'lowongan')->where('name', '!=', 'Admin')->orderBy('created_at', 'asc')->get();
+        $data = User::onlyTrashed()->where('name', '!=', 'Admin')->orderBy('created_at', 'asc')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('Admin.restore')->with('data', $data);
+            })->addColumn('checkbox', function ($data) {
+                return "<input type='checkbox' class='child-cb' value='$data->id'/>";
             })
+            ->rawColumns(['checkbox'])
             ->make(true);
     }
+
     public function restore($id)
     {
         $user = User::withTrashed()->find($id);

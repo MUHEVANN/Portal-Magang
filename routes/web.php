@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\Table\BatchController;
 use App\Http\Controllers\Admin\Table\TrashController;
 use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Admin\Table\ListPemagangController;
-
+use App\Http\Controllers\Admin\Table\ListUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::get('logout', [UserAuth::class, 'logout']);
     // client
     Route::get('/apply-form', [ApplyJobController::class, 'formApply']);
-    Route::post('/apply-form', [ApplyJobController::class, 'store']);
+    Route::post('/apply-form', [ApplyJobController::class, 'store'])->middleware('checkDate');
     Route::post('/detail-form', [ApplyJobController::class, 'detail_lowongan']);
     // Profile
     Route::post('/update-profile', [ProfileController::class, 'update_profile']);
@@ -105,6 +105,12 @@ Route::middleware('auth')->group(function () {
         Route::get('edit-pemagang/{id}', [ListPemagangController::class, 'edit']);
         Route::put('edit-pemagang/{id}', [ListPemagangController::class, 'update']);
         Route::delete('hapus-pemagang/{id}', [ListPemagangController::class, 'delete']);
+        // list User
+        Route::get('all-user', [DashboardController::class, 'list_user_page']);
+        Route::get('list-user', [ListUserController::class, 'index']);
+        Route::get('edit-user/{id}', [ListUserController::class, 'edit']);
+        Route::put('edit-user/{id}', [ListUserController::class, 'update']);
+        Route::delete('hapus-user/{id}', [ListUserController::class, 'delete']);
         // Trash
         Route::get('trash-page', [DashboardController::class, 'trash_page']);
         Route::get('trash', [TrashController::class, 'trash']);

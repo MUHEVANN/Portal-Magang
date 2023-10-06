@@ -85,33 +85,33 @@
                         name: 'checkbox',
                     },
                     {
-                        data: 'name',
-                        name: 'name',
+                        data: 'user.name',
+                        name: 'user.name',
                     }, {
-                        data: 'apply.cv_user',
-                        name: 'apply.cv_user',
+                        data: 'cv_user',
+                        name: 'cv_user',
                         render: function(data) {
                             return "<a href='storage/cv/" + data + "'>" + data +
                                 "</a>";
                         }
                     }, {
-                        data: 'lowongan.name',
-                        name: 'lowongan.name',
+                        data: 'user.lowongan.name',
+                        name: 'user.lowongan.name',
                     }, {
-                        data: 'apply.tipe_magang',
-                        name: 'apply.tipe_magang',
+                        data: 'tipe_magang',
+                        name: 'tipe_magang',
                     }, {
-                        data: 'apply.status',
-                        name: 'apply.status',
+                        data: 'status',
+                        name: 'status',
                     }, {
-                        data: 'jabatan',
-                        name: 'jabatan',
+                        data: 'user.jabatan',
+                        name: 'user.jabatan',
                         render: function(data) {
                             return (data === 0) ? 'Anggota' : 'Ketua';
                         }
                     }, {
-                        data: 'kelompok.name',
-                        name: 'kelompok.name',
+                        data: 'user.kelompok.name',
+                        name: 'user.kelompok.name',
                         render: function(data) {
                             return (data !== null) ? 'kelompok ' + data : 'mandiri';
                         }
@@ -158,7 +158,7 @@
                 }
                 let all_checkbox = $('#myTable tbody .child-cb:checked');
                 let active_checkbox = (all_checkbox.length > 0);
-                // console.log(all_checkbox.val());
+
                 $('#btn-konfirmasi').prop('disabled', !active_checkbox);
                 $('#btn-reject').prop('disabled', !active_checkbox);
 

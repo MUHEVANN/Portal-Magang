@@ -10,6 +10,7 @@ use App\Jobs\CreateUserFromApply;
 use App\Jobs\StatusApplyJob;
 use App\Models\Carrer;
 use App\Models\Kelompok;
+use App\Models\Konfirmed;
 use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -27,18 +28,21 @@ class ApplyJobController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request->all());
-        // dd($request->all());
+
         $user = User::where('email', Auth::user()->email)->first();
         if ($user->is_active !== '1') {
             return $this->errorMessage('Gagal total', "Akun anda belum diverifikasi, cek email anda", 400);
         }
         $existingApply = Apply::where('user_id', Auth::user()->id)
-            ->whereIn('status', ['menunggu'])
+            ->where('status', 'menunggu')
             ->first();
         if ($existingApply) {
             return $this->errorMessage('Gagal total', 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami', 400);
         }
+
+
+
+
         $validate = Validator::make($request->all(), [
             'job_magang_ketua' => 'required',
             'cv_pendaftar' => 'required|mimes:pdf',
@@ -47,6 +51,7 @@ class ApplyJobController extends Controller
         if ($validate->fails()) {
             return $this->errorMessage('Gagal total', $validate->messages(), 400);
         }
+
 
         // untuk carrer ketua dan mandiri
 
@@ -58,7 +63,6 @@ class ApplyJobController extends Controller
         $pendaftar->job_magang_id = $request->job_magang_ketua;
         $pendaftar->jabatan = 1;
         // kelompok
-        $semua_pendaftar = [];
         if ($request->tipe_magang === 'kelompok') {
             $kelompok = Kelompok::create([
                 'name' => Str::random(5)
@@ -91,7 +95,7 @@ class ApplyJobController extends Controller
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
                 if ($user_acc) {
-                    $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc->id)->first();
+                    $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc->id)->where('status', 'menunggu')->first();
                     if ($cek_anggota_sudah_apply) {
                         return $this->errorMessage('Gagal', 'Salah satu anggotamu sudah pernah apply', 400);
                     }
@@ -113,7 +117,6 @@ class ApplyJobController extends Controller
                         'password' => Hash::make($password),
                         'kelompok_id' => $kelompok->id,
                     ]);
-                    array_push($semua_pendaftar, $new_user);
                     CreateUserFromApply::dispatch($new_user, $password);
                     // carrer
                     $carrer = Apply::create([
@@ -130,8 +133,8 @@ class ApplyJobController extends Controller
                     $user_acc->job_magang_id = $request->job_magang[$i];
                     $user_acc->save();
                     AfterApply::dispatch($user_acc);
-                    array_push($semua_pendaftar, $user_acc);
                     // carrer
+
                     $carrer = Apply::create([
                         'user_id' => $user_acc->id,
                         'tgl_mulai' => $request->tgl_mulai,
@@ -146,19 +149,22 @@ class ApplyJobController extends Controller
             $pendaftar->kelompok_id = 1;
         }
         $pendaftar->save();
+        $cv_file = $request->file('cv_pendaftar');
+        $cv_name = Str::random(10) . '.' . $cv_file->getClientOriginalExtension();
+        $cv_file->storeAs('public/cv', $cv_name);
+
         $carrer = new Apply();
         $carrer->user_id = auth()->user()->id;
         $carrer->tgl_mulai = $request->tgl_mulai;
         $carrer->tgl_selesai = $request->tgl_selesai;
         $carrer->carrer_id = $carr->id;
         $carrer->tipe_magang = $request->tipe_magang;
-        $cv_file = $request->file('cv_pendaftar');
-        $cv_name = Str::random(10) . '.' . $cv_file->getClientOriginalExtension();
-        $cv_path = $cv_file->storeAs('public/cv', $cv_name);
         $carrer->cv_user = $cv_name;
         $carrer->save();
-        array_push($semua_pendaftar, $pendaftar);
+
+
         Cache::forget('all-pemagang');
+        Cache::forget('/pendaftar');
         AfterApply::dispatch($pendaftar);
         return redirect()->to('/home');
     }
@@ -192,9 +198,14 @@ class ApplyJobController extends Controller
      */
     public function reject($id)
     {
-        $apply = Apply::where('user_id', $id)->first();
+        $apply = Apply::find($id);
         $apply->status = 'Ditolak';
         $apply->save();
+        $user = User::find($apply->user_id);
+        Konfirmed::create([
+            'user_id' => $user->id,
+            'status' => $apply->status
+        ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('pendaftar');
         Cache::forget('all-pemagang');
@@ -202,11 +213,17 @@ class ApplyJobController extends Controller
     }
     public function konfirm($id)
     {
-        $apply = Apply::where('user_id', $id)->first();
+        $apply = Apply::find($id);
         $apply->status = 'lulus';
         $apply->save();
+        $user = User::find($apply->user_id);
+        Konfirmed::create([
+            'user_id' => $user->id,
+            'status' => $apply->status
+        ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('all-pemagang');
+        Cache::forget('pendaftar');
         return redirect()->to('/pendaftar')->with(['success' => 'success']);
     }
     public function destroy(string $id)

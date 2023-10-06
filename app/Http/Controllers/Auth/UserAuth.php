@@ -133,7 +133,7 @@ class UserAuth extends Controller
     public function proccess_changePassword(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'email' => 'required',
+
             'verif_code' => 'required',
             'password' => 'required',
         ]);
@@ -141,13 +141,10 @@ class UserAuth extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages());
         }
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('verif_code', $request->verif_code)->first();
         if (!$user) {
-            return redirect()->back()->with(['error' => 'Email tidak ada']);
-        } elseif ($user && $request->verif_code !== $user->verif_code) {
             return redirect()->back()->with(['error' => 'Inputkan Kode dengan benar']);
         } else {
-            $user->verif_code = NULL;
             $user->password = $request->password;
             $user->save();
             return redirect('/')->with(['success' => "Password berhasil diganti"]);
