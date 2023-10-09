@@ -18,6 +18,6 @@ class Carrer extends Model
 
     public function apply()
     {
-        return $this->hasMany(Apply::class, 'id', 'carrer_id');
+        return $this->hasMany(Apply::class, 'carrer_id', 'id');
     }
 }

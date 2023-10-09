@@ -145,11 +145,10 @@ class UserAuth extends Controller
         }
 
         $user = User::where('verif_code', $request->verif_code)->first();
-        // dd($request->verif_code, $user);
+
         if (!$user) {
             return redirect()->back()->with(['error' => 'Inputkan Kode dengan benar']);
         } else {
-            $user->verif_code = NULL;
             $user->password = $request->password;
             $user->save();
             return redirect('/login')->with(['success' => "Password berhasil diganti"]);

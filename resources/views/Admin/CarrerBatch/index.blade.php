@@ -68,8 +68,8 @@
                         data: 'lowongan_count',
                         name: 'lowongan_count'
                     }, {
-                        data: 'total_user',
-                        name: 'total_user'
+                        data: 'apply_lulus',
+                        name: 'apply_lulus'
                     }, {
                         data: 'action',
                         name: 'action'

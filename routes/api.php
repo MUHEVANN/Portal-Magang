@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // profile
     Route::get('/profile', [ProfileControllerApi::class, 'profile']);
     Route::put('/profile', [ProfileControllerApi::class, 'update']);
-    Route::post('/apply', [ApplyControllerApi::class, 'apply']);
+    Route::post('/apply', [ApplyControllerApi::class, 'apply'])->middleware('checkDate');
     // search apply
     Route::get('/pendaftar/search', [DaftarPendaftar::class, 'search']);
     // change password
@@ -77,3 +77,6 @@ Route::get('/lowongan/{id}', [JobMagangApi::class, 'show']);
 
 Route::post('/register', [UserAuthApi::class, 'register']);
 Route::post('/login', [UserAuthApi::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/get-apply', [tes::class, 'getApply']);
+});

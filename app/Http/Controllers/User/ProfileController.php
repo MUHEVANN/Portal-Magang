@@ -16,9 +16,10 @@ class ProfileController extends Controller
     {
         $user_id = Auth::user()->id;
         $cekuser = Cache::get('user_' . $user_id);
-        $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
-            return User::with('lowongan')->find($user_id);
-        });
+        // $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
+        //     return User::with('lowongan')->find($user_id);
+        // });
+        $user = User::find($user_id);
         return view('Home.profile.index', compact('user'));
     }
 
@@ -26,8 +27,9 @@ class ProfileController extends Controller
     {
         $user_id = Auth::user()->id;
         $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
-            return User::with('lowongan')->find($user_id);
+            return User::find($user_id);
         });
+
         // $user = User::with('lowongan')->find($user_id);
         $response = [
             'name' => $user->name,
@@ -36,7 +38,7 @@ class ProfileController extends Controller
             'gender' => $user->gender,
             'alamat' => $user->alamat,
             'no_hp' => $user->no_hp,
-            'job_magang_id' => $user->job_magang_id === null ? 'Tidak Ada Job' : $user->lowongan->name,
+            // 'job_magang_id' => $user->job_magang_id === null ? 'Tidak Ada Job' : $user->lowongan->name,
             'profile_image' => $user->profile_image,
 
         ];

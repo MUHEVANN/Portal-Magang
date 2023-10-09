@@ -23,7 +23,12 @@ class DashboardController extends Controller
         $apply = Apply::select('status');
         $job = Lowongan::select('name', 'id')->get();
         $carrer = Carrer::select('batch', 'id')->whereNotIn('batch', ['tidak ada'])->get();
-        return view('Admin.pemagang.page', compact('carrer', 'job', 'apply'));
+        return view('Admin.user.page', compact('carrer', 'job', 'apply'));
+    }
+    public function list_user_page()
+    {
+        $job = Lowongan::select('name', 'id')->get();
+        return view('Admin.user.list_user', compact('job'));
     }
 
     public function trash_page()

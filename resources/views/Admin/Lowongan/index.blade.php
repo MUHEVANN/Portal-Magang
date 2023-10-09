@@ -358,8 +358,8 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Yakin ingin menghapus lowongan?',
+                    text: "Semua Apply yang berkaitan juga akan terhapus!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Yes, delete it!',

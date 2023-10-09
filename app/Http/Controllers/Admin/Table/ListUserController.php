@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin\Table;
 
 use App\Http\Controllers\Controller;
-use App\Models\Apply;
 use App\Models\Kelompok;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
-class ListPemagangController extends Controller
+class ListUserController extends Controller
 {
     public function index()
     {
@@ -22,15 +21,15 @@ class ListPemagangController extends Controller
         //         return $query->select('id', 'name');
         //     })->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get();
         // });
-        // $data = User::with('apply.carrer', 'kelompok', 'lowongan')->whereNotNull('job_magang_id')->get();
-        $data = Apply::with('lowongan', 'user', 'kelompok', 'carrer')->get();
+
+        $data = User::all();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('checkbox', function ($data) {
                 return "<input type='checkbox' class='child-cb' value='$data->id'/>";
             })
             ->addColumn('action', function ($data) {
-                return "<a href='#' data-id='$data->id' class='edit menu-icon tf-icons me-2'><i class='bx bx-edit-alt'></i></a><a href='#' data-id='$data->id' class='hapus' style='color:red;'><i class='bx bx-trash'></i></a>";
+                return "<a href='#' data-id=' $data->id ' class='edit menu-icon tf-icons me-2'><i class='bx bx-edit-alt'></i></a><a href='#' data-id='$data->id' class='hapus' style='color:red;'><i class='bx bx-trash'></i></a>";
             })
 
             ->rawColumns(['checkbox', 'action'])
@@ -39,51 +38,29 @@ class ListPemagangController extends Controller
 
     public function update(Request $request, $id)
     {
-        $apply = Apply::find($id);
-        $apply->carrer_id = $request->carrer_id;
-        $apply->tgl_mulai = $request->tgl_mulai;
-        $apply->tgl_selesai = $request->tgl_selesai;
-        $apply->job_magang_id = $request->job_magang_id;
-        $apply->save();
-
-
-        $user = User::find($apply->user_id);
+        $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = $request->password;
         $user->alamat = $request->alamat;
         $user->no_hp = $request->no_hp;
         $user->gender = $request->gender;
-        // $user->job_magang_id = $request->job_magang_id;
         $user->save();
+
         Cache::forget('all-pemagang');
         return response()->json(['success' => 'Berhasil Mengupdate']);
     }
     public function edit($id)
     {
-        $apply = Apply::find($id);
-        $user = User::find($apply->user_id);
-        $result = [
-            'user' => $user,
-            'apply' => $apply
-        ];
-        return response()->json(['result' => $result]);
+        $user = User::find($id);
+        return response()->json(['result' => $user]);
     }
     public function delete($id)
     {
-        $apply = Apply::find($id);
-        $kelompok_id = $apply->kelompok_id;
-        $kelompok = Kelompok::where('id', $kelompok_id)->first();
-        if ($apply->tipe_magang === "kelompok") {
-            $apply->delete();
-            if ($kelompok->apply->count() < 1) {
-                $kelompok->delete();
-            }
-        } else {
-            $apply->delete();
-        }
-
+        $user = User::find($id);
+        $user->delete();
         Cache::forget('all-pemagang');
+
         return response()->json(['success' => 'Berhasil Menghapus']);
     }
 }

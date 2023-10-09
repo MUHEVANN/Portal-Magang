@@ -14,22 +14,19 @@ class BatchController extends Controller
     public function index()
     {
         $data = Cache::remember('batch', 3000, function () {
-            return Carrer::select('id', 'batch')->where('batch', '!=', 'tidak ada')->with('lowongan.user')->withCount('lowongan')->get();
+            return Carrer::where('batch', '!=', 'tidak ada')->withCount(['apply as apply_lulus' => function ($query) {
+                $query->where('status', 'lulus');
+            }])->withCount('lowongan')->get();
         });
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('Admin.updel-user')->with('data', $data);
             })
-            ->addColumn('total_user', function ($data) {
+            // ->addColumn('total_user', function ($data) {
 
-                $totalUsers = 0;
-                foreach ($data->lowongan as $lowongan) {
-                    $totalUsers += $lowongan->user->count();
-                }
-
-                return $totalUsers;
-            })
+            //     return $data->apply_count;
+            // })
             ->make(true);
     }
     public function store(Request $request)

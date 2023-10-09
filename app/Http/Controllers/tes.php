@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apply;
 use App\Models\Carrer;
 use App\Models\Lowongan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
@@ -51,5 +53,20 @@ class tes extends Controller
         $job->update($data);
         Cache::forget('job');
         return response()->json(['success' => 'Perubahan Disimpan']);
+    }
+
+
+
+    public function getApply()
+    {
+        // $data = Apply::with('user.lowongan', 'user.kelompok')->get();
+        // $data = User::all();
+        // $data = User::with('konfirmed')->find(auth()->user()->id);
+        // $konfirmed_ketua = $data->konfirmed->last();
+        // $konfirmed_at = $konfirmed_ketua->created_at;
+        // $sixtyDaysAgo = $konfirmed_at->addDays(60);
+        // $time = $sixtyDaysAgo->diffInDays(now());
+        $data = Apply::with('lowongan', 'kelompok', 'user')->where('status', 'menunggu')->get();
+        return $this->successMessage($data, 'success');
     }
 }

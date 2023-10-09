@@ -18,4 +18,9 @@ class Lowongan extends Model
     {
         return $this->belongsTo(Carrer::class, 'carrer_id', 'id');
     }
+
+    public function apply()
+    {
+        return $this->hasMany(Apply::class, 'job_magang_id', 'id');
+    }
 }

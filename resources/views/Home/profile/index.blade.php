@@ -33,7 +33,7 @@
             <div class="mb-3">
                 <label for="gender">Gender</label>
                 <select name="gender" id="gender" class="input-style">
-                    <option>pilih gender</option>
+                    <option value="">pilih gender</option>
                     <option value="L">Laki-laki</option>
                     <option value="P">Perempuan</option>
                 </select>
@@ -46,10 +46,7 @@
                 <label for="no_hp">Nomor WA</label>
                 <input type="number" name="no_hp" id="no_hp" class="input-style">
             </div>
-            <div class="mb-3">
-                <label for="job_magang_id">Job Magang</label>
-                <input type="text" disabled name="job_magang_id" id="job_magang_id" class="opactiy-5 input-style">
-            </div>
+
 
             <div class="modal-footer">
                 <button type="button"
@@ -81,7 +78,6 @@
                     $('#gender').val(response.gender);
                     $('#alamat').val(response.alamat);
                     $('#no_hp').val(response.no_hp);
-                    $('#job_magang_id').val(response.job_magang_id);
 
                 }
             });
