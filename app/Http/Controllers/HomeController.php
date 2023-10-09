@@ -31,7 +31,7 @@ class HomeController extends Controller
     {
         $carrer = Carrer::latest()->first();
 
-        $query = Lowongan::where('deadline', '>=', date('y-m-d'))->where('carrer_id', $carrer->id);
+        $query = Lowongan::where('deadline', '>', date("Y-m-d"))->where('carrer_id', $carrer->id);
 
         if ($type == 'terlama') {
             $query->orderBy('created_at', 'asc');
@@ -40,6 +40,7 @@ class HomeController extends Controller
         }
 
         $lowongan = $query->get();
+
 
         return response()->json($lowongan);
     }

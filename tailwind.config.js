@@ -11,6 +11,7 @@ export default {
       },
       screens: {
         sml: '465px',
+        '1xl': '1440px'
       },
     },
   },

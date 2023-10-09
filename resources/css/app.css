@@ -39,7 +39,7 @@
 }
 
 .input-style {
-    @apply py-2 my-3 px-3 w-full mr-3 bg-slate-200 rounded-sm;
+    @apply py-2 my-3 px-3 w-full mr-3 bg-gray-100 rounded-sm;
 }
 
 .hover-underline {
@@ -101,11 +101,11 @@ ol {
 }
 
 .btn-style{
-    @apply bg-[#000D3B] py-2 px-3 lg:px-5 rounded hover:opacity-80 my-3 ml-auto text-slate-50 cursor-pointer;
+    @apply bg-[#000D3B] py-2 px-3 lg:px-5 rounded hover:opacity-80 my-3 ml-auto text-slate-50 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed;
 }
 
 .active-list{
-    @apply text-[#2b4297] bg-white hover:text-blue-700 font-semibold hover:bg-blue-400;
+    @apply text-[#2b4297] bg-white hover:text-blue-700 font-semibold hover:bg-blue-100;
 }
 
 /* pangination styles */
@@ -119,4 +119,13 @@ ol {
 
 .pagination-list li:hover p{
     @apply hover:bg-gray-100 hover:text-gray-500;
+}
+
+.text-limit{
+    @apply text-ellipsis block whitespace-nowrap overflow-hidden;
+}
+
+/* login register input style */
+.auth-input{
+ @apply pl-9 border-b-2 py-2 mb-2 px-2 w-full focus:outline-none focus:border-[#001D86] bg-gray-50 focus:bg-blue-50;
 }

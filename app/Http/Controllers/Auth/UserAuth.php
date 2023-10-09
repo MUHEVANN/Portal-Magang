@@ -120,9 +120,10 @@ class UserAuth extends Controller
             return redirect()->back()->with(['error' => "Email belum diverifikasi"]);
         } else {
             $user->verif_code = Str::random(60);
+            // dd($user->verif_code);
             $user->save();
-            CodeChangePassword::dispatch($user);
-            return redirect()->to('/changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
+            // CodeChangePassword::dispatch($user);
+            return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
         }
     }
 
@@ -136,18 +137,21 @@ class UserAuth extends Controller
 
             'verif_code' => 'required',
             'password' => 'required',
+            'repeat_password' => 'required|same:password'
         ]);
 
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages());
         }
+
         $user = User::where('verif_code', $request->verif_code)->first();
+
         if (!$user) {
             return redirect()->back()->with(['error' => 'Inputkan Kode dengan benar']);
         } else {
             $user->password = $request->password;
             $user->save();
-            return redirect('/')->with(['success' => "Password berhasil diganti"]);
+            return redirect('/login')->with(['success' => "Password berhasil diganti"]);
         }
     }
 
@@ -156,7 +160,7 @@ class UserAuth extends Controller
         $validate = Validator::make($request->all(), [
             'password_lama' => 'required',
             'password_baru' => 'required',
-            'confirm_password' => 'required|same:password_baru'
+            'confirm_password' => 'required|same:password_baru',
         ]);
 
         if ($validate->fails()) {
@@ -164,6 +168,7 @@ class UserAuth extends Controller
         }
         $password = $request->password_lama;
         $new_password = $request->password_baru;
+
         $id = auth()->user()->id;
         $user = User::find($id);
         if (Hash::check($password, $user->password)) {

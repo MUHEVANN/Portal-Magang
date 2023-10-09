@@ -3,9 +3,9 @@
 
 Klik Tombol Tautan Berikut ini untuk mem-verifikasi akun anda agar bisa mengaktifkan akun anda.
 
-<x-mail::button url="{{ route('verif', ['verif' => $user]) }}">
-    Verifikasi
-</x-mail::button>
+<a href="{{ route('verif', $user) }}" class="button-blue button text-center block">
+Verifikasi
+</a>
 
 Salam Hangat,<br>
 {{ config('app.name') }}
