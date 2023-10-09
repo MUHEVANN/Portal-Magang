@@ -278,8 +278,8 @@
                         name: 'user.name'
                     },
                     {
-                        data: 'user.lowongan.name',
-                        name: 'user.lowongan.name'
+                        data: 'lowongan.name',
+                        name: 'lowongan.name'
                     },
                     {
                         data: 'tipe_magang',
@@ -287,7 +287,10 @@
                     },
                     {
                         data: 'user.jabatan',
-                        name: 'user.jabatan'
+                        name: 'user.jabatan',
+                        render: function(data) {
+                            return data === 1 ? "ketua" : "anggota"
+                        }
                     },
                     {
                         data: 'carrer.batch',
@@ -302,8 +305,8 @@
                         name: 'cv_user'
                     },
                     {
-                        data: 'user.kelompok.name',
-                        name: 'user.kelompok.name'
+                        data: 'kelompok.name',
+                        name: 'kelompok.name'
                     },
                     {
                         data: 'action',
@@ -361,7 +364,7 @@
                         $('#no_hp').val(response.result.user.no_hp);
                         $('#tgl_mulai').val(response.result.apply.tgl_mulai);
                         $('#tgl_selesai').val(response.result.apply.tgl_selesai);
-                        var selectJob = response.result.user.job_magang_id;
+                        var selectJob = response.result.apply.job_magang_id;
                         $('#job_magang_id option').each(function() {
                             var optionVal = $(this).val();
 
@@ -431,6 +434,9 @@
                             $('#gender').val('');
                             $('#no_hp').val('');
                             $('#job_magang_id').val('');
+                            $('#carrer_id').val('');
+                            $('#tgl_mulai').val('');
+                            $('#tgl_selesai').val('');
                         }
                     });
                 });

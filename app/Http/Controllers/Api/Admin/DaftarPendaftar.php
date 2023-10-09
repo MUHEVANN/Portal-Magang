@@ -24,15 +24,13 @@ class DaftarPendaftar extends Controller
         $status = $request->status;
         $tipe_magang = $request->tipe_magang;
         // 
-        $query = Apply::with('user.lowongan', 'carrer');
+        $query = Apply::with('lowongan', 'carrer');
         $query->when($request->has('carrer_id'), function ($query) use ($carrer_id) {
             return $query->where('carrer_id', $carrer_id);
         });
 
         $query->when($request->has('job_id'), function ($query) use ($job_id) {
-            return $query->whereHas('user', function ($query) use ($job_id) {
-                $query->where('job_magang_id', $job_id);
-            });
+            return $query->where('job_magang_id', $job_id);
         });
 
         $query->when($request->has('status'), function ($query) use ($status) {
@@ -56,15 +54,13 @@ class DaftarPendaftar extends Controller
         $status = $request->status;
         $tipe_magang = $request->tipe_magang;
         // 
-        $query = Apply::with('user.lowongan', 'carrer')->whereNotIn('status', ['menunggu']);
+        $query = Apply::with('lowongan', 'carrer')->whereNotIn('status', ['menunggu']);
         $query->when($request->has('carrer_id'), function ($query) use ($carrer_id) {
             return $query->where('carrer_id', $carrer_id);
         });
 
         $query->when($request->has('job_id'), function ($query) use ($job_id) {
-            return $query->whereHas('user', function ($query) use ($job_id) {
-                $query->where('job_magang_id', $job_id);
-            });
+            return   $query->where('job_magang_id', $job_id);;
         });
 
         $query->when($request->has('status'), function ($query) use ($status) {
@@ -118,7 +114,7 @@ class DaftarPendaftar extends Controller
     public function search(Request $request)
     {
         $term = $request->query('search');
-        $apply = Apply::with('user.lowongan', 'carrer')->whereHas("user", function ($query) use ($term) {
+        $apply = Apply::with('user', 'lowongan', 'carrer')->whereHas("user", function ($query) use ($term) {
             $query->where('name', 'LIKE', "%" . $term . "%");
         })->get();
         $data = new AllPendaftar($apply);

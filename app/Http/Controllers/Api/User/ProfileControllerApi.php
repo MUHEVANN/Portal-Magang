@@ -18,9 +18,10 @@ class ProfileControllerApi extends Controller
     public function profile()
     {
         $user_id = Auth::user()->id;
-        $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
-            return User::with('lowongan')->find($user_id);
-        });
+        // $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
+        //     return User::find($user_id);
+        // });
+        $user = User::find($user_id);
         $profileResource = new ProfileResource($user);
         return $this->successMessage($profileResource, 'Berhasil Get Profile');
     }

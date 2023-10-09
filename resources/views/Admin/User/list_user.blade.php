@@ -56,14 +56,7 @@
                         <label for="no_hp">NO Hp</label>
                         <input type="number" name="no_hp" id="no_hp" class="form-control">
                     </div>
-                    <div class="mb-3">
-                        <label for="job_magang_id">Job Magang</label>
-                        <select name="job_magang_id" id="job_magang_id" class="form-control">
-                            @foreach ($job as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -133,16 +126,7 @@
                         $('#gender').val(response.result.gender);
                         $('#alamat').val(response.result.alamat);
                         $('#no_hp').val(response.result.no_hp);
-                        var selectJob = response.result.job_magang_id;
-                        $('#job_magang_id option').each(function() {
-                            var optionVal = $(this).val();
 
-                            if (selectJob === parseInt(optionVal)) {
-                                $(this).prop('selected', true);
-                            } else {
-                                $(this).prop('selected', false);
-                            }
-                        });
                     }
                 });
                 $("body").off('click', '.update').on('click', '.update', function(e) {
@@ -157,8 +141,7 @@
                             alamat: $('#alamat').val(),
                             gender: $('#gender').val(),
                             no_hp: $('#no_hp').val(),
-                            job_magang_id: $(
-                                '#job_magang_id').val(),
+
                         },
                         success: function(response) {
                             $('#edit-modal').modal('hide');
@@ -190,7 +173,6 @@
                             $('#alamat').val('');
                             $('#gender').val('');
                             $('#no_hp').val('');
-                            $('#job_magang_id').val('');
                         }
                     });
                 });

@@ -7,6 +7,7 @@ use App\Http\Resources\PendaftarMenunggu;
 use App\Jobs\StatusApplyJob;
 use App\Models\Apply;
 use App\Models\Kelompok;
+use App\Models\Konfirmed;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -18,20 +19,16 @@ class DaftarPendaftarMenunggu extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::select('name', 'id', 'job_magang_id')->with('apply.carrer', 'lowongan')->whereHas('apply', function ($query) {
-            $query->where('status', 'menunggu');
-        });
+        $query = Apply::with('lowongan', 'carrer')->where('status', 'menunggu');
         $tipe_magang = $request->tipe_magang;
         $query->when($request->has('tipe_magang'), function ($query) use ($tipe_magang) {
-            return $query->whereHas('apply', function ($query2) use ($tipe_magang) {
-                $query2->where('tipe_magang', $tipe_magang);
-            });
+            return  $query->where('tipe_magang', $tipe_magang);;
         });
 
-        $user = Cache::remember('user_', 300, function () use ($query) {
+        $apply = Cache::remember('user_', 300, function () use ($query) {
             return $query->get();
         });
-        $data = new PendaftarMenunggu($user);
+        $data = new PendaftarMenunggu($apply);
         return $this->successMessage($data, 'Berhasil get pendaftar');
     }
 
@@ -40,18 +37,28 @@ class DaftarPendaftarMenunggu extends Controller
      */
     public function reject($id)
     {
-        $apply = Apply::where('user_id', $id)->first();
+        $apply = Apply::find($id);
         $apply->status = 'Ditolak';
         $apply->save();
+        $user = User::find($apply->user_id);
+        Konfirmed::create([
+            'user_id' => $user->id,
+            'status' => $apply->status
+        ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('user_');
         return $this->successMessage("rejected", "user dengan id " . $apply->user->id . " berhasil direject");
     }
     public function konfirm($id)
     {
-        $apply = Apply::where('user_id', $id)->first();
+        $apply = Apply::find($id);
         $apply->status = 'lulus';
         $apply->save();
+        $user = User::find($apply->user_id);
+        Konfirmed::create([
+            'user_id' => $user->id,
+            'status' => $apply->status
+        ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('user_');
         return $this->successMessage("konfirmed", "user dengan id " . $apply->user->id . " berhasil dikonfirm");

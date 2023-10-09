@@ -18,7 +18,7 @@ class ApplyController extends Controller
         //     $query->where('status', 'menunggu');
         // })->get();
 
-        $data = $data = Apply::with('user.lowongan', 'user.kelompok')->get();
+        $data = $data = Apply::with('lowongan', 'kelompok', 'user')->where('status', 'menunggu')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {

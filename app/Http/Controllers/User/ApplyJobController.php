@@ -40,9 +40,6 @@ class ApplyJobController extends Controller
             return $this->errorMessage('Gagal total', 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami', 400);
         }
 
-
-
-
         $validate = Validator::make($request->all(), [
             'job_magang_ketua' => 'required',
             'cv_pendaftar' => 'required|mimes:pdf',
@@ -60,14 +57,13 @@ class ApplyJobController extends Controller
 
         // akun ketua dan mandiri
         $pendaftar = User::where('email', Auth::user()->email)->first();
-        $pendaftar->job_magang_id = $request->job_magang_ketua;
+        // $pendaftar->job_magang_id = $request->job_magang_ketua;
         $pendaftar->jabatan = 1;
         // kelompok
         if ($request->tipe_magang === 'kelompok') {
             $kelompok = Kelompok::create([
                 'name' => Str::random(5)
             ]);
-            $pendaftar->kelompok_id = $kelompok->id;
             $pendaftar->save();
             $validate_anggota = Validator::make($request->all(), [
                 'job_magang' => 'required',
@@ -113,9 +109,7 @@ class ApplyJobController extends Controller
                     $new_user = User::create([
                         'name' => $request->name[$i],
                         'email' => $request->email[$i],
-                        'job_magang_id' => $request->job_magang[$i],
                         'password' => Hash::make($password),
-                        'kelompok_id' => $kelompok->id,
                     ]);
                     CreateUserFromApply::dispatch($new_user, $password);
                     // carrer
@@ -125,6 +119,8 @@ class ApplyJobController extends Controller
                         'tgl_selesai' => $request->tgl_selesai,
                         'carrer_id' => $carr->id,
                         'tipe_magang' => $request->tipe_magang,
+                        'job_magang_id' => $request->job_magang[$i],
+                        'kelompok_id' => $kelompok->id,
                         'cv_user' => $cv_name
                     ]);
                 } else {
@@ -140,6 +136,8 @@ class ApplyJobController extends Controller
                         'tgl_mulai' => $request->tgl_mulai,
                         'tgl_selesai' => $request->tgl_selesai,
                         'carrer_id' => $carr->id,
+                        'job_magang_id' => $request->job_magang[$i],
+                        'kelompok_id' => $kelompok->id,
                         'tipe_magang' => $request->tipe_magang,
                         'cv_user' => $cv_name
                     ]);
@@ -156,6 +154,8 @@ class ApplyJobController extends Controller
         $carrer = new Apply();
         $carrer->user_id = auth()->user()->id;
         $carrer->tgl_mulai = $request->tgl_mulai;
+        $carrer->job_magang_id = $request->job_magang_ketua;
+        $carrer->kelompok_id = $kelompok->id;
         $carrer->tgl_selesai = $request->tgl_selesai;
         $carrer->carrer_id = $carr->id;
         $carrer->tipe_magang = $request->tipe_magang;

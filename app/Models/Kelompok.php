@@ -12,13 +12,13 @@ class Kelompok extends Model
     protected $fillable = ['name'];
 
 
-    public function user()
-    {
-        return $this->hasMany(User::class, 'kelompok_id', 'id');
-    }
+    // public function user()
+    // {
+    //     return $this->hasMany(User::class, 'kelompok_id', 'id');
+    // }
 
     public function apply()
     {
-        return $this->hasOne(Apply::class, 'kelompok_id', 'id');
+        return $this->hasMany(Apply::class, 'kelompok_id', 'id');
     }
 }

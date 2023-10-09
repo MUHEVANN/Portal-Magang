@@ -23,7 +23,7 @@ class ListPemagangController extends Controller
         //     })->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get();
         // });
         // $data = User::with('apply.carrer', 'kelompok', 'lowongan')->whereNotNull('job_magang_id')->get();
-        $data = Apply::with('user.lowongan', 'user.kelompok', 'carrer')->get();
+        $data = Apply::with('lowongan', 'user', 'kelompok', 'carrer')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('checkbox', function ($data) {
@@ -43,6 +43,7 @@ class ListPemagangController extends Controller
         $apply->carrer_id = $request->carrer_id;
         $apply->tgl_mulai = $request->tgl_mulai;
         $apply->tgl_selesai = $request->tgl_selesai;
+        $apply->job_magang_id = $request->job_magang_id;
         $apply->save();
 
 
@@ -53,7 +54,7 @@ class ListPemagangController extends Controller
         $user->alamat = $request->alamat;
         $user->no_hp = $request->no_hp;
         $user->gender = $request->gender;
-        $user->job_magang_id = $request->job_magang_id;
+        // $user->job_magang_id = $request->job_magang_id;
         $user->save();
         Cache::forget('all-pemagang');
         return response()->json(['success' => 'Berhasil Mengupdate']);
@@ -71,7 +72,17 @@ class ListPemagangController extends Controller
     public function delete($id)
     {
         $apply = Apply::find($id);
-        $apply->delete();
+        $kelompok_id = $apply->kelompok_id;
+        $kelompok = Kelompok::where('id', $kelompok_id)->first();
+        if ($apply->tipe_magang === "kelompok") {
+            $apply->delete();
+            if ($kelompok->apply->count() < 1) {
+                $kelompok->delete();
+            }
+        } else {
+            $apply->delete();
+        }
+
         Cache::forget('all-pemagang');
         return response()->json(['success' => 'Berhasil Menghapus']);
     }

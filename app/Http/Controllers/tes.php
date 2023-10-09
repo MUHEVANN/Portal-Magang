@@ -61,8 +61,12 @@ class tes extends Controller
     {
         // $data = Apply::with('user.lowongan', 'user.kelompok')->get();
         // $data = User::all();
-        $data = User::with('konfirmed')->find(auth()->user()->id);
-        $konfirmed_ketua = $data->konfirmed->last();
-        return $this->successMessage($konfirmed_ketua, 'success');
+        // $data = User::with('konfirmed')->find(auth()->user()->id);
+        // $konfirmed_ketua = $data->konfirmed->last();
+        // $konfirmed_at = $konfirmed_ketua->created_at;
+        // $sixtyDaysAgo = $konfirmed_at->addDays(60);
+        // $time = $sixtyDaysAgo->diffInDays(now());
+        $data = Apply::with('lowongan', 'kelompok', 'user')->where('status', 'menunggu')->get();
+        return $this->successMessage($data, 'success');
     }
 }

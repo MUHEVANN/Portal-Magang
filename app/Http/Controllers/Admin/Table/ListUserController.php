@@ -45,18 +45,9 @@ class ListUserController extends Controller
         $user->alamat = $request->alamat;
         $user->no_hp = $request->no_hp;
         $user->gender = $request->gender;
-        $user->job_magang_id = $request->job_magang_id;
         $user->save();
 
-        Cache::put(
-            'all-pemagang',
-            User::select('name', 'created_at', 'kelompok_id', 'job_magang_id', 'id')->with('apply.carrer', 'lowongan', 'kelompok')->whereHas('apply', function ($query) {
-                return $query->select('tipe_magang', 'user_id', 'carrer_id');
-            })->whereHas('kelompok', function ($query) {
-                return $query->select('id', 'name');
-            })->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get(),
-            300
-        );
+        Cache::forget('all-pemagang');
         return response()->json(['success' => 'Berhasil Mengupdate']);
     }
     public function edit($id)
@@ -68,15 +59,8 @@ class ListUserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        Cache::put(
-            'all-pemagang',
-            User::select('name', 'created_at', 'kelompok_id', 'job_magang_id', 'id')->with('apply.carrer', 'lowongan', 'kelompok')->whereHas('apply', function ($query) {
-                return $query->select('tipe_magang', 'user_id', 'carrer_id');
-            })->whereHas('kelompok', function ($query) {
-                return $query->select('id', 'name');
-            })->whereNotNull('job_magang_id')->orderBy('created_at', 'asc')->get(),
-            300
-        );
+        Cache::forget('all-pemagang');
+
         return response()->json(['success' => 'Berhasil Menghapus']);
     }
 }

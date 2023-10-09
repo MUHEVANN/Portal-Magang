@@ -106,6 +106,6 @@ class LowonganController extends Controller
         if ($batch_id) {
             $query->where('carrer_id', $batch_id);
         }
-        Cache::put('lowongan', $query->get(), 3000);
+        Cache::forget('job');
     }
 }

@@ -23,12 +23,13 @@ class CheckDate
             return $next($request);
         }
         $konfirmed_at = $konfirmed_ketua->created_at;
-        $sixtyDaysAgo = $konfirmed_at->addSeconds(5);
+        $sixtyDaysAgo = $konfirmed_at->addDays(10);
 
         if (now()->gte($sixtyDaysAgo)) {
             return $next($request);
         } else {
-            return redirect()->back()->with('error', 'Anda sudah melakukan applyan dan dikonfirmasi, tunggu 60 hari lagi untuk melakukan apply');
+            $time = $sixtyDaysAgo->diffInDays(now());
+            return redirect()->back()->with('error', 'Anda sudah melakukan applyan dan dikonfirmasi, tunggu' . $time . ' hari lagi untuk melakukan apply');
         }
 
         $email = $request->email;

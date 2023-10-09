@@ -18,21 +18,11 @@ class CarrerBatch extends Controller
      */
     public function index()
     {
-        $carrer = Cache::remember('carrer', 30000, function () {
-            return Carrer::with('lowongan.user')->withCount('lowongan')->get();
+        $data = Cache::remember('batch', 3000, function () {
+            return Carrer::where('batch', '!=', 'tidak ada')->withCount(['apply as apply_lulus' => function ($query) {
+                $query->where('status', 'lulus');
+            }])->withCount('lowongan')->get();
         });
-        $data = [];
-        foreach ($carrer as $carr) {
-            $user = 0;
-            foreach ($carr->lowongan as $lowongan) {
-                $user += $lowongan->user->count();
-            }
-            $data[] = [
-                'batch' => $carr->batch,
-                'total lowongan' => $carr->lowongan_count,
-                'total peserta' => $user
-            ];
-        }
         return $this->successMessage($data, 'Success get carrer');
     }
 

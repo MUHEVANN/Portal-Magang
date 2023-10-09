@@ -95,8 +95,8 @@
                                 "</a>";
                         }
                     }, {
-                        data: 'user.lowongan.name',
-                        name: 'user.lowongan.name',
+                        data: 'lowongan.name',
+                        name: 'lowongan.name',
                     }, {
                         data: 'tipe_magang',
                         name: 'tipe_magang',
@@ -110,11 +110,9 @@
                             return (data === 0) ? 'Anggota' : 'Ketua';
                         }
                     }, {
-                        data: 'user.kelompok.name',
-                        name: 'user.kelompok.name',
-                        render: function(data) {
-                            return (data !== null) ? 'kelompok ' + data : 'mandiri';
-                        }
+                        data: 'kelompok.name',
+                        name: 'kelompok.name',
+
                     }, {
                         data: 'action',
                         name: 'action',

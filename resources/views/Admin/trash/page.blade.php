@@ -167,7 +167,7 @@
             $.each(checkbox_checked, function(index, value) {
                 all_checked.push(value.value);
             });
-            console.log(all_checked);
+
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -192,7 +192,8 @@
                             url: "restore/" + all_checked[i],
                         })
                     }
-
+                    $('#restore').prop('disabled', true);
+                    $('#head-cb').prop('checked', false);
                     const Toast = Swal.mixin({
                         width: 400,
                         padding: 18,
