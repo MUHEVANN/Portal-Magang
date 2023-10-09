@@ -19,23 +19,31 @@
         <p class="bg-yellow-300 text-center py-5 w-full">Akun anda belum terverifikasi,
             silahkan
             verifikasi dengan mengklik
-            tautan <button type="button" class="underline verif">berikut</button>
+            tautan <button type="button" class="hover-underline verif">berikut</button>
         </p>
     @endif
     @if (session('success'))
-        <p class="text-green-500" x-init='$nextTick(() => {
+        <p x-init='$nextTick(() => {
             verified("<?= session('success') ?>")
             })'></p>
     @endif
 
     @if (session('error'))
-        <p class="text-green-500" x-init='$nextTick(() => {
+        <p x-init='$nextTick(() => {
             verified("<?= session('error') ?>","error")
             })'></p>
     @endif
 
+    @if ($errors->all())
+        @foreach ($errors->all() as $error)
+            <p x-init='$nextTick(() => {
+            verified("<?= $error ?>","error")
+                })'></p>
+        @endforeach
+    @endif
+
     <div class="bg-white sticky shadow-sm top-0 z-10">
-        <header class="flex py-5 mx-5 lg:mx-auto max-w-[1080px] justify-between items-center">
+        <header class="flex py-5 mx-5 1xl:mx-auto max-w-[1440px] justify-between items-center">
             <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
 
             @if (Auth::check())
@@ -98,7 +106,7 @@
     @endif
 
     <div class="text-center h-full relative overflow-hidden" id="top">
-        <div class="my-10 mx-5 lg:mx-auto max-w-[1080px]">
+        <div class="my-10 mx-5 1xl:mx-auto max-w-[1440px]">
             @yield('jumbotron')
         </div>
         <span class="bg-[#EAEEFF] w-60 h-60 ornament -top-20 -right-16"></span>
@@ -122,7 +130,7 @@
         </a>
     </main>
     <footer class="bg-[#000D3B]">
-        <div class="flex flex-col px-5 sm:flex-row max-w-[1000px] mx-auto items-center text-white justify-between">
+        <div class="flex flex-col px-5 sm:flex-row max-w-[1200px] mx-auto items-center text-white justify-between">
             <img src="{{ asset('images/jetorbit-logo-white.png') }}" class="w-40 sm:h-40 mt-7 sm:mt-0 object-contain"
                 alt="">
 

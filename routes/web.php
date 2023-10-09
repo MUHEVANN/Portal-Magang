@@ -41,6 +41,7 @@ Route::post('login', [UserAuth::class, 'proccess_login']);
 // changePassword
 Route::get('verif-email-changePassword', [UserAuth::class, 'verif_email_changePassword']);
 Route::post('verif-email-changePassword', [UserAuth::class, 'code_changePassword']);
+Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 
 // Pages
 // Client
@@ -54,10 +55,9 @@ Route::get('/home', [HomeController::class, 'home']);
 Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail']);
 Route::get('/filters/{type}', [HomeController::class, 'filter'])->name('filters');
 Route::middleware('auth')->group(function () {
-    
+
     // change password logged in
     Route::get('changePassword', [UserAuth::class, 'changePassword']);
-    Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 
     Route::post('/ganti-password', [UserAuth::class, 'ganti_password']);
     // Auth verif

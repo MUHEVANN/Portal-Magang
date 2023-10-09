@@ -9,12 +9,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/main.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center border-[2px] border-slate-400">
-    <div
-        class="bg-white h-full md:h-[30rem] w-[45rem] flex items-center flex-col md:flex-row shadow-sm border-2 border-gray-100 rounded-md">
+    <div x-data="apply"
+        class="bg-white h-full md:h-[30rem] justify-center w-[45rem] flex items-center flex-col md:flex-row shadow-sm border-2 border-gray-100 rounded-md">
+        @if (session('success'))
+            <p class="text-green-500" x-init='$nextTick(() => {
+                verified("<?= session('success') ?>")
+                })'></p>
+        @endif
+        {{-- {{ session()->all() }} --}}
         <section class="p-10 w-full sml:w-4/6 sm:w-[25rem]">
             <div class="my-5">
                 <h1 class="my-2 text-2xl">Login</h1>
@@ -67,6 +73,7 @@
             alt="login jetorbit logo">
 
     </div>
+    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 
 </html>

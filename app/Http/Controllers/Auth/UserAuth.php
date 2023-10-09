@@ -120,6 +120,7 @@ class UserAuth extends Controller
             return redirect()->back()->with(['error' => "Email belum diverifikasi"]);
         } else {
             $user->verif_code = Str::random(60);
+            // dd($user->verif_code);
             $user->save();
             CodeChangePassword::dispatch($user);
             return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
@@ -133,24 +134,25 @@ class UserAuth extends Controller
     public function proccess_changePassword(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'email' => 'required',
+
             'verif_code' => 'required',
             'password' => 'required',
+            'repeat_password' => 'required|same:password'
         ]);
 
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages());
         }
-        $user = User::where('email', $request->email)->first();
+
+        $user = User::where('verif_code', $request->verif_code)->first();
+        // dd($request->verif_code, $user);
         if (!$user) {
-            return redirect()->back()->with(['error' => 'Email tidak ada']);
-        } elseif ($user && $request->verif_code !== $user->verif_code) {
             return redirect()->back()->with(['error' => 'Inputkan Kode dengan benar']);
         } else {
             $user->verif_code = NULL;
             $user->password = $request->password;
             $user->save();
-            return redirect('/')->with(['success' => "Password berhasil diganti"]);
+            return redirect('/login')->with(['success' => "Password berhasil diganti"]);
         }
     }
 

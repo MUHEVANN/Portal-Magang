@@ -22,6 +22,6 @@ class DummySeed extends Seeder
         $batch = Carrer::create([
             'batch' => 'tidak ada'
         ]);
-        User::factory()->count(1000)->create();
+        User::factory()->count(10)->create();
     }
 }

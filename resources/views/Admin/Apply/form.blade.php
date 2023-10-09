@@ -10,19 +10,20 @@
 
 @section('content')
     <div class="container-width flex-col-reverse">
+
         <form action="{{ url('apply-form') }}" class="bg-red lg:w-3/5" method="post" enctype="multipart/form-data">
             {{-- <div class="bg-red lg:w-3/5"> --}}
             @csrf
             <div x-show.transition="current_pos == 1">
-                @foreach ($errors->get('name') as $error)
+
+                {{-- @foreach ($errors->all() as $error)
+                    <p class="text-red-500 my-2 font-semibold">{{ $error }}</p>
+                @endforeach --}}
+
+                {{-- @foreach ($errors->get('name') as $error)
                     {{ $error }}
                 @endforeach
-
-                @error('email')
-                    {{ $message }}
-                @enderror
-
-                @error('job_magang')
+                    @error('job_magang')
                     {{ $message }}
                 @enderror
 
@@ -42,14 +43,15 @@
                     <div class="alert alert-danger">
                         {{ $errors->first('sudah-lulus') }}
                     </div>
-                @endif
+                @endif --}}
+
                 <label for="tgl-mulai">Tanggal Mulai</label>
-                <input type="date" x-model='start_date' name="tgl_mulai" id="tgl-mulai" class="input-style"
-                    id="tipe-magang">
+                <input type="date" x-model='start_date' value="{{ old('tgl_mulai') }}" name="tgl_mulai" id="tgl-mulai"
+                    class="input-style" id="tipe-magang">
 
                 <label for="tgl-selesai">Tanggal Selesai</label>
-                <input type="date" x-model='end_date' name="tgl_selesai" id="tgl-selesai" class="input-style"
-                    id="tipe-magang">
+                <input type="date" x-model='end_date' value="{{ old('tgl_selesai') }}" name="tgl_selesai"
+                    id="tgl-selesai" class="input-style" id="tipe-magang">
                 <button
                     class="py-2 bg-gray-300 px-5 rounded hover:opacity-80 mt-5 my-3 flex justify-end ml-auto text-slate-950"
                     x-on:click.prevent="next()">Berikutnya</button>
@@ -101,7 +103,7 @@
                     <option value="mandiri">Mandiri</option>
                     <option value="kelompok">Kelompok</option>
                 </select>
-                
+
                 {{-- <p x-text="fields"></p> --}}
                 <div x-show="cek_output">
                     <button :class="fields_len >= 5 ? 'cursor-not-allowed opacity-60' : ''"
