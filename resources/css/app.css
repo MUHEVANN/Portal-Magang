@@ -82,7 +82,7 @@ ol {
 }
 
 .container-width{
-    @apply max-w-[1200px] mx-auto flex md:flex-row justify-start gap-5 px-5;
+    @apply max-w-[1000px] mx-auto flex md:flex-row justify-start gap-5 px-5;
 }
 
 .list-contents{
@@ -105,7 +105,7 @@ ol {
 }
 
 .active-list{
-    @apply text-[#2b4297] bg-white hover:text-blue-700 font-semibold hover:bg-blue-400;
+    @apply text-[#2b4297] bg-white hover:text-blue-700 font-semibold hover:bg-blue-100;
 }
 
 /* pangination styles */

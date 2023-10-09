@@ -122,7 +122,7 @@ class UserAuth extends Controller
             $user->verif_code = Str::random(60);
             // dd($user->verif_code);
             $user->save();
-            CodeChangePassword::dispatch($user);
+            // CodeChangePassword::dispatch($user);
             return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
         }
     }

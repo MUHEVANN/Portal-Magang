@@ -92,7 +92,7 @@
             <ul>
                 <li
                     class="list-none text-center flex flex-col items-center gap-3 border-[1px] bg-slate-50 border-slate-200 m-2 p-2 rounded">
-                    <img class="rounded-full object-cover w-11 h-11"
+                    <img class="rounded-full object-cover w-20 h-20"
                         src=" {{ Auth::user()->profile_image === null ? asset('images/profile.jpg') : asset('storage/profile/' . Auth::user()->profile_image) }}"
                         alt="user profile">
                     <strong>{{ Auth::user()->name }}</strong>
@@ -125,7 +125,7 @@
             @yield('sidebar')
         </div> --}}
         <a href="#top" x-on:scroll.window="scrollPos()" :class="top_position ? 'hidden' : ''"
-            class="bg-[#e7e7e7] p-4 block w-14 h-14 sticky bottom-5 right-5 opacity-50 ml-auto backdrop-blur-3xl">
+            class="bg-[#e7e7e7] p-4 block w-14 h-14 sticky bottom-5 right-5 sm:mt-16 opacity-50 ml-auto backdrop-blur-3xl">
             <img src="{{ asset('assets/chevron.svg') }}" class="rotate-180 w-full" alt="">
         </a>
     </main>

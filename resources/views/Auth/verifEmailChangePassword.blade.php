@@ -9,7 +9,7 @@
 @endsection
 @section('content')
     <div class="mx-auto sm:w-7/12 p-5 rounded-md border-[1px] bg-white shadow-sm border-slate-100" x-data="gates">
-        <h1 class="sub-title">Lupa Password</h1>
+        <h1 class="sub-title">Lupa <em>Password</em></h1>
         <form action="{{ url('verif-email-changePassword') }}" x-init="initBtnCode" method="post"
             x-on:submit="forgetPassword">
             @csrf
@@ -48,7 +48,7 @@
         <form action="{{ url('changePassword') }}" x-on:submit="changeForgetPassword" method="post">
             @csrf
             <hr class="my-5">
-            <h3 class="text-xl text-center mb-3 opacity-80">Ketikan Password Baru</h3>
+            <h3 class="text-xl text-center mb-3 opacity-80">Ketikan <em>Password</em> Baru</h3>
 
             <label for="confirm_code">Kode Konfirmasi</label><br>
 
@@ -76,7 +76,7 @@
             </div>
             <span class="text-red-500" x-text="new_forget_password_invalid"></span> <br>
 
-            <button type="submit" class="btn-style">Ubah Password</button>
+            <button type="submit" class="btn-style">Ubah <em>Password</em></button>
         </form>
     </div>
 @endsection

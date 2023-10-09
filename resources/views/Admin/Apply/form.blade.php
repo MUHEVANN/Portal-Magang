@@ -112,8 +112,8 @@
 
                     <template x-for="(ar, idx) in fields">
                         <div class="border-2 border-slate-100 px-2 py-3 mt-5">
-                            <span class="hover-underline  block w-fit ml-auto mb-5 cursor-pointer"
-                                x-on:click.prevent="remove(idx)">remove</span>
+                            <span class="hover-underline text-red-500 block w-fit ml-auto mb-5 cursor-pointer"
+                                x-on:click.prevent="remove(idx)">Hapus</span>
                             <label for="name">Name Aggota ke-<span x-text="idx+1"></span></label>
                             <input type="text" name="name[]" class="input-style" id="name"
                                 placeholder="E.g.Fulan Nugroho" x-model="ar.name" />

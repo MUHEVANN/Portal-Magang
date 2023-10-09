@@ -24,12 +24,12 @@
             <div x-show="$store.reactive.isEmpty()" class="flex justify-center font-xl mt-10">
                 <span x-html="$store.reactive.placeholder" class="flex flex-col items-center gap-y-3"></span>
             </div>
-            <div class="my-5 grid sml:grid-cols-2 grid-cols-1 gap-4">
+            <div class="my-5 grid sml:grid-cols-2 grid-cols-1 gap-6">
                 <template x-for='data in $store.reactive.result()' :key="data.id">
                     <template x-if="data.id">
                         <a :href="'lowongan/detail/' + data.id"
-                            class="sm:items-center w-full col-span-1 bg-white hover:shadow border-[1px] border-slate-300 flex flex-row justify-between rounded-md cursor-pointer hover:bg-gray-50">
-                            <div class="flex flex-col w-full h-full">
+                            class="sm:items-center w-full col-span-1 bg-white hover:border-blue-500 hover:shadow border-[1px] border-slate-300 flex flex-row justify-between rounded-md cursor-pointer hover:bg-blue-50">
+                            <div class="flex flex-col w-full h-full justify-between">
                                 <span class="bg-slate-200 overflow-hidden transition rounded-t-md sml:w-full">
                                     <template x-if="imageType(data.gambar)">
                                         <img :src="data.gambar" :alt="data.gambar"
@@ -41,8 +41,8 @@
                                     </template>
                                 </span>
                                 <div class="p-3">
-                                    <h1 class="text-[#000D3B] font-bold text-lg md:text-2xl mb-3" x-text='data.name'></h1>
-                                    <p x-html="sortParagraph(data.desc)" class="w-full text-slate-700 mb-3 text-sm"></p>
+                                    <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl mb-3" x-text='data.name'></h1>
+                                    <p x-html="sortParagraph(data.desc)" class="w-full text-gray-500 mb-3 text-sm"></p>
 
                                     <div class="flex justify-between w-full mt-3 sml:mt-0 gap-2 sm:items-center">
                                         <p class="text-green-600 text-sm text-limit" x-text='elapsedTime(data.updated_at)'>
