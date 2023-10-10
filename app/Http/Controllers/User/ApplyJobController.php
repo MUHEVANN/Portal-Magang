@@ -145,8 +145,6 @@ class ApplyJobController extends Controller
                     ]);
                 }
             }
-        } else {
-            $pendaftar->kelompok_id = 1;
         }
         $pendaftar->save();
         $cv_file = $request->file('cv_pendaftar');
@@ -157,11 +155,15 @@ class ApplyJobController extends Controller
         $carrer->user_id = auth()->user()->id;
         $carrer->tgl_mulai = $request->tgl_mulai;
         $carrer->job_magang_id = $request->job_magang_ketua;
-        $carrer->kelompok_id = $kelompok->id;
         $carrer->tgl_selesai = $request->tgl_selesai;
         $carrer->carrer_id = $carr->id;
         $carrer->tipe_magang = $request->tipe_magang;
         $carrer->cv_user = $cv_name;
+        if ($request->tipe_magang === "kelompok") {
+            $carrer->kelompok_id = $kelompok->id;
+        } else {
+            $carrer->kelompok_id = 1;
+        }
         $carrer->save();
 
 
@@ -207,7 +209,8 @@ class ApplyJobController extends Controller
         Konfirmed::create([
             'user_id' => $user->id,
             'status' => $apply->status,
-            'carrer_id' => $apply->carrer_id
+            'carrer_id' => $apply->carrer_id,
+            'apply_id' => $apply->id
         ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('pendaftar');
@@ -223,7 +226,8 @@ class ApplyJobController extends Controller
         Konfirmed::create([
             'user_id' => $user->id,
             'status' => $apply->status,
-            'carrer_id' => $apply->carrer_id
+            'carrer_id' => $apply->carrer_id,
+            'apply_id' => $apply->id
         ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('all-pemagang');

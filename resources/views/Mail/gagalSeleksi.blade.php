@@ -18,26 +18,26 @@
 </style>
 
 <x-mail::message>
-## Status Pendaftar
+    ## Status Pendaftar
 
-<p>
-Terimakasih sudah tertarik untuk mendaftar magang di <strong>jetorbit</strong>, tetapi sayangnya setelah
-mempertimbangkan dengan cermat.
-Kami menyatakan bahwa status Pendaftaran anda adalah:
-</p>
+    <p>
+        Terimakasih sudah tertarik untuk mendaftar magang di <strong>jetorbit</strong>, tetapi sayangnya setelah
+        mempertimbangkan dengan cermat.
+        Kami menyatakan bahwa status Pendaftaran anda adalah:
+    </p>
 
-<div class="panel-failed">
-<div class="panel-content-failed">
-<p class="text-failed">{{ $status }}</p>
-</div>
-</div>
+    <div class="panel-failed">
+        <div class="panel-content-failed">
+            <p class="text-failed">{{ $status }}</p>
+        </div>
+    </div>
 
-<p>
-Kami menghargai minat Anda untuk magang di <strong>jetorbit</strong> dan berharap dapat mendengar pendapat Anda lagi
-di masa mendatang!
-</p>
+    <p>
+        Kami menghargai minat Anda untuk magang di <strong>jetorbit</strong> Kamu bisa Apply lowongan lagi 60 hari
+        kedepan!
+    </p>
 
 
-Salam Hangat,<br>
-{{ config('app.name') }}
+    Salam Hangat,<br>
+    {{ config('app.name') }}
 </x-mail::message>

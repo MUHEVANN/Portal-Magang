@@ -9,9 +9,13 @@ class Konfirmed extends Model
 {
     use HasFactory;
     protected $table = 'konfirmed';
-    protected $fillable = ['status', 'user_id', 'carrer_id', 'isSend'];
+    protected $fillable = ['status', 'user_id', 'carrer_id', 'isSend', 'apply_id'];
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function apply()
+    {
+        return $this->hasOne(Apply::class);
     }
 }

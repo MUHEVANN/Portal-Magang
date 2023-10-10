@@ -67,7 +67,8 @@
                     @endforeach
                 </select>
                 <label for="cv">CV Ketua</label>
-                <input type="file" name="cv_pendaftar" class="input-style" x-model="cv_lead" id="cv" />
+                <input type="file" name="cv_pendaftar" class="input-style" x-model="cv_lead" id="cv"
+                    accept=".pdf" />
                 <p class="text-slate-600">Masukan CV dan Portfolio.</p>
                 {{-- indicator Alert --}}
                 <li x-show="cv_lead.length > 0" class="flex items-center pb-2 pt-2">
@@ -158,7 +159,7 @@
 
                             <label for="cv">CV</label>
                             <input type="file" name="cv_anggota[]" class="input-style" id="cv"
-                                x-model="ar.cv" />
+                                x-model="ar.cv" accept=".pdf" />
                             <p class="text-slate-600">Masukan CV dan Portfolio.</p>
 
                             {{-- indicator Alert --}}
