@@ -409,6 +409,7 @@ document.addEventListener("alpine:init", () => {
                 position: "bottom-end",
                 showConfirmButton: false,
                 timer: 5500,
+                width: 400,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener("mouseenter", Swal.stopTimer);
