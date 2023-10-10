@@ -204,7 +204,8 @@ class ApplyJobController extends Controller
         $user = User::find($apply->user_id);
         Konfirmed::create([
             'user_id' => $user->id,
-            'status' => $apply->status
+            'status' => $apply->status,
+            'carrer_id' => $apply->carrer_id
         ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('pendaftar');
@@ -219,7 +220,8 @@ class ApplyJobController extends Controller
         $user = User::find($apply->user_id);
         Konfirmed::create([
             'user_id' => $user->id,
-            'status' => $apply->status
+            'status' => $apply->status,
+            'carrer_id' => $apply->carrer_id
         ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('all-pemagang');

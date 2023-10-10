@@ -9,7 +9,7 @@ class Konfirmed extends Model
 {
     use HasFactory;
     protected $table = 'konfirmed';
-    protected $fillable = ['status', 'user_id'];
+    protected $fillable = ['status', 'user_id', 'carrer_id', 'isSend'];
     public function user()
     {
         return $this->belongsTo(User::class);
