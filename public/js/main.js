@@ -156,10 +156,10 @@ document.addEventListener("alpine:init", () => {
         search: "",
 
         // cek if image is a address link or local image name
-        imageType(param){
-            if(param.split('/').length > 1){
+        imageType(param) {
+            if (param.split("/").length > 1) {
                 return true;
-            } else{
+            } else {
                 return false;
             }
         },
@@ -410,6 +410,12 @@ document.addEventListener("alpine:init", () => {
                 showConfirmButton: false,
                 timer: 5500,
                 width: 400,
+                width: 400,
+                padding: 20,
+                // heightAuto: false,
+                // customClass: {
+                //     content: "custom-height", // Gunakan nama class CSS
+                // },
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener("mouseenter", Swal.stopTimer);
@@ -574,9 +580,9 @@ document.addEventListener("alpine:init", () => {
 
         // initialize function from before, and get data from localstorage when user refresh the pages.
         initBtnCode() {
-            let storageParse = JSON.parse(localStorage.getItem("waitFor"))
-            this.waitFor = storageParse.isWaiting
-            this.count = storageParse.countdown
+            let storageParse = JSON.parse(localStorage.getItem("waitFor"));
+            this.waitFor = storageParse.isWaiting;
+            this.count = storageParse.countdown;
 
             if (localStorage.getItem("waitFor")) {
                 setTimeout(() => {
@@ -588,16 +594,18 @@ document.addEventListener("alpine:init", () => {
             }
         },
 
-
         forgetPassword(e) {
             if (this.isClicked >= 1) {
                 return e.preventDefault();
             }
 
-            localStorage.setItem("waitFor", JSON.stringify({
-                "isWaiting":true,
-                "countdown": 30 
-            }));
+            localStorage.setItem(
+                "waitFor",
+                JSON.stringify({
+                    isWaiting: true,
+                    countdown: 30,
+                })
+            );
 
             this.isClicked = 1;
             if (!this.valid_email_pass) {

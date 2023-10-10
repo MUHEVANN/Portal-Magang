@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Apply;
 use App\Models\Carrer;
+use App\Models\Konfirmed;
 use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -66,7 +67,11 @@ class tes extends Controller
         // $konfirmed_at = $konfirmed_ketua->created_at;
         // $sixtyDaysAgo = $konfirmed_at->addDays(60);
         // $time = $sixtyDaysAgo->diffInDays(now());
-        $data = Apply::with('lowongan', 'kelompok', 'user')->where('status', 'menunggu')->get();
+        $konfirm =   Konfirmed::with('user', 'apply')->where('isSend', 0)->first();
+        $konfirm_at = $konfirm->created_at;
+        $sixtyDays = $konfirm_at->addMinutes(20);
+        // $data = now()->diffInMinutes($sixtyDays);
+        $data = $konfirm;
         return $this->successMessage($data, 'success');
     }
 }
