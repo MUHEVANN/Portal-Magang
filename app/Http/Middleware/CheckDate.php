@@ -23,7 +23,7 @@ class CheckDate
             return $next($request);
         }
         $konfirmed_at = $konfirmed_ketua->created_at;
-        $sixtyDaysAgo = $konfirmed_at->addDays(10);
+        $sixtyDaysAgo = $konfirmed_at->addDays(60);
 
         if (now()->gte($sixtyDaysAgo)) {
             return $next($request);

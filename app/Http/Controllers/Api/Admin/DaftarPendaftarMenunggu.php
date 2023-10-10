@@ -43,7 +43,8 @@ class DaftarPendaftarMenunggu extends Controller
         $user = User::find($apply->user_id);
         Konfirmed::create([
             'user_id' => $user->id,
-            'status' => $apply->status
+            'status' => $apply->status,
+            'carrer_id' => $apply->carrer_id
         ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('user_');
@@ -57,7 +58,8 @@ class DaftarPendaftarMenunggu extends Controller
         $user = User::find($apply->user_id);
         Konfirmed::create([
             'user_id' => $user->id,
-            'status' => $apply->status
+            'status' => $apply->status,
+            'carrer_id' => $apply->carrer_id
         ]);
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('user_');
@@ -69,22 +71,20 @@ class DaftarPendaftarMenunggu extends Controller
      */
     public function destroy(string $id)
     {
-        $apply = Apply::where('user_id', $id)->first();
-        $user = User::find($id);
-        $kolompok_id = $user->kelompok_id;
-        $user->kelompok_id = NULL;
-        $user->job_magang_id = NULL;
-        $user->jabatan = 0;
-        $user->save();
-
+        $apply = Apply::find($id);
+        $kelompok_id = $apply->kelompok_id;
+        $kelompok = Kelompok::where('id', $kelompok_id)->first();
         if ($apply->tipe_magang === "kelompok") {
-            $kelompok = Kelompok::with('user')->where('id', $kolompok_id)->first();
-            if ($kelompok->user->count() === 0) {
+            $apply->delete();
+            if ($kelompok->apply->count() < 1) {
                 $kelompok->delete();
             }
+        } else {
+            $apply->delete();
         }
-        $apply->delete();
 
-        return $this->successMessage($user->name . " apply berhasil dihapus", 'berhasil menghapus');
+        Cache::forget('all-pemagang');
+
+        return $this->successMessage($apply->id . " berhasil dihapus", 'berhasil menghapus');
     }
 }

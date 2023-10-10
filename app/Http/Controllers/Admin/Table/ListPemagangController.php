@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Table;
 use App\Http\Controllers\Controller;
 use App\Models\Apply;
 use App\Models\Kelompok;
+use App\Models\Konfirmed;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -74,6 +75,8 @@ class ListPemagangController extends Controller
         $apply = Apply::find($id);
         $kelompok_id = $apply->kelompok_id;
         $kelompok = Kelompok::where('id', $kelompok_id)->first();
+        $konfirmed = Konfirmed::where('apply_id', $apply->id)->first();
+        $konfirmed->delete();
         if ($apply->tipe_magang === "kelompok") {
             $apply->delete();
             if ($kelompok->apply->count() < 1) {
@@ -82,7 +85,6 @@ class ListPemagangController extends Controller
         } else {
             $apply->delete();
         }
-
         Cache::forget('all-pemagang');
         return response()->json(['success' => 'Berhasil Menghapus']);
     }
