@@ -82,7 +82,7 @@ ol {
 }
 
 .container-width{
-    @apply max-w-[1000px] mx-auto flex md:flex-row justify-start gap-5 px-5;
+    @apply max-w-[1100px] mx-auto flex md:flex-row justify-start gap-5 px-5;
 }
 
 .list-contents{

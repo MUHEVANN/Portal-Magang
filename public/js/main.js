@@ -447,8 +447,6 @@ document.addEventListener("alpine:init", () => {
         new_pass_invalid: "",
         repeat_pass_invalid: "",
 
-        statusResponse: "",
-
         // new forget password
         repeat_new_forget_pass: "",
         new_forget_pass: "",
@@ -490,7 +488,6 @@ document.addEventListener("alpine:init", () => {
 
         async changePassword() {
             this.$event.preventDefault();
-
             await fetch("/ganti-password", {
                 method: "POST",
                 headers: {
@@ -505,36 +502,56 @@ document.addEventListener("alpine:init", () => {
                 }),
             })
                 .then((res) => {
-                    res.json().then((response) => {
-                        if (response.error) {
-                            this.old_pass_invalid =
-                                response.error["password_lama"];
-                            this.new_pass_invalid =
-                                response.error["password_baru"];
-                            this.repeat_pass_invalid =
-                                response.error["confirm_password"];
-                            return;
+                    res.json().then((response) => {  
+                        console.log(Object.keys(response).length, response);
+
+                        if(Object.keys(response).length >= 1){
+                            this.reset_invalid_pass();
+                            for (const msg in response) {
+                                if (Object.hasOwnProperty.call(response, msg)) {
+                                switch (msg) {
+                                    case 'password_lama':
+                                        this.old_pass_invalid = response[msg];
+                                        break;
+                                    case 'password_baru':
+                                        this.new_pass_invalid = response[msg];
+                                        break;
+                                    case 'confirm_password':
+                                        this.repeat_pass_invalid = response[msg];
+                                        break;
+                                    case 'success':
+                                        this.reset_validate_pass_success(response);
+                                        break;
+                                    default:
+                                        this.alertChangePass('Terjadi Masalah.<br> Silahkan coba lagi!','error');
+                                        break;
+                                    }     
+                                }
+                            }
                         }
-                        if (response.fail) {
-                            this.old_pass_invalid = response.fail;
-                            return;
-                        }
-
-                        this.old_pass_invalid = "";
-                        this.new_pass_invalid = "";
-                        this.repeat_pass_invalid = "";
-
-                        window.location.href = "/update-profile";
-
-                        this.alertChangePass(response.success);
-                        this.old_pass = "";
-                        this.new_pass = "";
-                        this.repeat_pass = "";
                     });
                 })
                 .catch((er) => {
                     console.log(er);
                 });
+        },
+
+        // message if success reset the password
+        reset_validate_pass_success(response){
+            this.reset_invalid_pass();
+
+            this.alertChangePass(response.success);
+            
+            this.old_pass = "";
+            this.new_pass = "";
+            this.repeat_pass = "";
+        },
+
+        // reset all error message for every message
+        reset_invalid_pass(){
+            this.old_pass_invalid = "";
+            this.new_pass_invalid = "";
+            this.repeat_pass_invalid = "";
         },
 
         validateUserEmail() {

@@ -33,7 +33,7 @@ Kami menyatakan bahwa status Pendaftaran anda adalah:
 </div>
 
 <p>
-Kami menghargai minat Anda untuk magang di <strong>jetorbit</strong> dan berharap dapat mendengar pendapat Anda lagi
+Kami menghargai minat Anda untuk magang di <strong>jetorbit</strong> dan berharap dapat mendengar anda lagi
 di masa mendatang!
 </p>
 
