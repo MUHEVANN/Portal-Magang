@@ -32,10 +32,12 @@
         </div>
     </div>
 
+
     <p>
         Kami menghargai minat Anda untuk magang di <strong>jetorbit</strong> Kamu bisa Apply lowongan lagi 60 hari
         kedepan!
     </p>
+
 
 
     Salam Hangat,<br>

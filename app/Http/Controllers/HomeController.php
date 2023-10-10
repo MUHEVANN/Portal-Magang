@@ -22,15 +22,12 @@ class HomeController extends Controller
         if ($request->search) {
             $lowongan->where('name', 'LIKE', '%' . $request->search . '%');
         }
-        $lowongan = $lowongan->paginate(10);
-        // dd($lowongan);
         return view('Home.index', compact('lowongan'));
     }
 
     public function filter(string $type = '')
     {
         $carrer = Carrer::latest()->first();
-
         $query = Lowongan::where('deadline', '>', date("Y-m-d"))->where('carrer_id', $carrer->id);
 
         if ($type == 'terlama') {
@@ -38,10 +35,7 @@ class HomeController extends Controller
         } else if ($type == 'terbaru') {
             $query->orderBy('created_at', 'desc');
         }
-
         $lowongan = $query->get();
-
-
         return response()->json($lowongan);
     }
 

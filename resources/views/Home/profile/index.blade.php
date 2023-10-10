@@ -112,12 +112,24 @@
                         if (!response.success) {
                             $('.error-name').text(response.error.name);
                         }
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Your work has been saved',
+
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "bottom-end",
                             showConfirmButton: false,
-                            timer: 1500
+                            timer: 5000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener("mouseenter", Swal
+                                    .stopTimer);
+                                toast.addEventListener("mouseleave", Swal
+                                    .resumeTimer);
+                            },
+                        });
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Pembaruan berhasil disimpan',
                         });
                     }
                 });

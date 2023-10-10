@@ -41,7 +41,6 @@
                 })'></p>
         @endforeach
     @endif
-
     <div class="bg-white sticky shadow-sm top-0 z-10">
         <header class="flex py-5 mx-5 1xl:mx-auto max-w-[1440px] justify-between items-center">
             <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
