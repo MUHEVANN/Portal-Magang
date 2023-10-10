@@ -12,7 +12,7 @@
     </div>
 @endsection
 @section('content')
-    <div class="container-width flex-col-reverse">
+    <div class="flex-col-reverse container-width">
         <section class="md:w-4/5" x-data="home" x-init="$store.reactive.filterInit()">
             <div class="bg-red w-full relative">
                 <input
@@ -21,63 +21,68 @@
                 <img src="assets/magnify.svg" alt="magnify icon" class=" absolute top-4 left-5" width="20">
             </div>
             <p x-text="search"></p>
-
-            <div class="my-5">
-                <div x-show="$store.reactive.isEmpty()" class="flex justify-center font-xl mt-10">
-                    <span x-html="$store.reactive.placeholder" class="flex flex-col items-center gap-y-3"></span>
-                </div>
+            <div x-show="$store.reactive.isEmpty()" class="flex justify-center font-xl mt-10">
+                <span x-html="$store.reactive.placeholder" class="flex flex-col items-center gap-y-3"></span>
+            </div>
+            <div class="my-5 grid sml:grid-cols-2 grid-cols-1 gap-6">
                 <template x-for='data in $store.reactive.result()' :key="data.id">
                     <template x-if="data.id">
                         <a :href="'lowongan/detail/' + data.id"
-                            class="my-2 sm:items-center bg-white hover:shadow border-[1px] border-slate-300 flex flex-col sm:flex-row sm:justify-between rounded cursor-pointer hover:bg-gray-50">
-                            <div class="flex flex-col sml:flex-row gap-3 w-full">
-                                <span class="bg-slate-200 h-38 overflow-hidden transition rounded-l sml:w-3/6 sm:w-2/6">
-                                    {{-- <img :src="data.gambar" :alt="data.gambar" class="transition hover:scale-125"> --}}
-                                    <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar"
-                                        class="w-full h-full">
+                            class="sm:items-center w-full col-span-1 bg-white hover:border-blue-500 hover:shadow border-[1px] border-slate-300 flex flex-row justify-between rounded-md cursor-pointer hover:bg-blue-50">
+                            <div class="flex flex-col w-full h-full justify-between">
+                                <span class="bg-slate-200 overflow-hidden transition rounded-t-md sml:w-full">
+                                    <template x-if="imageType(data.gambar)">
+                                        <img :src="data.gambar" :alt="data.gambar"
+                                            class="transition hover:scale-110">
+                                    </template>
+                                    <template x-if="!imageType(data.gambar)">
+                                        <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar"
+                                            class="transition hover:scale-110">
+                                    </template>
                                 </span>
-                                <div
-                                    class="justify-around flex-wrap p-3 pb-5 sm:p-0 content-between sml:w-3/6 sm:w-4/6 flex flex-col py-2 ">
-                                    <div class="flex justify-between items-center">
-                                        <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl" x-text='data.name'></h1>
-                                        <p x-text="data.deadline"></p>
+                                <div class="p-3">
+                                    <h1 class="text-[#000D3B] font-bold text-lg md:text-1xl mb-3" x-text='data.name'></h1>
+                                    <p x-html="sortParagraph(data.desc)" class="w-full text-gray-500 mb-3 text-sm"></p>
+
+                                    <div class="flex justify-between w-full mt-3 sml:mt-0 gap-2 sm:items-center">
+                                        <p class="text-green-600 text-sm text-limit" x-text='elapsedTime(data.updated_at)'>
+                                        </p>
+                                        <p x-text="dueTime(data.deadline)" class="text-sm text-slate-400 text-limit"></p>
                                     </div>
-                                    <p x-html="sortParagraph(data.desc)" class="w-4/5 text-slate-700 text-sm"></p>
-                                    <p class="text-slate-400 text-sm" x-text='elapsedTime(data.created_at)'>
-                                    </p>
                                 </div>
                             </div>
+                        </a>
                     </template>
                 </template>
-                <template x-if="$store.reactive.paginate()">
-                    <nav class="flex justify-center mt-5">
-                        <ul class="pagination-list">
-                            <li x-on:click="$store.reactive.prevPage()">
-                                <p
-                                    class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-500">
-                                    <img src="{{ asset('assets/chevron.svg') }}" class="rotate-90 opacity-50 w-5"
-                                        alt="">
-                                </p>
-                            </li>
-                            <template x-for="item in $store.reactive.paginate()" :key="item">
-                                <li>
-                                    <p x-on:click="$store.reactive.selectPage(item)"
-                                        :class="{ 'active': item == $store.reactive.curr_select }"
-                                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-500 "
-                                        x-text="setNumPage(item)"></p>
-                                </li>
-                            </template>
-                            <li x-on:click="$store.reactive.nextPage()">
-                                <p
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-500 ">
-                                    <img src="{{ asset('assets/chevron.svg') }}" class="-rotate-90 opacity-50 w-5"
-                                        alt="">
-                                </p>
-                            </li>
-                        </ul>
-                    </nav>
-                </template>
             </div>
+            <template x-if="$store.reactive.paginate()">
+                <nav class="flex justify-center mt-5 w-full">
+                    <ul class="pagination-list">
+                        <li x-on:click="$store.reactive.prevPage()">
+                            <p
+                                class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-500">
+                                <img src="{{ asset('assets/chevron.svg') }}" class="rotate-90 opacity-50 w-5"
+                                    alt="">
+                            </p>
+                        </li>
+                        <template x-for="item in $store.reactive.paginate()" :key="item">
+                            <li>
+                                <p x-on:click="$store.reactive.selectPage(item)"
+                                    :class="{ 'active': item == $store.reactive.curr_select }"
+                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-500 "
+                                    x-text="setNumPage(item)"></p>
+                            </li>
+                        </template>
+                        <li x-on:click="$store.reactive.nextPage()">
+                            <p
+                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-500 ">
+                                <img src="{{ asset('assets/chevron.svg') }}" class="-rotate-90 opacity-50 w-5"
+                                    alt="">
+                            </p>
+                        </li>
+                    </ul>
+                </nav>
+            </template>
         </section>
 
         <div class="sidebar">

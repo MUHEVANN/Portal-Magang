@@ -23,20 +23,46 @@
     </div>
 @endsection
 @section('content')
-    <div class="mx-auto sm:w-7/12 p-5 rounded-md border-[1px] bg-white shadow-sm border-slate-100" x-data="apply">
+    <div class="mx-auto sm:w-7/12 p-5 rounded-md border-[1px] bg-white shadow-sm border-slate-100" x-data="gates">
         <h1 class="sub-title">Ganti Password</h1>
-        <form action="{{ url('changePassword') }}" method="post">
+        <form action="{{ url('ganti-password') }}" method="post" x-on:submit="changePassword">
             @csrf
-            <label for="verif_code">Kode</label> <br>
-            <div class="flex items-center">
-                <input type="verif_code" id="verif_code" name="verif_code" class="w-3/5 input-style">
-                <a x-on:click="send_code()" class="btn-style w-2/5">Kirim Kode</a>
+            <label for="password_lama">Password Lama</label><br>
+
+            <div class="relative mt-2" x-transition>
+                <input :type="!isVisible ? 'password' : 'text'" x-model="old_pass" id='password_lama' name="password_lama"
+                    class=" bg-gray-100 py-2 px-2 w-full" required>
+                <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle()'
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
             </div>
 
-            <label for="password">Password</label> <br>
-            <input type="password" id="password" name="password" class="input-style">
+            <span class="text-red-500 mb-2" x-text="old_pass_invalid"></span>
 
-            <button type="submit" class="btn-style">Change Password</button>
+            <hr class="my-5">
+            <h3 class="text-xl text-center mb-3 opacity-80">Ketikan Password Baru</h3>
+
+            <label for="password_baru">Password</label> <br>
+            <div class="relative mt-2" x-transition>
+                <input :type="!isVisible1 ? 'password' : 'text'" x-model="new_pass" id='password_baru' name="password_baru"
+                    class=" bg-gray-100 py-2 px-2 w-full" required>
+                <img :src="!isVisible1 ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle1()'
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+            </div>
+
+
+            <span class="text-red-500 mb-2" x-text="new_pass_invalid"></span> <br>
+
+
+            <label for="confirm_password">Ulangi Password</label> <br>
+            <div class="relative mt-2" x-transition>
+                <input :type="!isVisible2 ? 'password' : 'text'" x-model="repeat_pass" id='confirm_password'
+                    name="confirm_password" class=" bg-gray-100 py-2 px-2 w-full" required>
+                <img :src="!isVisible2 ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle2()'
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+            </div>
+            <span class="text-red-500" x-text="repeat_pass_invalid"></span> <br>
+
+            <button type="submit" class="btn-style">Ubah Password</button>
         </form>
     </div>
 @endsection

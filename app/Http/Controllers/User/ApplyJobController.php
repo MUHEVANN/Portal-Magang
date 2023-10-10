@@ -31,13 +31,13 @@ class ApplyJobController extends Controller
 
         $user = User::where('email', Auth::user()->email)->first();
         if ($user->is_active !== '1') {
-            return $this->errorMessage('Gagal total', "Akun anda belum diverifikasi, cek email anda", 400);
+            return redirect()->back()->with(['error' => "Akun anda belum diverifikasi, cek email anda"])->withInput();
         }
         $existingApply = Apply::where('user_id', Auth::user()->id)
             ->where('status', 'menunggu')
             ->first();
         if ($existingApply) {
-            return $this->errorMessage('Gagal total', 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami', 400);
+            return redirect()->back()->with(['error' => 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami'])->withInput();
         }
 
         $validate = Validator::make($request->all(), [
@@ -46,7 +46,7 @@ class ApplyJobController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return $this->errorMessage('Gagal total', $validate->messages(), 400);
+            return redirect()->back()->withErrors($validate)->withInput();
         }
 
 
@@ -72,7 +72,8 @@ class ApplyJobController extends Controller
             ]);
 
             if ($validate_anggota->fails()) {
-                return $this->errorMessage('Gagal', $validate_anggota->messages(), 400);
+                // dd($validate_anggota->messages());
+                return redirect()->back()->withErrors($validate_anggota)->withInput();
             }
 
             $files = $request->file('cv_anggota');
@@ -81,22 +82,23 @@ class ApplyJobController extends Controller
                     'cv_anggota' => 'required|mimes:pdf'
                 ]);
                 if ($validateCV->fails()) {
-                    return $this->errorMessage('Gagal', $validate->messages(), 400);
+                    return redirect()->back()->withErrors($validate)->withInput();
                 }
             }
             $email = $request->email;
             if (count($email) > 4) {
-                return $this->errorMessage('Gagal', 'max 5 anggota', 400);
+                return redirect()->back()->with(['error' => 'max 5 anggota'])->withInput();
             }
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
                 if ($user_acc) {
                     $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc->id)->where('status', 'menunggu')->first();
                     if ($cek_anggota_sudah_apply) {
-                        return $this->errorMessage('Gagal', 'Salah satu anggotamu sudah pernah apply', 400);
+                        return redirect()->back()->with(['error' => 'Salah satu anggotamu sudah pernah apply'])->withInput();
                     }
                 }
             }
+
 
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
@@ -166,7 +168,7 @@ class ApplyJobController extends Controller
         Cache::forget('all-pemagang');
         Cache::forget('/pendaftar');
         AfterApply::dispatch($pendaftar);
-        return redirect()->to('/home');
+        return redirect()->to('/home')->with(['success' => 'Berhasil mengirimkan.']);
     }
 
     public function formApply()
@@ -227,8 +229,5 @@ class ApplyJobController extends Controller
         Cache::forget('all-pemagang');
         Cache::forget('pendaftar');
         return redirect()->to('/pendaftar')->with(['success' => 'success']);
-    }
-    public function destroy(string $id)
-    {
     }
 }

@@ -285,7 +285,6 @@ img {
 /* text indicator */
 
 .text{
-    text-transform: capitalize;
     color: rgb(0, 4, 77);
     margin: 0;
     font-weight: 600;

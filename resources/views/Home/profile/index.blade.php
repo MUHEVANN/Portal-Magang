@@ -50,7 +50,7 @@
 
             <div class="modal-footer">
                 <button type="button"
-                    class="py-2 bg-gray-300 px-5 rounded w-full sm:w-fit block hover:opacity-80 mt-5 my-3 mr-auto text-slate-950 update">Update</button>
+                    class="py-2 bg-gray-300 px-5 rounded w-full sm:w-fit block hover:opacity-80 mt-5 my-3 mr-auto text-slate-950 update">Perbarui</button>
             </div>
         </form>
     </div>

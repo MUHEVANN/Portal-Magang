@@ -26,11 +26,10 @@ class LowonganFactory extends Factory
             'name' => fake()->name,
             'carrer_id' => 1,
             'desc' => fake()->realTextBetween(50, 100),
-            'deadline' => fake()->dateTimeBetween('now', "+" . fake()->numberBetween(5, 30) . "days"),
+            'deadline' => fake()->dateTimeBetween('now', "+" . fake()->numberBetween(5, 30) . "days")->format('Y-m-d'),
             'benefit' => fake()->realTextBetween(30, 70),
             'kualifikasi' => fake()->realTextBetween(25, 40),
             'gambar' => fake()->imageUrl,
-            // 'max_applay' => fake()->dateTime('now')
         ];
     }
 }
