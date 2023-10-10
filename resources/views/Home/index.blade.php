@@ -102,7 +102,6 @@
                             Terlama</label></li>
                 </ul>
             </section>
-
             <section class="mt-5" x-data>
                 @if (!Auth::check())
                     <button disabled

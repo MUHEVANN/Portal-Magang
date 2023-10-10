@@ -11,6 +11,8 @@ document.addEventListener("alpine:init", () => {
         start_from: 0,
         end_to: 10,
 
+        statusError: '',
+
         // call when page first load and call 'getSorted()' function
         filterInit() {
             this.getSorted();
@@ -50,6 +52,7 @@ document.addEventListener("alpine:init", () => {
                     return res;
                 })
                 .catch((er) => {
+                    this.statusError = er;
                     console.log(er);
                 });
         },
@@ -59,11 +62,14 @@ document.addEventListener("alpine:init", () => {
             if (this.result() == "" && this.search_type != "") {
                 this.placeholder = "Tidak Ada Hasil!";
                 return true;
-            } else if (this.result() == "" && this.search_type == "") {
+            } else if (this.result() == "" && this.search_type == "" && this.statusError == '') {
                 this.placeholder =
                     "<img width='24' src='assets/animated/loading.svg' alt=''>";
                 return true;
-            } else {
+            } else if(this.statusError != '') {
+                this.placeholder = "Oops... Sepertinya terjadi masalah! Silahkan coba lagi";
+                return true;
+            } else{
                 return false;
             }
         },
