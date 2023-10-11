@@ -69,6 +69,10 @@ class ApplyJobController extends Controller
                 'job_magang' => 'required',
                 'name' => 'required',
                 'email' => 'required|unique:users',
+            ], [
+                'job_magang.required' => 'job_magang wajib diisi',
+                'email.required' => 'job_magang wajib diisi',
+                'name.required' => 'job_magang wajib diisi',
             ]);
 
             if ($validate_anggota->fails()) {
@@ -112,6 +116,7 @@ class ApplyJobController extends Controller
                         'name' => $request->name[$i],
                         'email' => $request->email[$i],
                         'password' => Hash::make($password),
+                        'verif_code' => Str::uuid(60)
                     ]);
                     CreateUserFromApply::dispatch($new_user, $password);
                     // carrer

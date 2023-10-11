@@ -58,7 +58,6 @@ Route::middleware('auth')->group(function () {
 
     // change password logged in
     Route::get('changePassword', [UserAuth::class, 'changePassword']);
-
     Route::post('/ganti-password', [UserAuth::class, 'ganti_password']);
     // Auth verif
     Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);

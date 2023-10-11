@@ -39,7 +39,7 @@ class UserAuth extends Controller
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password),
-            "verif_code" => Str::uuid(),
+            "verif_code" => Str::uuid(60),
         ]);
         $user->addRole('client');
         Session::put('user', $user);
@@ -116,15 +116,10 @@ class UserAuth extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return redirect()->back()->with(['error' => "Email tidak ada"]);
-        } elseif ($user && $user->is_active === "0") {
-            return redirect()->back()->with(['error' => "Email belum diverifikasi"]);
-        } else {
-            $user->verif_code = Str::random(60);
-            // dd($user->verif_code);
-            $user->save();
-            CodeChangePassword::dispatch($user);
-            return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
         }
+
+        CodeChangePassword::dispatch($user);
+        return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
     }
 
     public function changePassword()

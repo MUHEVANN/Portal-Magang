@@ -67,11 +67,11 @@ class tes extends Controller
         // $konfirmed_at = $konfirmed_ketua->created_at;
         // $sixtyDaysAgo = $konfirmed_at->addDays(60);
         // $time = $sixtyDaysAgo->diffInDays(now());
-        $konfirm =   Konfirmed::with('user', 'apply')->where('isSend', 0)->first();
+        $konfirm =   Konfirmed::with('user')->where('isSend', 0)->first();
         $konfirm_at = $konfirm->created_at;
-        $sixtyDays = $konfirm_at->addMinutes(20);
-        // $data = now()->diffInMinutes($sixtyDays);
-        $data = $konfirm;
+        $sixtyDays = $konfirm_at->addMinutes(7);
+        $data = now()->diffInMinutes($sixtyDays);
+        // $data = $konfirm;
         return $this->successMessage($data, 'success');
     }
 }
