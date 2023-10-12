@@ -102,22 +102,21 @@
                             Terlama</label></li>
                 </ul>
             </section>
-
             <section class="mt-5" x-data>
                 @if (!Auth::check())
                     <button disabled
-                        x-on:click="inform('akun anda belum di verifikasi! <br> mohon verfikasi terlebih dahulu')"
                         class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Lamar
                         Magang</button>
                 @else
-                    @if (Auth::user()->is_active === 0)
+                    @if (Auth::user()->is_active == 0)
                         <button disabled
                             class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Lamar
                             Magang</button>
+                    @else
+                        <a href='apply-form'
+                            class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Lamar
+                            Magang</a>
                     @endif
-                    <a href='apply-form'
-                        class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Lamar
-                        Magang</a>
                 @endif
                 <a href="#" class="my-3 cursor-pointer hover-underline text-center block">Hubungi Kita</a>
             </section>

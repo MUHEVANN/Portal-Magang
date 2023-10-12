@@ -14,7 +14,7 @@
 
 <body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center" x-data="gates" x-cloak>
     <div
-        class="bg-white h-fit flex align-middle shadow-sm rounded-md border-2 md:border-gray-100 flex-col w-full justify-center md:flex-row md:w-[780px]">
+        class="bg-white h-full md:h-fit flex align-middle shadow-sm rounded-md md:border-2 md:border-gray-100 flex-col w-full justify-center md:flex-row md:w-[780px]">
         <section class="py-8 px-7 w-full self-center sml:w-4/6">
             <div class="my-5">
                 <h1 class="my-2 text-2xl">Registrasi</h1>

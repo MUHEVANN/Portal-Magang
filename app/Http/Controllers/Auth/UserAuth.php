@@ -116,6 +116,17 @@ class UserAuth extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return redirect()->back()->with(['error' => "Email tidak ada"]);
+<<<<<<< HEAD
+=======
+            // } elseif ($user && $user->is_active === "0") {
+            //     return redirect()->back()->with(['error' => "Email belum diverifikasi"]);
+        } else {
+            $user->verif_code = Str::random(60);
+            // dd($user->verif_code);
+            $user->save();
+            CodeChangePassword::dispatch($user);
+            return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
+>>>>>>> d77063c835b270b4699a676984eeb2d44e9ea4cf
         }
 
         CodeChangePassword::dispatch($user);
@@ -159,7 +170,7 @@ class UserAuth extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json(['error' => $validate->messages()]);
+            return response()->json($validate->messages());
         }
         $password = $request->password_lama;
         $new_password = $request->password_baru;
@@ -171,7 +182,7 @@ class UserAuth extends Controller
             $user->save();
             return response()->json(['success' => 'password berhasil diganti']);
         } else {
-            return response()->json(['error' => 'Password tidak sama']);
+            return response()->json(['password_lama' => 'Password lama tidak sama']);
         }
     }
 }
