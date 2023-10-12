@@ -116,17 +116,12 @@ class UserAuth extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return redirect()->back()->with(['error' => "Email tidak ada"]);
-<<<<<<< HEAD
-=======
-            // } elseif ($user && $user->is_active === "0") {
-            //     return redirect()->back()->with(['error' => "Email belum diverifikasi"]);
         } else {
             $user->verif_code = Str::random(60);
             // dd($user->verif_code);
             $user->save();
             CodeChangePassword::dispatch($user);
             return redirect()->to('/verif-email-changePassword')->with(['success' => 'Kode telah dikirimkan periksa email anda']);
->>>>>>> d77063c835b270b4699a676984eeb2d44e9ea4cf
         }
 
         CodeChangePassword::dispatch($user);
