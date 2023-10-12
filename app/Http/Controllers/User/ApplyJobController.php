@@ -185,7 +185,8 @@ class ApplyJobController extends Controller
 
         Cache::forget('all-pemagang');
         Cache::forget('/pendaftar');
-        AfterApply::dispatch($pendaftar);
+        AfterApply::dispatch('evan.kusyanto@students.amikom.ac.id');
+        AfterApply::dispatch($pendaftar->email);
         return redirect()->to('/home')->with(['success' => 'Berhasil mengirimkan.']);
     }
 

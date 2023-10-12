@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin\Table;
 
 use App\Http\Controllers\Controller;
 use App\Models\Apply;
+use App\Models\Carrer;
 use App\Models\Kelompok;
 use App\Models\Konfirmed;
+use App\Models\Lowongan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class ListPemagangController extends Controller
@@ -40,8 +44,24 @@ class ListPemagangController extends Controller
 
     public function update(Request $request, $id)
     {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required',
+        ], [
+            'name.required' => 'nama wajib diisi',
+            'email.required' => 'email wajib diisi',
+        ]);
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->messages())->withInput();
+        }
         $apply = Apply::find($id);
+
         $apply->carrer_id = $request->carrer_id;
+        if ($request->has('carrer_id') && $apply->status !== 'menunggu') {
+            $konfirmed = Konfirmed::where('apply_id', $apply->id)->latest()->first();
+            $konfirmed->carrer_id = $request->carrer_id;
+            $konfirmed->save();
+        }
         $apply->tgl_mulai = $request->tgl_mulai;
         $apply->tgl_selesai = $request->tgl_selesai;
         $apply->job_magang_id = $request->job_magang_id;
@@ -51,7 +71,7 @@ class ListPemagangController extends Controller
         $user = User::find($apply->user_id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->alamat = $request->alamat;
         $user->no_hp = $request->no_hp;
         $user->gender = $request->gender;
@@ -62,14 +82,24 @@ class ListPemagangController extends Controller
     }
     public function edit($id)
     {
-        $apply = Apply::find($id);
+
+        $apply = Apply::with('carrer')->find($id);
         $user = User::find($apply->user_id);
+
         $result = [
             'user' => $user,
-            'apply' => $apply
+            'apply' => $apply,
+
         ];
         return response()->json(['result' => $result]);
     }
+
+    public function byBatch($batchId)
+    {
+        $batch = Lowongan::where('carrer_id', $batchId)->get();
+        return response()->json(['data' => $batch]);
+    }
+
     public function delete($id)
     {
         $apply = Apply::find($id);

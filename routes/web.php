@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::get('edit-pemagang/{id}', [ListPemagangController::class, 'edit']);
         Route::put('edit-pemagang/{id}', [ListPemagangController::class, 'update']);
         Route::delete('hapus-pemagang/{id}', [ListPemagangController::class, 'delete']);
+        Route::get('by-batch/{batchId}', [ListPemagangController::class, 'byBatch']);
         // list User
         Route::get('all-user', [DashboardController::class, 'list_user_page']);
         Route::get('list-user', [ListUserController::class, 'index']);

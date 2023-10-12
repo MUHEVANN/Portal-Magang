@@ -94,15 +94,7 @@
                         <input type="number" name="no_hp" id="no_hp" class="form-control">
                     </div>
                     <h2 class="fs-5">-- Data Apply --</h2>
-                    <div class="mb-3">
-                        <label for="job_magang_id">Job Magang</label>
-                        <select name="job_magang_id" id="job_magang_id" class="form-control">
-                            <option value="">Pilih Job</option>
-                            @foreach ($job as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    {{-- <input type="text" id="batch" name="batch" class="form-control"> --}}
                     <div class="mb-3">
                         <label for="name">Batch</label>
                         <select name="batch" id="batch" class="form-control">
@@ -110,6 +102,15 @@
                             @foreach ($carrer as $item)
                                 <option value="{{ $item->id }}">{{ $item->batch }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="job_magang_id">Job Magang</label>
+                        <select name="job_magang_id" id="job_magang_id" class="form-control">
+                            <option value="">Pilih Job</option>
+                            {{-- @foreach ($job as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="mb-3">
@@ -121,44 +122,6 @@
                         <input type="date" name="tgl_selesai" id="tgl_selesai" class="form-control">
                     </div>
                 </div>
-                {{-- <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="name">Email</label>
-                        <input type="email" name="email" id="email" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="name">Password</label>
-                        <input type="password" name="password" id="password" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender">Gender</label>
-                        <select name="gender" id="gender" class="form-control">
-                            <option value="">Pilih Gender</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat">alamat</label>
-                        <input type="text" name="alamat" id="alamat" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="no_hp">NO Hp</label>
-                        <input type="number" name="no_hp" id="no_hp" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="job_magang_id">Job Magang</label>
-                        <select name="job_magang_id" id="job_magang_id" class="form-control">
-                            @foreach ($job as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> --}}
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary update">Update</button>
@@ -309,8 +272,10 @@
                 var id = $(this).data('id');
                 $.ajax({
                     url: '/edit-pemagang/' + id,
+
                     method: 'GET',
                     success: function(response) {
+                        console.log(response.result.apply.job_magang_id);
                         $('#edit-modal').modal('show');
                         $('#name').val(response.result.user.name);
                         $('#email').val(response.result.user.email);
@@ -321,27 +286,78 @@
                         $('#no_hp').val(response.result.user.no_hp);
                         $('#tgl_mulai').val(response.result.apply.tgl_mulai);
                         $('#tgl_selesai').val(response.result.apply.tgl_selesai);
+                        var selectedBatchId = response.result.apply.carrer_id;
+                        $('#job_magang_id').empty();
                         var selectJob = response.result.apply.job_magang_id;
-                        $('#job_magang_id option').each(function() {
-                            var optionVal = $(this).val();
+                        $.ajax({
+                            url: 'by-batch/' + selectedBatchId,
+                            method: 'GET',
+                            success: function(response) {
+                                // console.log(response.data[0].name);
+                                var selectElement = $('#job_magang_id');
+                                // Mengisi opsi elemen select dengan data dari server
+                                $.each(response.data, function(key,
+                                    value) {
+                                    selectElement.append(
+                                        '<option value="' +
+                                        value.id + '">' +
+                                        value.name +
+                                        '</option>');
+                                    console.log(selectJob)
+                                    $('#job_magang_id option').each(
+                                        function() {
+                                            var optionVal = $(this)
+                                                .val();
 
-                            if (selectJob === parseInt(optionVal)) {
-                                $(this).prop('selected', true);
-                            } else {
-                                $(this).prop('selected', false);
+                                            if (selectJob === parseInt(
+                                                    optionVal)) {
+                                                $(this).prop('selected',
+                                                    true);
+                                            } else {
+                                                $(this).prop('selected',
+                                                    false);
+                                            }
+                                        });
+                                });
                             }
                         });
                         var selectBatch = response.result.apply.carrer_id;
-                        $('#batch option').each(function() {
-                            var optionValBatch = $(this).val();
-                            if (selectBatch === parseInt(optionValBatch)) {
-                                $(this).prop('selected', true)
-                            } else {
-                                $(this).prop('selected', false);
-                            }
+                        $('#batch').val(selectBatch);
+
+                        // console.log(selectJob);
+                        $('#job_magang_id').val(selectJob);
+                        $('#batch').on('change', function() {
+                            var selectedBatchId = $(this).val();
+                            // Selanjutnya, Anda dapat mengirim permintaan AJAX untuk mendapatkan data lowongan sesuai batch ID yang dipilih.
+                            $.ajax({
+                                url: 'by-batch/' + selectedBatchId,
+                                method: 'GET',
+                                success: function(response) {
+                                    console.log(response.data);
+                                    var selectElement = $('#job_magang_id');
+                                    selectElement
+                                        .empty(); // Mengosongkan elemen select
+
+                                    // Menambahkan opsi default
+                                    selectElement.append(
+                                        '<option value="">Pilih Job</option>'
+                                    );
+
+                                    // Mengisi opsi elemen select dengan data dari server
+                                    $.each(response.data, function(key,
+                                        value) {
+                                        selectElement.append(
+                                            '<option value="' +
+                                            value.id + '">' +
+                                            value.name +
+                                            '</option>');
+                                    });
+                                }
+                            });
                         });
                     }
                 });
+
                 $("body").off('click', '.update').on('click', '.update', function(e) {
                     e.preventDefault();
                     $.ajax({
@@ -558,4 +574,25 @@
 
         }
     </script>
+    {{-- // $('#batch').val(response.result.apply.carrer.batch);
+    // var selectJob = response.result.apply.job_magang_id;
+    // $('#job_magang_id option').each(function() {
+    // var optionVal = $(this).val();
+
+    // if (selectJob === parseInt(optionVal)) {
+    // $(this).prop('selected', true);
+    // } else {
+    // $(this).prop('selected', false);
+    // }
+    // });
+    // var selectBatch = response.result.apply.carrer_id;
+    // $('#batch option').each(function() {
+    // var optionValBatch = $(this).val();
+
+    // if (selectBatch === parseInt(optionValBatch)) {
+    // $(this).prop('selected', true)
+    // } else {
+    // $(this).prop('selected', false);
+    // }
+    // }); --}}
 @endsection
