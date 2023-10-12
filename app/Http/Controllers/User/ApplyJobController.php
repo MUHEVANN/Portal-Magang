@@ -43,6 +43,12 @@ class ApplyJobController extends Controller
         $validate = Validator::make($request->all(), [
             'job_magang_ketua' => 'required',
             'cv_pendaftar' => 'required|mimes:pdf',
+            'no_hp' => 'required|max:12',
+        ], [
+            'job_magang_ketua.required' => 'Job magang wajib diisi',
+            'cv_pendaftar.required' => 'CV wajib diisi',
+            'no_hp.required' => 'Nomor Wa wajib diisi',
+            'no_hp.max' => 'Nomor Wa Maximal 12',
         ]);
 
         if ($validate->fails()) {
@@ -69,10 +75,13 @@ class ApplyJobController extends Controller
                 'job_magang' => 'required',
                 'name' => 'required',
                 'email' => 'required|unique:users',
+                'no_hp_anggota' => 'required|max:12'
             ], [
                 'job_magang.required' => 'job_magang wajib diisi',
                 'email.required' => 'job_magang wajib diisi',
                 'name.required' => 'job_magang wajib diisi',
+                'no_hp_anggota.required' => 'Nomor Wa wajib diisi',
+                'no_hp_anggota.max' => 'Maximal nomor 12'
             ]);
 
             if ($validate_anggota->fails()) {
@@ -116,7 +125,8 @@ class ApplyJobController extends Controller
                         'name' => $request->name[$i],
                         'email' => $request->email[$i],
                         'password' => Hash::make($password),
-                        'verif_code' => Str::uuid(60)
+                        'verif_code' => Str::uuid(60),
+                        'no_hp' => $request->no_hp_anggota[$i]
                     ]);
                     CreateUserFromApply::dispatch($new_user, $password);
                     // carrer
@@ -151,6 +161,7 @@ class ApplyJobController extends Controller
                 }
             }
         }
+        $pendaftar->no_hp = $request->no_hp;
         $pendaftar->save();
         $cv_file = $request->file('cv_pendaftar');
         $cv_name = Str::random(10) . '.' . $cv_file->getClientOriginalExtension();

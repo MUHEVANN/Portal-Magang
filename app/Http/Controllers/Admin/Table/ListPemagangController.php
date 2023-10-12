@@ -75,8 +75,10 @@ class ListPemagangController extends Controller
         $apply = Apply::find($id);
         $kelompok_id = $apply->kelompok_id;
         $kelompok = Kelompok::where('id', $kelompok_id)->first();
-        $konfirmed = Konfirmed::where('apply_id', $apply->id)->first();
-        $konfirmed->delete();
+        if ($apply->status !== 'menunggu') {
+            $konfirmed = Konfirmed::where('apply_id', $apply->id)->first();
+            $konfirmed->delete();
+        }
         if ($apply->tipe_magang === "kelompok") {
             $apply->delete();
             if ($kelompok->apply->count() < 1) {

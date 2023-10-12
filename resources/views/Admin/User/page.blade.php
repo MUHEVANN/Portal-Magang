@@ -43,6 +43,7 @@
                     <th><input type="checkbox" name="" id="head-cb"></th>
                     <th>Name</th>
                     <th>Job</th>
+                    <th>No Hp</th>
                     <th>Tipe Magang</th>
                     <th>Jabatan</th>
                     <th>Batch</th>
@@ -176,11 +177,11 @@
             });
             var table = $('#myTable').DataTable({
                 order: [
-                    [8, 'asc']
+                    [9, 'asc']
                 ],
                 columnDefs: [{
                     visible: false,
-                    targets: 8
+                    targets: 9
                 }],
                 responsive: true,
                 processing: true,
@@ -192,7 +193,7 @@
                     }).nodes();
                     var last = null;
 
-                    api.column(8, {
+                    api.column(9, {
                             page: 'current'
                         })
                         .data()
@@ -201,7 +202,7 @@
                                 $(rows)
                                     .eq(i)
                                     .before(
-                                        '<tr class="group" style="background:#f9f9f9;cursor:pointer"><td colspan="9">' +
+                                        '<tr class="group" style="background:#f9f9f9;cursor:pointer"><td colspan="10">' +
                                         group +
                                         '</td></tr>'
                                     );
@@ -213,62 +214,11 @@
                 rowGroup: {
                     dataSrc: 'kelompok.name', // Kolom yang digunakan untuk mengelompokkan data
                     startRender: function(rows, group) {
-                        return '<tr class="group"><td colspan="8">' + group + '</td></tr>';
+                        return '<tr class="group"><td colspan="9">' + group + '</td></tr>';
                     },
                     endRender: null
                 },
                 ajax: 'list-pemagang',
-                // columns: [{
-                //         data: 'checkbox',
-                //         name: 'checkbox',
-                //     },
-                //     {
-                //         data: "name",
-                //         name: "name"
-                //     },
-                //     {
-                //         data: "lowongan.name",
-                //         name: "lowongan.name"
-                //     },
-                //     {
-                //         data: "apply.tipe_magang",
-                //         name: "apply.tipe_magang"
-                //     },
-                //     {
-                //         data: "jabatan",
-                //         name: "jabatan",
-                //         render: function(data) {
-                //             return (data === 0) ? 'Anggota' : 'Ketua';
-                //         }
-                //     },
-                //     {
-                //         data: 'apply.carrer.batch',
-                //         name: 'apply.carrer.batch',
-                //     },
-                //     {
-                //         data: "apply.status",
-                //         name: "apply.status"
-                //     },
-                //     {
-                //         data: "apply.cv_user",
-                //         name: "apply.cv_user",
-                //         render: function(data) {
-                //             return "<a href='storage/cv/" + data + "'>" + data +
-                //                 "</a>";
-                //         }
-                //     },
-                //     {
-                //         data: "kelompok.name",
-                //         name: "kelompok.name",
-                //         render: function(data) {
-                //             return (data !== null) ? 'kelompok ' + data : 'mandiri';
-                //         }
-                //     },
-                //     {
-                //         data: "action",
-                //         name: "action"
-                //     }
-                // ]
                 columns: [{
                         data: 'checkbox',
                         name: 'checkbox'
@@ -280,6 +230,10 @@
                     {
                         data: 'lowongan.name',
                         name: 'lowongan.name'
+                    },
+                    {
+                        data: 'user.no_hp',
+                        name: 'user.no_hp'
                     },
                     {
                         data: 'tipe_magang',
@@ -302,7 +256,10 @@
                     },
                     {
                         data: 'cv_user',
-                        name: 'cv_user'
+                        name: 'cv_user',
+                        render: function(data) {
+                            return "<a href='storage/cv/" + data + "'>" + data + "</a>"
+                        }
                     },
                     {
                         data: 'kelompok.name',

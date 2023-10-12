@@ -11,7 +11,7 @@
                     <th><input type="checkbox" name="" id="head-cb"></th>
                     <th>Nama</th>
                     <th>Email</th>
-                    <th>Password</th>
+                    <th>No Hp</th>
                     <th>Gender</th>
                     <th>Alamat</th>
                     <th>Action</th>
@@ -53,8 +53,8 @@
                         <input type="text" name="alamat" id="alamat" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label for="no_hp">NO Hp</label>
-                        <input type="number" name="no_hp" id="no_hp" class="form-control">
+                        <label for="no_hp">No Hp</label>
+                        <input type="number" name="no_hp" id="no_hp" class="form-control" max="12">
                     </div>
 
                 </div>
@@ -92,8 +92,8 @@
                         name: 'email'
                     },
                     {
-                        data: "password",
-                        name: "password"
+                        data: "no_hp",
+                        name: "no_hp"
                     },
                     {
                         data: 'gender',

@@ -14,6 +14,10 @@ class ProfileController extends Controller
 {
     public function index()
     {
+        $cek = Auth::check();
+        if (!$cek) {
+            return redirect()->to('login')->with(['error' => 'Login terlebih dahulu']);
+        }
         $user_id = Auth::user()->id;
         $cekuser = Cache::get('user_' . $user_id);
         // $user = Cache::remember('user_' . $user_id, 3600, function () use ($user_id) {
@@ -76,6 +80,6 @@ class ProfileController extends Controller
         Cache::put('user_' . $user->id, $user, 3600);
         $image = asset('storage/profile/' . $user->profile_image);
 
-        return response()->json(['success' => 'update profile berhasil', 'image' => $image]);
+        return response()->json(['success' => 'update profile berhasil']);
     }
 }

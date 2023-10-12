@@ -30,7 +30,8 @@
             <form action="{{ url('login') }}" method="post">
                 @csrf
                 <div class="relative">
-                    <input type="email" name="email" class="auth-input mb-2" placeholder="e.g. fulan@email.com">
+                    <input type="email" name="email" class="auth-input mb-2" placeholder="e.g. fulan@email.com"
+                        value='{{ old('email') }}'>
                     <br>
                     <img src="assets/email.svg" class="absolute w-6 top-2 left-1" alt="">
                 </div>
@@ -44,8 +45,8 @@
                         this.isVisible = !this.isVisible;
                     }
                 }" x-transition>
-                    <input :type="!isVisible ? 'password' : 'text'" id='pass' name="password" class="auth-input"
-                        placeholder="password">
+                    <input :type="!isVisible ? 'password' : 'text'" id='pass' value="{{ old('password') }}"
+                        name="password" class="auth-input" placeholder="password">
                     <img src="assets/pass.svg" class="absolute w-6 top-2 left-1" alt="">
                     <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator'
                         x-on:click='toggle()' class="absolute cursor-pointer w-6 top-2 right-3" alt="">

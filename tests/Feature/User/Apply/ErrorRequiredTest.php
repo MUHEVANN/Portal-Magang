@@ -14,14 +14,16 @@ class ErrorRequiredTest extends TestCase
         parent::setUp();
         $user = User::where('id', 3)->first();
         $this->actingAs($user);
+
     }
     /**
      * A basic feature test example.
      */
-    public function test_example(): void
+     public function test_apply_error_required()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $response = $this->post('apply-form', []);
+        $response->assertStatus(302);
+        $this->assertTrue(session('errors')->has('cv_pendaftar'));
+        $this->assertTrue(session('errors')->has('job_magang_ketua'));
     }
 }

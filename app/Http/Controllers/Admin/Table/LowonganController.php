@@ -60,7 +60,7 @@ class LowonganController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json(['error' => $validate->messages()]);
+            return response()->json(['error' => $validate->messages()],);
         }
         $gambar = $request->file('gambar');
         $gambar_name = date('ymdhis') . "." . $gambar->getClientOriginalExtension();

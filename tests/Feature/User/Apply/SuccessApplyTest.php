@@ -7,12 +7,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ErrorApplyedTest extends TestCase
+class SuccessApplyTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::where('id', 7)->first();
+        $user = User::where('id', 9)->first();
         $this->actingAs($user);
     }
     /**
@@ -22,9 +22,9 @@ class ErrorApplyedTest extends TestCase
     {
         $response = $this->post('/apply-form', [
             'job_magang_ketua' => 1,
-            'cv_pendaftar' => 'evan.pdf',
+            'cv_pendaftar' => 'user.pdf',
         ]);
-        $response->assertStatus(302);
-        $this->assertEquals('Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami', session('error'));
+
+        $response->assertRedirect('/');
     }
 }

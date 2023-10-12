@@ -136,7 +136,7 @@ class UserAuth extends Controller
         ]);
 
         if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate->messages());
+            return redirect()->back()->withErrors($validate->messages())->withInput();
         }
 
         $user = User::where('verif_code', $request->verif_code)->first();
