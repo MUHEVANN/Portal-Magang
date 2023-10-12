@@ -18,7 +18,7 @@
 </style>
 
 <x-mail::message>
-    ## Status Pendaftar
+## Status Pendaftar
 
     <p>
         Terimakasih sudah tertarik untuk mendaftar magang di <strong>jetorbit</strong>, tetapi sayangnya setelah
