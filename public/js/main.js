@@ -410,12 +410,7 @@ document.addEventListener("alpine:init", () => {
                 showConfirmButton: false,
                 timer: 5500,
                 width: 400,
-                width: 400,
                 padding: 20,
-                // heightAuto: false,
-                // customClass: {
-                //     content: "custom-height", // Gunakan nama class CSS
-                // },
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener("mouseenter", Swal.stopTimer);
@@ -581,6 +576,7 @@ document.addEventListener("alpine:init", () => {
         // initialize function from before, and get data from localstorage when user refresh the pages.
         initBtnCode() {
             let storageParse = JSON.parse(localStorage.getItem("waitFor"));
+            if(storageParse == null) return;
             this.waitFor = storageParse.isWaiting;
             this.count = storageParse.countdown;
 
