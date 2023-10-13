@@ -9,7 +9,7 @@
 @endsection
 @section('content')
     <div class="mx-auto sm:w-7/12 p-5 rounded-md border-[1px] bg-white shadow-sm border-slate-100" x-data="gates">
-        <h1 class="sub-title">Lupa <em>Password</em></h1>
+        <h1 class="sub-title">Lupa Password</h1>
         <form action="{{ url('verif-email-changePassword') }}" x-init="initBtnCode" method="post"
             x-on:submit="forgetPassword">
             @csrf

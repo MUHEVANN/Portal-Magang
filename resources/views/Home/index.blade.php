@@ -27,17 +27,19 @@
             <div class="my-5 grid sml:grid-cols-2 grid-cols-1 gap-6">
                 <template x-for='data in $store.reactive.result()' :key="data.id">
                     <template x-if="data.id">
-                        <a :href="'lowongan/detail/' + data.id"
-                            class="sm:items-center w-full col-span-1 bg-white hover:border-blue-500 hover:shadow border-[1px] border-slate-300 flex flex-row justify-between rounded-md cursor-pointer hover:bg-blue-50">
-                            <div class="flex flex-col w-full h-full justify-between">
-                                <span class="bg-slate-200 overflow-hidden transition rounded-t-md sml:w-full">
+                        <a :href="'lowongan/detail/' + data.id" data-testid="lists"
+                            class="sm:items-center w-full col-span-1 bg-white hover:border-blue-500 hover:shadow border-[1px] border-slate-300 flex flex-row justify-between rounded-lg cursor-pointer hover:bg-blue-50">
+                            <div class="flex flex-col w-full h-full justify-between relative">
+                                <span class="bg-slate-200 overflow-hidden transition h-64 rounded-t-lg sml:w-full">
+                                    <span
+                                        class="bg-gradient-to-b from-slate-600 to-transparent rounded-t-lg w-full h-16 opacity-40 absolute top-0 z-[9]"></span>
                                     <template x-if="imageType(data.gambar)">
                                         <img :src="data.gambar" :alt="data.gambar"
-                                            class="transition hover:scale-110">
+                                            class="transition object-cover h-full w-full hover:scale-110">
                                     </template>
                                     <template x-if="!imageType(data.gambar)">
                                         <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar"
-                                            class="transition hover:scale-110">
+                                            class="transition object-cover h-full w-full hover:scale-110">
                                     </template>
                                 </span>
                                 <div class="p-3">
