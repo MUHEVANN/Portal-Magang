@@ -47,8 +47,13 @@
 }
 
 .sidebar {
-    @apply h-max w-full md:w-2/5 p-3 border-[1px] border-slate-300 rounded-md md:sticky top-24;
+    @apply h-max w-1/5 md:w-2/5 p-3 border-[1px] border-slate-300 rounded-md md:sticky top-24;
 }
+
+.min {
+    @apply w-4/5;
+}
+
 .trix ol {
     list-style-type: disc;
 }
@@ -81,10 +86,8 @@ ol {
     background: #002872;
 }
 
-
-.container-width{
+.container-width {
     @apply max-w-[1100px] mx-auto flex md:flex-row justify-start gap-5 px-5;
-
 }
 
 .list-contents {
