@@ -45,7 +45,9 @@
     @endif
     <div class="bg-white sticky shadow-sm top-0 z-10">
         <header class="flex py-5 mx-5 1xl:mx-auto max-w-[1440px] justify-between items-center">
-            <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
+            <a href="https://www.jetorbit.com/" class="block">
+                <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
+            </a>
 
             @if (Auth::check())
                 <div x-data="{ open: false }" class="hidden sml:block relative z-20" x-on:click.outside='open = false'>
@@ -137,24 +139,29 @@
     </main>
     <footer class="bg-[#000D3B]">
         <div class="flex flex-col px-5 sm:flex-row max-w-[1200px] mx-auto items-center text-white justify-between">
-            <img src="{{ asset('images/jetorbit-logo-white.png') }}" class="w-40 sm:h-40 mt-7 sm:mt-0 object-contain"
-                alt="">
+            <a href="https://www.jetorbit.com/" class="block">
+                <img src="{{ asset('images/jetorbit-logo-white.png') }}"
+                    class="w-40 sm:h-40 mt-7 sm:mt-0 object-contain" alt="">
+            </a>
 
             <ul class="list-contents sm:my-0 my-10">
-                <li><a href="#" class="list-menu">Kontak</a></li>
+                <li><a href="https://www.jetorbit.com/kontak/" class="list-menu">Kontak</a></li>
                 <li><a href="#" class="list-menu">Layanan</a></li>
                 <li><a href="#" class="list-menu">Bantuan</a></li>
             </ul>
             <ul class="list-contents sm:mb-0 mb-7">
-                <li><a href="#"><img class="svg-social" src="{{ asset('assets/socials/facebook.svg') }}"
-                            alt="facebook"></a></li>
-                <li><a href="#"><img class="svg-social" src="{{ asset('assets/socials/twitter.svg') }}"
-                            alt="twitter"></a></a>
-                </li>
-                <li><a href="#"><img class="svg-social" src="{{ asset('assets/socials/instagram.svg') }}"
-                            alt="instagram"></a></a></li>
+                <li><a href="https://www.linkedin.com/company/jetorbit/"><img class="svg-social"
+                            src="{{ asset('assets/socials/linkedIn.svg') }}" alt="linked in"></a></a></li>
+                <li><a href="https://web.facebook.com/jetorbithost?_rdc=1&_rdr"><img class="svg-social"
+                            src="{{ asset('assets/socials/facebook.svg') }}" alt="facebook"></a></li>
+                <li><a href="https://twitter.com/jetorbithost"><img class="svg-social"
+                            src="{{ asset('assets/socials/twitter.svg') }}" alt="twitter"></a></a></li>
+                <li><a href="https://www.instagram.com/jetorbit/"><img class="svg-social"
+                            src="{{ asset('assets/socials/instagram.svg') }}" alt="instagram"></a></a></li>
+
             </ul>
-        </div>
+        </div><a href="https://www.jetorbit.com/"
+            class="hover-underline text-center block text-blue-100 font-thin text-sm opacity-40 py-5">SuportBy@jetorbit.com</a>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/locale/id.js"></script>

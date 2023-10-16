@@ -10,14 +10,17 @@
 @section('content')
     <div class="container-width flex-col">
         <div class="min">
-            <h1 class="text-black text-3xl font-bold mb-5">{{ $lowongan->name }}</h1>
+            <h1 class="text-black text-3xl font-bold mb-5">{{ $lowongan->nama }}</h1>
             {{-- <template x-if="imageType(data.gambar)">
                 <img :src="data.gambar" :alt="data.gambar" class="rounded-md w-5/5 h-3/5 my-5">
             </template>
             <template x-if="!imageType(data.gambar)">
                 <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar" class="rounded-md w-5/5 h-3/5 my-5">
             </template> --}}
-            <img src="{{ $lowongan->gambar }}" class="rounded-md w-5/5 h-3/5 my-5" alt="gambar">
+            {{-- <img :src="'storage/lowongan/' + data.gambar" :alt="data.gambar" class="rounded-md w-5/5 h-3/5 my-5"> --}}
+            {{-- <img src="{{ $lowongan->gambar }}" class="rounded-md w-5/5 h-3/5 my-5" alt="gambar"> --}}
+            <img src="{{ asset('storage/lowongan/' . $lowongan->gambar) }}" alt="{{ $lowongan->gambar }}"
+                class="rounded-md w-full my-5">
             <h3 class="my-2 font-bold text-xl">Diskripsi</h3>
             <p>{!! $lowongan->desc !!}</p>
             <h3 class="my-2 font-bold text-xl">Keuntungan</h3>
@@ -36,7 +39,7 @@
                         class="bg-[#000D3B] opacity-60 cursor-not-allowed w-full py-2 px-5 block text-center rounded hover:opacity-50 text-slate-50">Lamar
                         Magang</button>
                 @else
-                    <a href='apply-form'
+                    <a href='/apply-form'
                         class="bg-[#000D3B] py-2 px-5 block text-center rounded hover:opacity-80 text-slate-50">Lamar
                         Magang</a>
                 @endif
