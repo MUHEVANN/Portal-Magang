@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/update-profile', [ProfileController::class, 'index']);
     Route::get('/profile-user', [ProfileController::class, 'get_profile']);
 
+    Route::get("/dashboard", [ProfileController::class, 'dashboard']);
+
     // Admin
     Route::middleware('role:admin')->group(function () {
         Route::get('/pendaftar', [DashboardController::class, 'index']);

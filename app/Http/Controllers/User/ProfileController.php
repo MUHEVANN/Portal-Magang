@@ -78,4 +78,9 @@ class ProfileController extends Controller
 
         return response()->json(['success' => 'update profile berhasil', 'image' => $image]);
     }
+
+    public function dashboard()
+    {
+        return view('Home.profile.dashboard');
+    }
 }
