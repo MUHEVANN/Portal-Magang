@@ -46,9 +46,9 @@ Route::post('changePassword', [UserAuth::class, 'proccess_changePassword']);
 // Pages
 // Client
 // Home
-Route::get('/', function () {
+Route::get('/', [function () {
     return redirect('home');
-});
+}]);
 
 
 Route::get('/home', [HomeController::class, 'home']);

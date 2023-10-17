@@ -13,6 +13,8 @@
 
 <body class="antialiased bg-slate-100 m-0 relative h-full" x-cloak
     :class="isOpen ? 'overflow-hidden' : 'overflow-x-hidden'" x-data='apply'>
+
+
     <span class="absolute bg-slate-900 sml:hidden z-[11] opacity-50 top-0 h-full w-full"
         :class="isOpen ? 'block' : 'hidden'" x-on:click="isOpen = !isOpen"></span>
     @if (Auth::check() && Auth::user()->is_active == 0)
@@ -63,6 +65,11 @@
                                 class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
                                     src="{{ asset('assets/person.svg') }}" width="24" alt="person">
                                 <p class="px-1">Profile</p>
+                            </a>
+                            <a href="/update-profile"
+                                class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
+                                    src="{{ asset('assets/dashboard.svg') }}" width="24" alt="dashboard">
+                                <p class="px-1">Dashboard</p>
                             </a>
                             <a href="/logout" class="flex p-1 rounded hover:bg-slate-200 items-center cursor-pointer">
                                 <img src="{{ asset('assets/logout.svg') }}" alt="log out">

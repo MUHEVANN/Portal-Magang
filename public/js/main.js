@@ -588,6 +588,7 @@ document.addEventListener("alpine:init", () => {
         // initialize function from before, and get data from localstorage when user refresh the pages.
         initBtnCode() {
             let storageParse = JSON.parse(localStorage.getItem("waitFor"));
+            if(storageParse == null) return;
             this.waitFor = storageParse.isWaiting;
             this.count = storageParse.countdown;
 

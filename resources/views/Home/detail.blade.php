@@ -11,8 +11,9 @@
     <div class="container-width flex-col">
         <div class="min">
             <h1 class="text-black text-3xl font-bold mb-5">{{ $lowongan->name }}</h1>
-            {{-- <img src="{{ $lowongan->gambar }}" class="rounded-md w-5/5 h-3/5 my-5" alt="gambar"> --}}
+
             <img src="{{ '/storage/lowongan/' . $lowongan->gambar }}" class="rounded-md w-full my-5" alt="gambar">
+
             <h3 class="my-2 font-bold text-xl">Diskripsi</h3>
             <p>{!! $lowongan->desc !!}</p>
             <h3 class="my-2 font-bold text-xl">Keuntungan</h3>
