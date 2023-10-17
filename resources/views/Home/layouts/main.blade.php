@@ -125,14 +125,14 @@
     </div>
 
     <main class="bg-[#fcfcfc] pb-5">
-        <div class="py-16">
+        <div class="pt-16">
             @yield('content')
         </div>
         {{-- <div class="py-16 container-width">
             @yield('content')
             @yield('sidebar')
         </div> --}}
-        <a href="#top" x-on:scroll.window="scrollPos()" :class="top_position ? 'hidden' : ''"
+        <a href="#top" x-on:scroll.window="scrollPos()" :class="top_position ? 'invisible' : ''"
             class="bg-[#e7e7e7] p-4 block w-14 h-14 sticky bottom-5 right-5 sm:mt-16 opacity-50 ml-auto backdrop-blur-3xl">
             <img src="{{ asset('assets/chevron.svg') }}" class="rotate-180 w-full" alt="">
         </a>
