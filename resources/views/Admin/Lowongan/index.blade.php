@@ -211,6 +211,7 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
+
                             if (response.error) {
                                 $('#error-benefit').text(response.error.benefit);
                                 $('#error-name').text(response.error.name);
@@ -297,6 +298,7 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
+                            // console.log(response);
                             if (response[0] === 'error') {
                                 $('#error-benefit').text(response[1].benefit);
                                 $('#error-name').text(response[1].name);

@@ -131,12 +131,19 @@
                 </div>
             </div>
         </div>
-        <div style="width: 800px" class="card">
-            <div class="col-3 mt-3">
-                <select name="" id="tahun" onchange="changeYear()" class="form-control">
-                </select>
+        <div class="col-md-12 col-lg-8 mb-4">
+            <div class="w-full card p-3">
+                <div class="col-3 mt-3">
+                    <select name="" id="tahun" onchange="changeYear()" class="form-control">
+                    </select>
+                </div>
+                <canvas id="charts"></canvas>
             </div>
-            <canvas id="charts"></canvas>
+        </div>
+        <div class="col-md-6 col-lg-4 ">
+            <div class="card container-chart w-full p-3">
+                <canvas id="charts-apply">d</canvas>
+            </div>
         </div>
     </div>
 @endsection

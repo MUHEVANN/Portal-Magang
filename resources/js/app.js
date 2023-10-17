@@ -79,5 +79,35 @@ const chart = async () => {
     const initialYear = years[0].year;
     drawChart(initialYear);
 };
-
 chart();
+const chartApply = async () => {
+    const resApply = await axios.get(
+        "http://127.0.0.1:8000/api/get-data-apply"
+    );
+    const { total_ditolak, total_lulus, total_pendaftar } =
+        resApply.data.result;
+
+    // applyData,map((item)=>item.total)
+    const apply = document.getElementById("charts-apply");
+    const data = {
+        labels: ["Ditolak", "Lulus", "Pending"],
+        datasets: [
+            {
+                label: "My First Dataset",
+                data: [total_ditolak, total_lulus, total_pendaftar],
+                backgroundColor: [
+                    "#d05f5f", // Merah
+                    "#5FD068", // Hijau yang kurang cerah
+                    "#5f87d0", // Biru
+                ],
+                hoverOffset: 4,
+            },
+        ],
+    };
+    applyChart = new Chart(apply, {
+        type: "doughnut",
+        data: data,
+    });
+};
+
+chartApply();

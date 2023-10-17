@@ -16,6 +16,7 @@
 }
 .ijo {
     color: #048837;
+    /* color: #d05f5f; */
 }
 .bg-merah {
     background: #fab2b2;
@@ -28,4 +29,8 @@
 }
 .biru {
     color: #040688;
+}
+.container-chart {
+    display: flex;
+    justify-content: center;
 }

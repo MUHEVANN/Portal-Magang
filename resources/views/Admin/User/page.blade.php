@@ -69,10 +69,12 @@
                         <div class="mb-3">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control">
+                            <div id="error-name" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                             <label for="name">Email</label>
                             <input type="email" name="email" id="email" class="form-control">
+                            <div id="error-email" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                             <label for="name">Password</label>
@@ -113,6 +115,7 @@
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach --}}
                             </select>
+                            <div id="error-job_magang_id" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                             <label for="tgl_mulai">Tanggal Mulai</label>
@@ -379,39 +382,50 @@
                             tgl_selesai: $('#tgl_selesai').val(),
                         },
                         success: function(response) {
-                            $('#edit-modal').modal('hide');
-                            const Toast = Swal.mixin({
-                                width: 400,
-                                padding: 18,
-                                toast: true,
-                                position: 'bottom-end',
-                                showConfirmButton: false,
-                                timer: 1500,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter',
-                                        Swal.stopTimer)
-                                    toast.addEventListener('mouseleave',
-                                        Swal.resumeTimer)
-                                }
-                            })
 
-                            Toast.fire({
+                            if (response.error) {
+                                $('#error-job_magang_id').text(response.error
+                                    .job_magang_id);
+                                $('#error-name').text(response.error
+                                    .name);
+                                $('#error-email').text(response.error
+                                    .email);
+                            } else {
 
-                                icon: 'success',
-                                title: response.success
-                            });
-                            table.ajax.reload();
-                            $('#name').val('');
-                            $('#email').val('');
-                            $('#password').val('');
-                            $('#alamat').val('');
-                            $('#gender').val('');
-                            $('#no_hp').val('');
-                            $('#job_magang_id').val('');
-                            $('#carrer_id').val('');
-                            $('#tgl_mulai').val('');
-                            $('#tgl_selesai').val('');
+                                $('#edit-modal').modal('hide');
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 18,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+
+                                    icon: 'success',
+                                    title: response.success
+                                });
+                                table.ajax.reload();
+                                $('#name').val('');
+                                $('#email').val('');
+                                $('#password').val('');
+                                $('#alamat').val('');
+                                $('#gender').val('');
+                                $('#no_hp').val('');
+                                $('#job_magang_id').val('');
+                                $('#carrer_id').val('');
+                                $('#tgl_mulai').val('');
+                                $('#tgl_selesai').val('');
+                            }
                         }
                     });
                 });

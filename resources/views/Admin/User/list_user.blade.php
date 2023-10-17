@@ -32,14 +32,17 @@
                         <div class="mb-3">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control">
+                            <div id="error-name" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                             <label for="name">Email</label>
                             <input type="email" name="email" id="email" class="form-control">
+                            <div id="error-email" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                             <label for="name">Password</label>
                             <input type="password" name="password" id="password" class="form-control">
+                            <div id="error-password" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                             <label for="gender">Gender</label>
@@ -146,35 +149,41 @@
 
                         },
                         success: function(response) {
-                            $('#edit-modal').modal('hide');
-                            const Toast = Swal.mixin({
-                                width: 400,
-                                padding: 18,
-                                toast: true,
-                                position: 'bottom-end',
-                                showConfirmButton: false,
-                                timer: 1500,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter',
-                                        Swal.stopTimer)
-                                    toast.addEventListener('mouseleave',
-                                        Swal.resumeTimer)
-                                }
-                            })
+                            if (response.error) {
+                                $('#error-name').text(response.error.name);
+                                $('#error-email').text(response.error.email);
+                                $('#error-password').text(response.error.password);
+                            } else {
+                                $('#edit-modal').modal('hide');
+                                const Toast = Swal.mixin({
+                                    width: 400,
+                                    padding: 18,
+                                    toast: true,
+                                    position: 'bottom-end',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter',
+                                            Swal.stopTimer)
+                                        toast.addEventListener('mouseleave',
+                                            Swal.resumeTimer)
+                                    }
+                                })
 
-                            Toast.fire({
+                                Toast.fire({
 
-                                icon: 'success',
-                                title: response.success
-                            });
-                            table.ajax.reload();
-                            $('#name').val('');
-                            $('#email').val('');
-                            $('#password').val('');
-                            $('#alamat').val('');
-                            $('#gender').val('');
-                            $('#no_hp').val('');
+                                    icon: 'success',
+                                    title: response.success
+                                });
+                                table.ajax.reload();
+                                $('#name').val('');
+                                $('#email').val('');
+                                $('#password').val('');
+                                $('#alamat').val('');
+                                $('#gender').val('');
+                                $('#no_hp').val('');
+                            }
                         }
                     });
                 });
@@ -275,7 +284,6 @@
             $.each(checkbox_checked, function(index, value) {
                 all_checked.push(value.value);
             });
-            console.log(all_checked);
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',

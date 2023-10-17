@@ -71,4 +71,18 @@ class DashboardController extends Controller
         ];
         return response()->json(['result' => $result]);
     }
+    public function data_apply()
+    {
+        $pemagang = Apply::count();
+        $lulus = Apply::where('status', 'lulus')->count();
+        $ditolak = Apply::where('status', 'Ditolak')->count();
+        $apply = Apply::where('status', 'menunggu')->count();
+        $result = [
+            'total_pemagang' => $pemagang,
+            'total_pendaftar' => $apply,
+            'total_lulus' => $lulus,
+            'total_ditolak' => $ditolak,
+        ];
+        return response()->json(['result' => $result]);
+    }
 }
