@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
             if (count($konfirmed) > 0) {
                 foreach ($konfirmed as $konfirm) {
                     $konfirm_at = $konfirm->created_at;
-                    $sixtyDays = $konfirm_at->addMinutes(60);
+                    $sixtyDays = $konfirm_at->addDays(60);
                     if (now()->diffInDays($sixtyDays) === 0) {
                         konfirmedDayJob::dispatch($konfirm);
                         $konfirm->isSend = 1;

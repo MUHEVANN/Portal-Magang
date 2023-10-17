@@ -25,13 +25,13 @@ class ApplyControllerApi extends Controller
 
         $user = User::where('email', Auth::user()->email)->first();
         if ($user->is_active !== '1') {
-            return $this->errorMessage('Gagal total', "Akun anda belum diverifikasi, cek email anda", 400);
+            return $this->errorMessage('Gagal total', 'Akun anda belum diverifikasi', 400);
         }
         $existingApply = Apply::where('user_id', Auth::user()->id)
             ->where('status', 'menunggu')
             ->first();
         if ($existingApply) {
-            return $this->errorMessage('Gagal total', 'Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami', 400);
+            return $this->errorMessage('Gagal total', 'Anda sudah melakukan submit, tunggu konfirmasi dari kami', 400);
         }
 
         $validate = Validator::make($request->all(), [
@@ -58,7 +58,6 @@ class ApplyControllerApi extends Controller
             $kelompok = Kelompok::create([
                 'name' => Str::random(5)
             ]);
-            $pendaftar->kelompok_id = $kelompok->id;
             $pendaftar->save();
             $validate_anggota = Validator::make($request->all(), [
                 'job_magang' => 'required',
@@ -67,7 +66,8 @@ class ApplyControllerApi extends Controller
             ]);
 
             if ($validate_anggota->fails()) {
-                return $this->errorMessage('Gagal', $validate_anggota->messages(), 400);
+                // dd($validate_anggota->messages());
+                return $this->errorMessage('Gagal total', $validate_anggota->messages(), 400);
             }
 
             $files = $request->file('cv_anggota');
@@ -76,22 +76,23 @@ class ApplyControllerApi extends Controller
                     'cv_anggota' => 'required|mimes:pdf'
                 ]);
                 if ($validateCV->fails()) {
-                    return $this->errorMessage('Gagal', $validate->messages(), 400);
+                    return $this->errorMessage('Gagal total', $validateCV->messages(), 400);
                 }
             }
             $email = $request->email;
             if (count($email) > 4) {
-                return $this->errorMessage('Gagal', 'max 5 anggota', 400);
+                return $this->errorMessage('Gagal total', 'max 5 pendaftar', 400);
             }
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
                 if ($user_acc) {
                     $cek_anggota_sudah_apply = Apply::where('user_id', $user_acc->id)->where('status', 'menunggu')->first();
                     if ($cek_anggota_sudah_apply) {
-                        return $this->errorMessage('Gagal', 'Salah satu anggotamu sudah pernah apply', 400);
+                        return $this->errorMessage('Gagal total', 'Salah satu anggotamu sudah ada yang apply', 400);
                     }
                 }
             }
+
 
             for ($i = 0; $i < count($email); $i++) {
                 $user_acc = User::where('email', $email[$i])->first();
@@ -105,7 +106,7 @@ class ApplyControllerApi extends Controller
                         'name' => $request->name[$i],
                         'email' => $request->email[$i],
                         'password' => Hash::make($password),
-                        'kelompok_id' => $kelompok->id,
+                        'verif_code' => Str::uuid(60)
                     ]);
                     CreateUserFromApply::dispatch($new_user, $password);
                     // carrer
@@ -116,6 +117,7 @@ class ApplyControllerApi extends Controller
                         'carrer_id' => $carr->id,
                         'tipe_magang' => $request->tipe_magang,
                         'job_magang_id' => $request->job_magang[$i],
+                        'kelompok_id' => $kelompok->id,
                         'cv_user' => $cv_name
                     ]);
                 } else {
@@ -132,13 +134,12 @@ class ApplyControllerApi extends Controller
                         'tgl_selesai' => $request->tgl_selesai,
                         'carrer_id' => $carr->id,
                         'job_magang_id' => $request->job_magang[$i],
+                        'kelompok_id' => $kelompok->id,
                         'tipe_magang' => $request->tipe_magang,
                         'cv_user' => $cv_name
                     ]);
                 }
             }
-        } else {
-            $pendaftar->kelompok_id = 1;
         }
         $pendaftar->save();
         $cv_file = $request->file('cv_pendaftar');
@@ -153,12 +154,17 @@ class ApplyControllerApi extends Controller
         $carrer->carrer_id = $carr->id;
         $carrer->tipe_magang = $request->tipe_magang;
         $carrer->cv_user = $cv_name;
+        if ($request->tipe_magang === "kelompok") {
+            $carrer->kelompok_id = $kelompok->id;
+        } else {
+            $carrer->kelompok_id = 1;
+        }
         $carrer->save();
 
 
         Cache::forget('all-pemagang');
         Cache::forget('/pendaftar');
         AfterApply::dispatch($pendaftar);
-        return $this->successMessage($pendaftar, 'berhasil mendaftar');
+        return $this->successMessage('Success Mendaftar', 'Pendaftaran berhasil');
     }
 }

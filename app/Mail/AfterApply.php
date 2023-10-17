@@ -12,13 +12,13 @@ use Illuminate\Queue\SerializesModels;
 class AfterApply extends Mailable
 {
     use Queueable, SerializesModels;
-
+    protected $email;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($email)
     {
-        //
+        $this->email = $email;
     }
 
     /**
@@ -38,6 +38,7 @@ class AfterApply extends Mailable
     {
         return new Content(
             markdown: 'Mail.afterApply',
+            with: ['email' => $this->email]
         );
     }
 

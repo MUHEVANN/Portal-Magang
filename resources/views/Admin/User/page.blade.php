@@ -43,6 +43,7 @@
                     <th><input type="checkbox" name="" id="head-cb"></th>
                     <th>Name</th>
                     <th>Job</th>
+                    <th>No Hp</th>
                     <th>Tipe Magang</th>
                     <th>Jabatan</th>
                     <th>Batch</th>
@@ -93,15 +94,7 @@
                         <input type="number" name="no_hp" id="no_hp" class="form-control">
                     </div>
                     <h2 class="fs-5">-- Data Apply --</h2>
-                    <div class="mb-3">
-                        <label for="job_magang_id">Job Magang</label>
-                        <select name="job_magang_id" id="job_magang_id" class="form-control">
-                            <option value="">Pilih Job</option>
-                            @foreach ($job as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    {{-- <input type="text" id="batch" name="batch" class="form-control"> --}}
                     <div class="mb-3">
                         <label for="name">Batch</label>
                         <select name="batch" id="batch" class="form-control">
@@ -109,6 +102,15 @@
                             @foreach ($carrer as $item)
                                 <option value="{{ $item->id }}">{{ $item->batch }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="job_magang_id">Job Magang</label>
+                        <select name="job_magang_id" id="job_magang_id" class="form-control">
+                            <option value="">Pilih Job</option>
+                            {{-- @foreach ($job as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="mb-3">
@@ -120,44 +122,6 @@
                         <input type="date" name="tgl_selesai" id="tgl_selesai" class="form-control">
                     </div>
                 </div>
-                {{-- <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="name">Email</label>
-                        <input type="email" name="email" id="email" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="name">Password</label>
-                        <input type="password" name="password" id="password" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender">Gender</label>
-                        <select name="gender" id="gender" class="form-control">
-                            <option value="">Pilih Gender</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat">alamat</label>
-                        <input type="text" name="alamat" id="alamat" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="no_hp">NO Hp</label>
-                        <input type="number" name="no_hp" id="no_hp" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="job_magang_id">Job Magang</label>
-                        <select name="job_magang_id" id="job_magang_id" class="form-control">
-                            @foreach ($job as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> --}}
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary update">Update</button>
@@ -176,11 +140,11 @@
             });
             var table = $('#myTable').DataTable({
                 order: [
-                    [8, 'asc']
+                    [9, 'asc']
                 ],
                 columnDefs: [{
                     visible: false,
-                    targets: 8
+                    targets: 9
                 }],
                 responsive: true,
                 processing: true,
@@ -192,7 +156,7 @@
                     }).nodes();
                     var last = null;
 
-                    api.column(8, {
+                    api.column(9, {
                             page: 'current'
                         })
                         .data()
@@ -201,7 +165,7 @@
                                 $(rows)
                                     .eq(i)
                                     .before(
-                                        '<tr class="group" style="background:#f9f9f9;cursor:pointer"><td colspan="9">' +
+                                        '<tr class="group" style="background:#f9f9f9;cursor:pointer"><td colspan="10">' +
                                         group +
                                         '</td></tr>'
                                     );
@@ -213,62 +177,11 @@
                 rowGroup: {
                     dataSrc: 'kelompok.name', // Kolom yang digunakan untuk mengelompokkan data
                     startRender: function(rows, group) {
-                        return '<tr class="group"><td colspan="8">' + group + '</td></tr>';
+                        return '<tr class="group"><td colspan="9">' + group + '</td></tr>';
                     },
                     endRender: null
                 },
                 ajax: 'list-pemagang',
-                // columns: [{
-                //         data: 'checkbox',
-                //         name: 'checkbox',
-                //     },
-                //     {
-                //         data: "name",
-                //         name: "name"
-                //     },
-                //     {
-                //         data: "lowongan.name",
-                //         name: "lowongan.name"
-                //     },
-                //     {
-                //         data: "apply.tipe_magang",
-                //         name: "apply.tipe_magang"
-                //     },
-                //     {
-                //         data: "jabatan",
-                //         name: "jabatan",
-                //         render: function(data) {
-                //             return (data === 0) ? 'Anggota' : 'Ketua';
-                //         }
-                //     },
-                //     {
-                //         data: 'apply.carrer.batch',
-                //         name: 'apply.carrer.batch',
-                //     },
-                //     {
-                //         data: "apply.status",
-                //         name: "apply.status"
-                //     },
-                //     {
-                //         data: "apply.cv_user",
-                //         name: "apply.cv_user",
-                //         render: function(data) {
-                //             return "<a href='storage/cv/" + data + "'>" + data +
-                //                 "</a>";
-                //         }
-                //     },
-                //     {
-                //         data: "kelompok.name",
-                //         name: "kelompok.name",
-                //         render: function(data) {
-                //             return (data !== null) ? 'kelompok ' + data : 'mandiri';
-                //         }
-                //     },
-                //     {
-                //         data: "action",
-                //         name: "action"
-                //     }
-                // ]
                 columns: [{
                         data: 'checkbox',
                         name: 'checkbox'
@@ -280,6 +193,10 @@
                     {
                         data: 'lowongan.name',
                         name: 'lowongan.name'
+                    },
+                    {
+                        data: 'user.no_hp',
+                        name: 'user.no_hp'
                     },
                     {
                         data: 'tipe_magang',
@@ -302,7 +219,10 @@
                     },
                     {
                         data: 'cv_user',
-                        name: 'cv_user'
+                        name: 'cv_user',
+                        render: function(data) {
+                            return "<a href='storage/cv/" + data + "'>" + data + "</a>"
+                        }
                     },
                     {
                         data: 'kelompok.name',
@@ -352,8 +272,10 @@
                 var id = $(this).data('id');
                 $.ajax({
                     url: '/edit-pemagang/' + id,
+
                     method: 'GET',
                     success: function(response) {
+                        console.log(response.result.apply.job_magang_id);
                         $('#edit-modal').modal('show');
                         $('#name').val(response.result.user.name);
                         $('#email').val(response.result.user.email);
@@ -364,27 +286,78 @@
                         $('#no_hp').val(response.result.user.no_hp);
                         $('#tgl_mulai').val(response.result.apply.tgl_mulai);
                         $('#tgl_selesai').val(response.result.apply.tgl_selesai);
+                        var selectedBatchId = response.result.apply.carrer_id;
+                        $('#job_magang_id').empty();
                         var selectJob = response.result.apply.job_magang_id;
-                        $('#job_magang_id option').each(function() {
-                            var optionVal = $(this).val();
+                        $.ajax({
+                            url: 'by-batch/' + selectedBatchId,
+                            method: 'GET',
+                            success: function(response) {
+                                // console.log(response.data[0].name);
+                                var selectElement = $('#job_magang_id');
+                                // Mengisi opsi elemen select dengan data dari server
+                                $.each(response.data, function(key,
+                                    value) {
+                                    selectElement.append(
+                                        '<option value="' +
+                                        value.id + '">' +
+                                        value.name +
+                                        '</option>');
+                                    console.log(selectJob)
+                                    $('#job_magang_id option').each(
+                                        function() {
+                                            var optionVal = $(this)
+                                                .val();
 
-                            if (selectJob === parseInt(optionVal)) {
-                                $(this).prop('selected', true);
-                            } else {
-                                $(this).prop('selected', false);
+                                            if (selectJob === parseInt(
+                                                    optionVal)) {
+                                                $(this).prop('selected',
+                                                    true);
+                                            } else {
+                                                $(this).prop('selected',
+                                                    false);
+                                            }
+                                        });
+                                });
                             }
                         });
                         var selectBatch = response.result.apply.carrer_id;
-                        $('#batch option').each(function() {
-                            var optionValBatch = $(this).val();
-                            if (selectBatch === parseInt(optionValBatch)) {
-                                $(this).prop('selected', true)
-                            } else {
-                                $(this).prop('selected', false);
-                            }
+                        $('#batch').val(selectBatch);
+
+                        // console.log(selectJob);
+                        $('#job_magang_id').val(selectJob);
+                        $('#batch').on('change', function() {
+                            var selectedBatchId = $(this).val();
+                            // Selanjutnya, Anda dapat mengirim permintaan AJAX untuk mendapatkan data lowongan sesuai batch ID yang dipilih.
+                            $.ajax({
+                                url: 'by-batch/' + selectedBatchId,
+                                method: 'GET',
+                                success: function(response) {
+                                    console.log(response.data);
+                                    var selectElement = $('#job_magang_id');
+                                    selectElement
+                                        .empty(); // Mengosongkan elemen select
+
+                                    // Menambahkan opsi default
+                                    selectElement.append(
+                                        '<option value="">Pilih Job</option>'
+                                    );
+
+                                    // Mengisi opsi elemen select dengan data dari server
+                                    $.each(response.data, function(key,
+                                        value) {
+                                        selectElement.append(
+                                            '<option value="' +
+                                            value.id + '">' +
+                                            value.name +
+                                            '</option>');
+                                    });
+                                }
+                            });
                         });
                     }
                 });
+
                 $("body").off('click', '.update').on('click', '.update', function(e) {
                     e.preventDefault();
                     $.ajax({
@@ -601,4 +574,25 @@
 
         }
     </script>
+    {{-- // $('#batch').val(response.result.apply.carrer.batch);
+    // var selectJob = response.result.apply.job_magang_id;
+    // $('#job_magang_id option').each(function() {
+    // var optionVal = $(this).val();
+
+    // if (selectJob === parseInt(optionVal)) {
+    // $(this).prop('selected', true);
+    // } else {
+    // $(this).prop('selected', false);
+    // }
+    // });
+    // var selectBatch = response.result.apply.carrer_id;
+    // $('#batch option').each(function() {
+    // var optionValBatch = $(this).val();
+
+    // if (selectBatch === parseInt(optionValBatch)) {
+    // $(this).prop('selected', true)
+    // } else {
+    // $(this).prop('selected', false);
+    // }
+    // }); --}}
 @endsection

@@ -97,7 +97,10 @@
                 {{-- end indicator alert --}}
 
 
+
                 <hr class="my-5">
+                <label for="tipe-magang">Nomor WA</label> <br>
+                <input type="number" class="input-style" name="no_hp">
                 <label for="tipe-magang">Tipe Magang</label> <br>
                 <select x-model='tipe_magang' name="tipe_magang" class="input-style" id="tipe-magang">
                     <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
@@ -156,7 +159,8 @@
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-
+                            <label for="tipe-magang">Nomor WA</label> <br>
+                            <input type="number" class="input-style" name="no_hp_anggota[]">
                             <label for="cv">CV</label>
                             <input type="file" name="cv_anggota[]" class="input-style" id="cv"
                                 x-model="ar.cv" accept=".pdf" />
@@ -186,6 +190,7 @@
                                     x-text="validateCV(idx) ? 
                                 'File sudah Valid' : 'File harus berformat PDF!' "></span>
                             </li>
+
                             {{-- end indicator alert --}}
                         </div>
                     </template>

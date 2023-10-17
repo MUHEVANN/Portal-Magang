@@ -29,6 +29,6 @@ class AfterApply implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->user->email)->send(new MailAfterApply($this->user));
+        Mail::to($this->user)->send(new MailAfterApply($this->user));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apply;
 use App\Models\Carrer;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
@@ -44,5 +45,16 @@ class HomeController extends Controller
     {
         $lowongan = Lowongan::find($id);
         return view('Home.detail', compact('lowongan'));
+    }
+
+    public function dashboard()
+    {
+        return view('Home.dashboard');
+    }
+
+    public function dashboard_apply()
+    {
+        $apply = Apply::with('carrer', 'lowongan', 'kelompok')->where('user_id', auth()->user()->id)->get();
+        return response()->json(['result' => $apply]);
     }
 }
