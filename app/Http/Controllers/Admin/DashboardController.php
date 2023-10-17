@@ -46,4 +46,29 @@ class DashboardController extends Controller
 
         return view('Admin.lowongan.index', compact('carrer'));
     }
+
+    public function dashboard()
+    {
+        return view('Admin.Dashboard.dashboard');
+    }
+    public function data_dashboard()
+    {
+        $user = User::count();
+        $apply = Apply::where('status', 'menunggu')->count();
+        $pemagang = Apply::count();
+        $lulus = Apply::where('status', 'lulus')->count();
+        $ditolak = Apply::where('status', 'Ditolak')->count();
+        $batch = Carrer::count();
+        $lowongan = Lowongan::count();
+        $result = [
+            'total_user' => $user,
+            'total_pemagang' => $pemagang,
+            'total_pendaftar' => $apply,
+            'total_lulus' => $lulus,
+            'total_ditolak' => $ditolak,
+            'total_batch' => $batch,
+            'total_lowongan' => $lowongan,
+        ];
+        return response()->json(['result' => $result]);
+    }
 }

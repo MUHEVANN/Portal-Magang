@@ -1,130 +1,132 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div class="my-5">
-        <div class="row mb-3">
-            <div class="col-lg-3">
-                <select name="carrer_id" id="filter-batch" class="form-control">
-                    <option value="">Pilih Batch</option>
-                    @foreach ($carrer as $item)
-                        <option value="{{ $item->batch }}">{{ $item->batch }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-lg-3">
-                <select name="filter-job" id="filter-job" class="form-control">
-                    <option value="">Pilih Lowongan</option>
-                    @foreach ($job as $item)
-                        <option value="{{ $item->name }}">{{ $item->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-lg-3">
-                <select name="carrer_id" id="filter-status" class="form-control">
-                    <option value="">Pilih Status</option>
-                    <option value="menunggu">Menunggu</option>
-                    <option value="Lulus">Lulus</option>
-                    <option value="Ditolak">Ditolak</option>
-                </select>
-            </div>
-            <div class="col-lg-3">
-                <select name="filter-tipe-magang" id="filter-tipe-magang" class="form-control">
-                    <option value="">Pilih Tipe Magang</option>
-                    <option value="mandiri">Mandiri</option>
-                    <option value="kelompok">Kelompok</option>
-                </select>
-            </div>
-        </div>
-        <div class="mb-3">
-            <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
-        </div>
-        <table class="table table-hover" id="myTable">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" name="" id="head-cb"></th>
-                    <th>Name</th>
-                    <th>Job</th>
-                    <th>No Hp</th>
-                    <th>Tipe Magang</th>
-                    <th>Jabatan</th>
-                    <th>Batch</th>
-                    <th>Status</th>
-                    <th>Cv</th>
-                    <th>Kelompok Id</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="modal fade" id="edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="card container">
+        <div class="my-5">
+            <div class="row mb-3">
+                <div class="col-lg-3">
+                    <select name="carrer_id" id="filter-batch" class="form-control">
+                        <option value="">Pilih Batch</option>
+                        @foreach ($carrer as $item)
+                            <option value="{{ $item->batch }}">{{ $item->batch }}</option>
+                        @endforeach
+                    </select>
                 </div>
+                <div class="col-lg-3">
+                    <select name="filter-job" id="filter-job" class="form-control">
+                        <option value="">Pilih Lowongan</option>
+                        @foreach ($job as $item)
+                            <option value="{{ $item->name }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <select name="carrer_id" id="filter-status" class="form-control">
+                        <option value="">Pilih Status</option>
+                        <option value="menunggu">Menunggu</option>
+                        <option value="Lulus">Lulus</option>
+                        <option value="Ditolak">Ditolak</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <select name="filter-tipe-magang" id="filter-tipe-magang" class="form-control">
+                        <option value="">Pilih Tipe Magang</option>
+                        <option value="mandiri">Mandiri</option>
+                        <option value="kelompok">Kelompok</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
+            </div>
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="" id="head-cb"></th>
+                        <th>Name</th>
+                        <th>Job</th>
+                        <th>No Hp</th>
+                        <th>Tipe Magang</th>
+                        <th>Jabatan</th>
+                        <th>Batch</th>
+                        <th>Status</th>
+                        <th>Cv</th>
+                        <th>Kelompok Id</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="modal fade" id="edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
 
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="name">Email</label>
-                        <input type="email" name="email" id="email" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="name">Password</label>
-                        <input type="password" name="password" id="password" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender">Gender</label>
-                        <select name="gender" id="gender" class="form-control">
-                            <option value="">Pilih Gender</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat">alamat</label>
-                        <input type="text" name="alamat" id="alamat" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="no_hp">NO Hp</label>
-                        <input type="number" name="no_hp" id="no_hp" class="form-control">
-                    </div>
-                    <h2 class="fs-5">-- Data Apply --</h2>
-                    {{-- <input type="text" id="batch" name="batch" class="form-control"> --}}
-                    <div class="mb-3">
-                        <label for="name">Batch</label>
-                        <select name="batch" id="batch" class="form-control">
-                            <option value="">Pilih Batch</option>
-                            @foreach ($carrer as $item)
-                                <option value="{{ $item->id }}">{{ $item->batch }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="job_magang_id">Job Magang</label>
-                        <select name="job_magang_id" id="job_magang_id" class="form-control">
-                            <option value="">Pilih Job</option>
-                            {{-- @foreach ($job as $item)
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name">Email</label>
+                            <input type="email" name="email" id="email" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name">Password</label>
+                            <input type="password" name="password" id="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender">Gender</label>
+                            <select name="gender" id="gender" class="form-control">
+                                <option value="">Pilih Gender</option>
+                                <option value="L">L</option>
+                                <option value="P">P</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="alamat">alamat</label>
+                            <input type="text" name="alamat" id="alamat" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="no_hp">NO Hp</label>
+                            <input type="number" name="no_hp" id="no_hp" class="form-control">
+                        </div>
+                        <h2 class="fs-5">-- Data Apply --</h2>
+                        {{-- <input type="text" id="batch" name="batch" class="form-control"> --}}
+                        <div class="mb-3">
+                            <label for="name">Batch</label>
+                            <select name="batch" id="batch" class="form-control">
+                                <option value="">Pilih Batch</option>
+                                @foreach ($carrer as $item)
+                                    <option value="{{ $item->id }}">{{ $item->batch }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="job_magang_id">Job Magang</label>
+                            <select name="job_magang_id" id="job_magang_id" class="form-control">
+                                <option value="">Pilih Job</option>
+                                {{-- @foreach ($job as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach --}}
-                        </select>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tgl_mulai">Tanggal Mulai</label>
+                            <input type="date" name="tgl_mulai" id="tgl_mulai" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tgl_selesai">Tanggal Selesai</label>
+                            <input type="date" name="tgl_selesai" id="tgl_selesai" class="form-control">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="tgl_mulai">Tanggal Mulai</label>
-                        <input type="date" name="tgl_mulai" id="tgl_mulai" class="form-control">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary update">Update</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="tgl_selesai">Tanggal Selesai</label>
-                        <input type="date" name="tgl_selesai" id="tgl_selesai" class="form-control">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary update">Update</button>
                 </div>
             </div>
         </div>
@@ -253,7 +255,7 @@
             $('tr.group').data('group-start', 'closed').next().hide();
             $('#filter-batch').on('change', function() {
                 var batch = $(this).val();
-                table.column(5).search(batch).draw();
+                table.column(6).search(batch).draw();
             })
             $('#filter-job').on('change', function() {
                 var job = $(this).val();
@@ -261,11 +263,11 @@
             })
             $('#filter-status').on('change', function() {
                 var job = $(this).val();
-                table.column(6).search(job).draw();
+                table.column(7).search(job).draw();
             })
             $('#filter-tipe-magang').on('change', function() {
                 var tipe = $(this).val();
-                table.column(3).search(tipe).draw();
+                table.column(4).search(tipe).draw();
             })
             $('body').on('click', '.edit', function(e) {
                 e.preventDefault();

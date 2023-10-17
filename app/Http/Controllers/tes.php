@@ -58,21 +58,67 @@ class tes extends Controller
 
 
 
-    public function getApply()
+    public function getApply(Request $request)
     {
-        // $data = Apply::with('user.lowongan', 'user.kelompok')->get();
-        // $data = User::all();
-        // $data = User::with('konfirmed')->find(auth()->user()->id);
-        // $konfirmed_ketua = $data->konfirmed->last();
-        // $konfirmed_at = $konfirmed_ketua->created_at;
-        // $sixtyDaysAgo = $konfirmed_at->addDays(60);
-        // $time = $sixtyDaysAgo->diffInDays(now());
-        // $konfirm =   Konfirmed::with('user')->where('isSend', 0)->first();
-        // $konfirm_at = $konfirm->created_at;
-        // $sixtyDays = $konfirm_at->addMinutes(7);
-        // $data = now()->diffInMinutes($sixtyDays);
-        // $data = $konfirm;
-        $data = Apply::with('carrer', 'lowongan', 'kelompok')->where('user_id', auth()->user()->id)->get();
+        $allMonths = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $allMonths[] = $i;
+        }
+        $filterYear = 2023;
+        if ($request->has('filter_year')) {
+            $filterYear = $request->query('filter_year');
+        }
+        // Query untuk mengambil data pendaftaran pengguna
+        $userRegistrations = User::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', $filterYear)
+            ->groupBy('year', 'month')
+            ->get();
+
+        // Buat kumpulan data lengkap dengan semua bulan
+        $data = [];
+        $months = [];
+        foreach ($allMonths as $month) {
+            $matchingData = $userRegistrations->where('month', $month)->first();
+            $count = $matchingData ? $matchingData->count : 0;
+            $year = $matchingData ? $matchingData->year : date('Y');
+            $months[] = [
+                'month' => $month,
+                'count' => $count,
+            ];
+        }
+        $data[] = [
+            'months' => $months,
+        ];
+
+
+        array_push($data, $year);
+        // $user = User::count();
+        // $apply = Apply::where('status', 'menunggu')->count();
+        // $lulus = Apply::where('status', 'lulus')->count();
+        // $ditolak = Apply::where('status', 'Ditolak')->count();
+        // $batch = Carrer::count();
+        // $lowongan = Lowongan::count();
+        // $result = [
+        //     'total user' => $user,
+        //     'total pendaftar' => $apply,
+        //     'total apply lulus' => $lulus,
+        //     'total ditolak' => $ditolak,
+        //     'total batch' => $batch,
+        //     'total lowongan' => $lowongan,
+        // ];
         return $this->successMessage($data, 'success');
+    }
+    public function get_year()
+    {
+        $years = User::selectRaw('YEAR(created_at) as year')->get();
+        $data = [];
+
+        foreach ($years as $year) {
+            if (!in_array($year, $data)) {
+                $data[] = $year;
+            }
+        }
+
+        return $this->successMessage($data, 'berhasil');
     }
 }

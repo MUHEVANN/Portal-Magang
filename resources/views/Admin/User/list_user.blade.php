@@ -1,66 +1,68 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div class="my-5">
+    <div class="card container">
+        <div class="my-5">
 
-        <div class="mb-3">
-            <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
+            <div class="mb-3">
+                <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
+            </div>
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="" id="head-cb"></th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>No Hp</th>
+                        <th>Gender</th>
+                        <th>Alamat</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-        <table class="table table-hover" id="myTable">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" name="" id="head-cb"></th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>No Hp</th>
-                    <th>Gender</th>
-                    <th>Alamat</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="modal fade" id="edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control">
+        <div class="modal fade" id="edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="name">Email</label>
-                        <input type="email" name="email" id="email" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="name">Password</label>
-                        <input type="password" name="password" id="password" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender">Gender</label>
-                        <select name="gender" id="gender" class="form-control">
-                            <option value="">Pilih Gender</option>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat">alamat</label>
-                        <input type="text" name="alamat" id="alamat" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="no_hp">No Hp</label>
-                        <input type="number" name="no_hp" id="no_hp" class="form-control" max="12">
-                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name">Email</label>
+                            <input type="email" name="email" id="email" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name">Password</label>
+                            <input type="password" name="password" id="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender">Gender</label>
+                            <select name="gender" id="gender" class="form-control">
+                                <option value="">Pilih Gender</option>
+                                <option value="L">L</option>
+                                <option value="P">P</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="alamat">alamat</label>
+                            <input type="text" name="alamat" id="alamat" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="no_hp">No Hp</label>
+                            <input type="number" name="no_hp" id="no_hp" class="form-control" max="12">
+                        </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary update">Update</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary update">Update</button>
+                    </div>
                 </div>
             </div>
         </div>

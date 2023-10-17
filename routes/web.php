@@ -78,6 +78,8 @@ Route::middleware('auth')->group(function () {
 
     // Admin
     Route::middleware('role:admin')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'dashboard']);
+        Route::get('/dashboard-data', [DashboardController::class, 'data_dashboard']);
         Route::get('/pendaftar', [DashboardController::class, 'index']);
         // Lowongan
         Route::get('lowongan-page', [DashboardController::class, 'lowongan_page']);

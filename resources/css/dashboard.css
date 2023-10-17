@@ -1,0 +1,31 @@
+.icon-container {
+    padding: 10px;
+    border-radius: 10px;
+}
+.icon {
+    font-size: 20px;
+    font-weight: bold;
+}
+.container-text {
+    display: flex;
+    align-items: center;
+}
+
+.bg-ijo {
+    background: #b2face;
+}
+.ijo {
+    color: #048837;
+}
+.bg-merah {
+    background: #fab2b2;
+}
+.merah {
+    color: #880404;
+}
+.bg-biru {
+    background: #b2b7fa;
+}
+.biru {
+    color: #040688;
+}

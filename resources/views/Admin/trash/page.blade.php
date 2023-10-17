@@ -1,22 +1,24 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div class="my-5">
-        <div class="mb-3">
-            <button type="button" id="restore" class="btn btn-primary" onclick="restore()" disabled>Restore</button>
+    <div class="card container">
+        <div class="my-5">
+            <div class="mb-3">
+                <button type="button" id="restore" class="btn btn-primary" onclick="restore()" disabled>Restore</button>
+            </div>
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="" id="head-cb"></th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Gender</th>
+                        <th>Alamat</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-        <table class="table" id="myTable">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" name="" id="head-cb"></th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Password</th>
-                    <th>Gender</th>
-                    <th>Alamat</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
     </div>
 @endsection
 @section('script')

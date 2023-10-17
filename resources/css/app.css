@@ -59,7 +59,10 @@
 }
 
 /* TRiX EDITOR CSS*/
-
+.icon-container {
+    padding: 20px;
+    background: #000;
+}
 ul {
     list-style: disc;
     list-style-position: inside;

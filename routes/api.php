@@ -77,6 +77,7 @@ Route::get('/lowongan/{id}', [JobMagangApi::class, 'show']);
 
 Route::post('/register', [UserAuthApi::class, 'register']);
 Route::post('/login', [UserAuthApi::class, 'login']);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/get-apply', [tes::class, 'getApply']);
-});
+// Route::middleware('auth:sanctum')->group(function () {
+// });
+Route::get('/get-apply', [tes::class, 'getApply']);
+Route::get('/get-year', [tes::class, 'get_year']);
