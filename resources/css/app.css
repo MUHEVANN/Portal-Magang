@@ -50,7 +50,8 @@
     @apply h-max w-1/5 md:w-2/5 p-3 border-[1px] border-slate-300 rounded-md md:sticky top-24;
 }
 
-.min {
+
+.min{
     @apply w-4/5;
 }
 
@@ -137,6 +138,7 @@ ol {
 .auth-input {
     @apply pl-9 border-b-2 py-2 mb-2 px-2 w-full focus:outline-none focus:border-[#001D86] bg-gray-50 focus:bg-blue-50;
 }
+
 .custom-height {
     height: 500px;
 }
