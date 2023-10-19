@@ -588,7 +588,7 @@ document.addEventListener("alpine:init", () => {
         // initialize function from before, and get data from localstorage when user refresh the pages.
         initBtnCode() {
             let storageParse = JSON.parse(localStorage.getItem("waitFor"));
-            if(storageParse == null) return;
+            if (storageParse == null) return;
             this.waitFor = storageParse.isWaiting;
             this.count = storageParse.countdown;
 
@@ -683,23 +683,23 @@ document.addEventListener("alpine:init", () => {
     }));
 });
 
-
 document.addEventListener("alpine:init", () => {
     Alpine.data("dashboard", () => ({
+        message: "",
+        async dashboardUser() {
+            const response = await (await fetch("/dashboard-data-user")).json();
 
-        message: '',
-        async dashboardUser(){
-            const response = await (await fetch('/dashboard-data')).json();
-            console.log(response.result);
-
-            if(response.result.length <= 0){
-                this.message = 'Oops,.. Sepertinya anda belum melakukan pendaftaran ke lowongan yang tersedia!';
+            if (response.result.length <= 0) {
+                this.message =
+                    "Oops,.. Sepertinya anda belum melakukan pendaftaran ke lowongan yang tersedia!";
             }
+
+            console.log("hasil" + response);
             return response.result;
         },
 
-        statusCheck(param){
-            return (param.toLowerCase() == 'ditolak') ? true : false;
-        }
+        statusCheck(param) {
+            return param.toLowerCase() == "ditolak" ? true : false;
+        },
     }));
 });

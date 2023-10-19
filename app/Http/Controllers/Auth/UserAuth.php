@@ -71,8 +71,8 @@ class UserAuth extends Controller
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }
 
-
         $user = User::where('email', $request->email)->first();
+        // dd(Hash::check($request->password, $user->password));
         $remember = $request->has('remember');
         if ($user) {
             if (Hash::check($request->password, $user->password)) {

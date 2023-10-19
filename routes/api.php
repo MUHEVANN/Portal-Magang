@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\User\ApplyControllerApi;
 use App\Http\Controllers\Api\User\JobMagangApi;
 use App\Http\Controllers\Api\User\ProfileControllerApi;
 use App\Http\Controllers\Auth\UserAuth;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\tes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [UserAuthApi::class, 'logout']);
     // Auth verif
+    Route::get('dashboard-data-user', [HomeController::class, 'dashboard_apply']);
     Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
     // verif user
     Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');

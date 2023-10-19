@@ -57,7 +57,7 @@ Route::get('/filters/{type}', [HomeController::class, 'filter'])->name('filters'
 Route::middleware('auth')->group(function () {
     // dashboard user
     Route::get('dashboard-apply', [HomeController::class, 'dashboard']);
-    Route::get('dashboard-data', [HomeController::class, 'dashboard_apply']);
+    Route::get('dashboard-data-user', [HomeController::class, 'dashboard_apply']);
     // change password logged in
     Route::get('changePassword', [UserAuth::class, 'changePassword']);
     Route::post('/ganti-password', [UserAuth::class, 'ganti_password']);
