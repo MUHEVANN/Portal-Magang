@@ -11,7 +11,7 @@ document.addEventListener("alpine:init", () => {
         start_from: 0,
         end_to: 10,
 
-        statusError: '',
+        statusError: "",
 
         // call when page first load and call 'getSorted()' function
         filterInit() {
@@ -62,14 +62,19 @@ document.addEventListener("alpine:init", () => {
             if (this.result() == "" && this.search_type != "") {
                 this.placeholder = "Tidak Ada Hasil!";
                 return true;
-            } else if (this.result() == "" && this.search_type == "" && this.statusError == '') {
+            } else if (
+                this.result() == "" &&
+                this.search_type == "" &&
+                this.statusError == ""
+            ) {
                 this.placeholder =
                     "<img width='24' src='assets/animated/loading.svg' alt=''>";
                 return true;
-            } else if(this.statusError != '') {
-                this.placeholder = "Oops... Sepertinya terjadi masalah! Silahkan coba lagi";
+            } else if (this.statusError != "") {
+                this.placeholder =
+                    "Oops... Sepertinya terjadi masalah! Silahkan coba lagi";
                 return true;
-            } else{
+            } else {
                 return false;
             }
         },
@@ -509,30 +514,38 @@ document.addEventListener("alpine:init", () => {
                 }),
             })
                 .then((res) => {
-                    res.json().then((response) => {  
+                    res.json().then((response) => {
                         console.log(Object.keys(response).length, response);
 
-                        if(Object.keys(response).length >= 1){
+                        if (Object.keys(response).length >= 1) {
                             this.reset_invalid_pass();
                             for (const msg in response) {
                                 if (Object.hasOwnProperty.call(response, msg)) {
-                                switch (msg) {
-                                    case 'password_lama':
-                                        this.old_pass_invalid = response[msg];
-                                        break;
-                                    case 'password_baru':
-                                        this.new_pass_invalid = response[msg];
-                                        break;
-                                    case 'confirm_password':
-                                        this.repeat_pass_invalid = response[msg];
-                                        break;
-                                    case 'success':
-                                        this.reset_validate_pass_success(response);
-                                        break;
-                                    default:
-                                        this.alertChangePass('Terjadi Masalah.<br> Silahkan coba lagi!','error');
-                                        break;
-                                    }     
+                                    switch (msg) {
+                                        case "password_lama":
+                                            this.old_pass_invalid =
+                                                response[msg];
+                                            break;
+                                        case "password_baru":
+                                            this.new_pass_invalid =
+                                                response[msg];
+                                            break;
+                                        case "confirm_password":
+                                            this.repeat_pass_invalid =
+                                                response[msg];
+                                            break;
+                                        case "success":
+                                            this.reset_validate_pass_success(
+                                                response
+                                            );
+                                            break;
+                                        default:
+                                            this.alertChangePass(
+                                                "Terjadi Masalah.<br> Silahkan coba lagi!",
+                                                "error"
+                                            );
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -544,18 +557,18 @@ document.addEventListener("alpine:init", () => {
         },
 
         // message if success reset the password
-        reset_validate_pass_success(response){
+        reset_validate_pass_success(response) {
             this.reset_invalid_pass();
 
             this.alertChangePass(response.success);
-            
+
             this.old_pass = "";
             this.new_pass = "";
             this.repeat_pass = "";
         },
 
         // reset all error message for every message
-        reset_invalid_pass(){
+        reset_invalid_pass() {
             this.old_pass_invalid = "";
             this.new_pass_invalid = "";
             this.repeat_pass_invalid = "";

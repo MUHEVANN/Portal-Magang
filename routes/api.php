@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Api\Admin\CarrerBatch;
 use App\Http\Controllers\Api\Admin\DaftarPendaftar;
@@ -68,6 +69,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/pengguna/restore/{id}', [Trashed::class, 'restore']);
         // batch
         Route::resource('/batch', CarrerBatch::class);
+        Route::get('/get-apply', [tes::class, 'getApply']);
+        Route::get('/get-year', [tes::class, 'get_year']);
+        Route::get('/get-data-apply', [DashboardController::class, 'data_apply']);
     });
 });
 
@@ -77,6 +81,5 @@ Route::get('/lowongan/{id}', [JobMagangApi::class, 'show']);
 
 Route::post('/register', [UserAuthApi::class, 'register']);
 Route::post('/login', [UserAuthApi::class, 'login']);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/get-apply', [tes::class, 'getApply']);
-});
+// Route::middleware('auth:sanctum')->group(function () {
+// });

@@ -26,6 +26,7 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
 
+    @vite(['resources/js/app.js'])
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,7 +48,7 @@
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-
+    @vite(['resources/css/dashboard.css'])
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -124,19 +125,13 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-                    <li
-                        class="menu-item {{ config('app.url') . '/all-pemagang' === request()->url() ? 'active' : '' }}">
-                        <a href="{{ url('all-pemagang') }}" class="menu-link">
+                    <li class="menu-item {{ config('app.url') . '/dashboard' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('dashboard') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">All Pemagang</div>
+                            <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ config('app.url') . '/all-user' === request()->url() ? 'active' : '' }}">
-                        <a href="{{ url('all-user') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">All User</div>
-                        </a>
-                    </li>
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Carrer</span></li>
                     <li
                         class="menu-item {{ config('app.url') . '/batch-page' === request()->url() ? 'active' : '' }}">
                         <a href="{{ url('batch-page') }}" class="menu-link">
@@ -155,6 +150,21 @@
                             <div data-i18n="Analytics">Lowongan</div>
                         </a>
                     </li>
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">User</span></li>
+                    <li
+                        class="menu-item {{ config('app.url') . '/all-pemagang' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('all-pemagang') }}" class="menu-link">
+                            <i class='bx bxs-user-detail menu-icon tf-icons'></i>
+                            <div data-i18n="Analytics">All Pemagang</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ config('app.url') . '/all-user' === request()->url() ? 'active' : '' }}">
+                        <a href="{{ url('all-user') }}" class="menu-link">
+                            <i class='bx bx-group menu-icon tf-icons'></i>
+                            <div data-i18n="Analytics">All User</div>
+                        </a>
+                    </li>
+
 
                     <!-- Forms & Tables -->
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Perlu
@@ -293,11 +303,11 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <div class="container-xxl container-p-y">
-                        <div class="card container">
-                            @yield('content')
-                        </div>
+                        @yield('content')
+
                     </div>
                 </div>
+
 
                 <!-- / Content -->
 

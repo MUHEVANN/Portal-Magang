@@ -7,6 +7,7 @@ use App\Models\Kelompok;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class ListUserController extends Controller
@@ -38,6 +39,14 @@ class ListUserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->messages()]);
+        }
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;

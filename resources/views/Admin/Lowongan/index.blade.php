@@ -1,89 +1,91 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div class="my-5">
+    <div class="card container">
+        <div class="my-5">
 
-        <div class="d-flex justify-content-end gap-2 mb-3">
-            <div class="col-lg-2">
-                <select name="batch" id="select-batch" class="form-control">
-                    <option value="">Pilih Batch</option>
-                    @foreach ($carrer as $item)
-                        <option value="{{ $item->id }}">{{ $item->batch }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <button type="button" class="btn btn-outline-primary" id="tambah">
-                Tambah
-            </button>
-        </div>
-        <table class="table" id="myTable">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama Lowongan</th>
-                    <th>desc</th>
-                    <th>Benefit</th>
-                    <th>Kualifikasi</th>
-                    <th>Deadline</th>
-                    <th>Gambar</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="modal fade" id="tambah-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                    <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="d-flex justify-content-end gap-2 mb-3">
+                <div class="col-lg-2">
+                    <select name="batch" id="select-batch" class="form-control">
+                        <option value="">Pilih Batch</option>
+                        @foreach ($carrer as $item)
+                            <option value="{{ $item->id }}">{{ $item->batch }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <form id="form-id">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name">Nama Lowongan</label>
-                            <input type="text" name="name" id="name" class="form-control">
-                            <span id="error-name" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="desc">Deskripsi</label>
-                            <trix-editor class="trix-editor" id="desc"></trix-editor>
-                            <span id="error-desc" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="benefit">Benefit</label>
-                            <trix-editor id="benefit"></trix-editor>
-                            <span id="error-benefit" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="kualifikasi">Kualifikasi</label>
-                            <trix-editor id="kualifikasi"></trix-editor>
-                            <span id="error-kualifikasi" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="deadline">Deadline</label>
-                            <input type="date" id="deadline" class="form-control">
-                            <span id="error-deadline" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="gambar">Gambar</label>
-                            <input type="file" name="gambar" id="gambar" class="form-control"
-                                accept=".png,.jpg,.jpeg,.svg">
-                            <span id="error-gambar" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-12">
-                            <img src="" id="image-preview" alt="" class="col-12">
-                        </div>
+                <button type="button" class="btn btn-outline-primary" id="tambah">
+                    Tambah
+                </button>
+            </div>
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Lowongan</th>
+                        <th>desc</th>
+                        <th>Benefit</th>
+                        <th>Kualifikasi</th>
+                        <th>Deadline</th>
+                        <th>Gambar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="modal fade" id="tambah-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                        <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" class="close"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary submit">Submit</button>
-                    </div>
-                </form>
+                    <form id="form-id">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="name">Nama Lowongan</label>
+                                <input type="text" name="name" id="name" class="form-control">
+                                <span id="error-name" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="desc">Deskripsi</label>
+                                <trix-editor class="trix-editor" id="desc"></trix-editor>
+                                <span id="error-desc" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="benefit">Benefit</label>
+                                <trix-editor id="benefit"></trix-editor>
+                                <span id="error-benefit" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="kualifikasi">Kualifikasi</label>
+                                <trix-editor id="kualifikasi"></trix-editor>
+                                <span id="error-kualifikasi" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deadline">Deadline</label>
+                                <input type="date" id="deadline" class="form-control">
+                                <span id="error-deadline" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="gambar">Gambar</label>
+                                <input type="file" name="gambar" id="gambar" class="form-control"
+                                    accept=".png,.jpg,.jpeg,.svg">
+                                <span id="error-gambar" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <img src="" id="image-preview" alt="" class="col-12">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" class="close"
+                                data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -209,6 +211,7 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
+
                             if (response.error) {
                                 $('#error-benefit').text(response.error.benefit);
                                 $('#error-name').text(response.error.name);
@@ -295,6 +298,7 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
+                            // console.log(response);
                             if (response[0] === 'error') {
                                 $('#error-benefit').text(response[1].benefit);
                                 $('#error-name').text(response[1].name);
