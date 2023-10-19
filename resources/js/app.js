@@ -68,15 +68,19 @@ const chart = async () => {
     const years = resYear.data.data;
 
     // Isi elemen select dengan daftar tahun
+    const year = new Date();
+    const initialYear = year.getFullYear();
     years.forEach((item) => {
         var option = document.createElement("option");
         option.value = item.year;
         option.text = item.year;
         tahun.appendChild(option);
+        if (parseInt(option.value) === initialYear) {
+            option.selected = true;
+        }
     });
 
     // Panggil fungsi untuk menggambar grafik dengan tahun awal
-    const initialYear = years[0].year;
     drawChart(initialYear);
 };
 chart();
