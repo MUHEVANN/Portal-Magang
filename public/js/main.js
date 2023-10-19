@@ -669,3 +669,24 @@ document.addEventListener("alpine:init", () => {
         },
     }));
 });
+
+
+document.addEventListener("alpine:init", () => {
+    Alpine.data("dashboard", () => ({
+
+        message: '',
+        async dashboardUser(){
+            const response = await (await fetch('/dashboard-data')).json();
+            console.log(response.result);
+
+            if(response.result.length <= 0){
+                this.message = 'Oops,.. Sepertinya anda belum melakukan pendaftaran ke lowongan yang tersedia!';
+            }
+            return response.result;
+        },
+
+        statusCheck(param){
+            return (param.toLowerCase() == 'ditolak') ? true : false;
+        }
+    }));
+});

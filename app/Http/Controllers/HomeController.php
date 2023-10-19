@@ -49,7 +49,7 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        return view('Home.dashboard');
+        return view('Home.profile.dashboard');
     }
 
     public function dashboard_apply()

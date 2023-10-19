@@ -68,7 +68,7 @@
                                     src="{{ asset('assets/person.svg') }}" width="24" alt="person">
                                 <p class="px-1">Profile</p>
                             </a>
-                            <a href="/dashboard"
+                            <a href="/dashboard-apply"
                                 class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
                                     src="{{ asset('assets/dashboard.svg') }}" width="24" alt="dashboard">
                                 <p class="px-1">Dashboard</p>
@@ -161,7 +161,7 @@
 
             </ul>
         </div>
-        <p class="text-center block pb-2 bg-blue-950">
+        <p class="text-center block pb-2 bg-[#121b40]">
             <a href="https://www.jetorbit.com/"
                 class="hover-underline text-blue-100 font-thin text-sm opacity-40">SuportBy@jetorbit.com</a>
         </p>
