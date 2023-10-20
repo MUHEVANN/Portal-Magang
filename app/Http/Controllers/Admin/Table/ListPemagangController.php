@@ -47,12 +47,14 @@ class ListPemagangController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required',
+            'job_magang_id' => 'required',
         ], [
             'name.required' => 'nama wajib diisi',
             'email.required' => 'email wajib diisi',
+            'job_magang_id.required' => 'job magang wajib diisi',
         ]);
         if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate->messages())->withInput();
+            return response()->json(['error' => $validate->messages()]);
         }
         $apply = Apply::find($id);
 
@@ -77,6 +79,7 @@ class ListPemagangController extends Controller
         $user->gender = $request->gender;
         // $user->job_magang_id = $request->job_magang_id;
         $user->save();
+        Cache::forget('batch');
         Cache::forget('all-pemagang');
         return response()->json(['success' => 'Berhasil Mengupdate']);
     }
@@ -118,6 +121,7 @@ class ListPemagangController extends Controller
             $apply->delete();
         }
         Cache::forget('all-pemagang');
+        Cache::forget('batch');
         return response()->json(['success' => 'Berhasil Menghapus']);
     }
 }

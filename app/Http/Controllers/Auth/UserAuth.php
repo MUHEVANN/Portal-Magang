@@ -79,7 +79,7 @@ class UserAuth extends Controller
                 Session::put('user', $user);
                 Auth::login($user, $remember);
                 if ($user->hasRole('admin')) {
-                    return redirect()->to('all-pemagang');
+                    return redirect()->to('dashboard');
                 } else {
                     Session::put('user', $user);
                     return redirect()->to('home');

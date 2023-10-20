@@ -1,35 +1,38 @@
 @extends('layouts.dashboard')
 @section('content')
-    <div class="my-5">
-        <div class="mb-3 d-flex justify-content-between">
-            <div class="mb-3">
-                <button class="btn btn-outline-primary" disabled id="btn-konfirmasi" onclick="konfirmasi()">Konfirmasi</button>
-                <button class="btn btn-outline-danger" disabled id="btn-reject" onclick="reject()">Reject</button>
+    <div class="card container">
+        <div class="my-5">
+            <div class="mb-3 d-flex justify-content-between">
+                <div class="mb-3">
+                    <button class="btn btn-outline-primary" disabled id="btn-konfirmasi"
+                        onclick="konfirmasi()">Konfirmasi</button>
+                    <button class="btn btn-outline-danger" disabled id="btn-reject" onclick="reject()">Reject</button>
+                </div>
+                <div class="col-3">
+                    <select name="" id="select-tipe" class="form-control">
+                        <option value="">Tipe Magang</option>
+                        <option value="mandiri">Mandiri</option>
+                        <option value="kelompok">Kelompok</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-3">
-                <select name="" id="select-tipe" class="form-control">
-                    <option value="">Tipe Magang</option>
-                    <option value="mandiri">Mandiri</option>
-                    <option value="kelompok">Kelompok</option>
-                </select>
-            </div>
+            <table class="table table-stiped table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="" id="head-cb" /></th>
+                        {{-- <th>No</th> --}}
+                        <th>Nama</th>
+                        <th>cv</th>
+                        <th>Job Magang</th>
+                        <th>Tipe Magang</th>
+                        <th>Status</th>
+                        <th>Jabatan</th>
+                        <th>Kelompok id</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-        <table class="table table-stiped table-hover" id="myTable">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" name="" id="head-cb" /></th>
-                    {{-- <th>No</th> --}}
-                    <th>Nama</th>
-                    <th>cv</th>
-                    <th>Job Magang</th>
-                    <th>Tipe Magang</th>
-                    <th>Status</th>
-                    <th>Jabatan</th>
-                    <th>Kelompok id</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
     </div>
 @endsection
 @section('script')
