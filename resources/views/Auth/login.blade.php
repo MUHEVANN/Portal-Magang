@@ -12,7 +12,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center border-[2px] border-slate-400">
+<body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center">
     <div x-data="apply"
         class="bg-white h-full md:h-[30rem] justify-center w-[45rem] flex items-center flex-col md:flex-row shadow-sm border-2 border-gray-100 rounded-md">
         @if (session('success'))
