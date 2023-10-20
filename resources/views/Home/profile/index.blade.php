@@ -12,7 +12,7 @@
 @section('content')
     <div class="mx-auto sm:w-7/12 p-5 rounded-md border-[1px] bg-white shadow-sm border-slate-100">
         <h1 class="sub-title">Profilku</h1>
-        <form>
+        <section x-data='profile' x-init="initWaitFor30Seconds">
             <img src="" alt="user profile" class="rounded-full object-cover w-40 h-40 mb-3" id="image-preview">
             <div class="mb-3">
                 <label for="job_magang_id">Profile</label>
@@ -20,14 +20,23 @@
                     accept=".jpg,.png,.svg,.jpeg">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" id="verifikasi">
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name" class="input-style">
                 <p class="error-name"></p>
             </div>
             <div class="mb-3">
                 <label for="name">Email</label>
-                <input type="email" name="email" id="email" class="input-style">
+                <div class="flex items-center">
+                    <input type="email" name="email" id="email" style="margin-right: 0px"
+                        class=" input-style w-3/5">
+                    @if (Auth::check() && Auth::user()->is_active == 0)
+                        <form class="w-2/5 ml-3">
+                            <button class="btn-style w-full" x-on:click="waitFor30Seconds"
+                                x-text="!waitFor ? 'Verifikasi': count + ' detik'" x-bind:disabled="waitFor"></button>
+                        </form>
+                    @endif
+                </div>
             </div>
             <a href="/changePassword" class="btn-style my-5 block text-center w-full">Ubah Password</a>
             <div class="mb-3">
@@ -52,7 +61,7 @@
                 <button type="button"
                     class="py-2 bg-gray-300 px-5 rounded w-full sm:w-fit block hover:opacity-80 mt-5 my-3 mr-auto text-slate-950 update">Perbarui</button>
             </div>
-        </form>
+        </section>
     </div>
 @endsection
 
