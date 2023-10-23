@@ -77,7 +77,6 @@
                 type: "GET",
                 url: "profile-user",
                 success: function(response) {
-                    console.log(response);
                     response.profile_image === null ? $('#image-preview').attr('src',
                         'images/profile.jpg') : $('#image-preview').attr('src', "storage/profile/" +
                         response.profile_image);

@@ -689,7 +689,7 @@ document.addEventListener("alpine:init", () => {
 
         message: '',
         async dashboardUser(){
-            const response = await (await fetch('/dashboard-data')).json();
+            const response = await (await fetch('/dashboard-data-user')).json();
 
             if(response.result.length <= 0){
                 this.message = 'Oops,.. Sepertinya anda belum melakukan pendaftaran ke lowongan yang tersedia.';
