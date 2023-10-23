@@ -1,6 +1,9 @@
 .icon-container {
     padding: 10px;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .icon {
     font-size: 20px;
