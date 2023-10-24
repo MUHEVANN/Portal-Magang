@@ -21,7 +21,10 @@
         <p class="bg-yellow-300 text-center py-5 w-full">Akun anda belum terverifikasi,
             silahkan
             verifikasi dengan mengklik
-            tautan <button type="button" class="hover-underline verif">berikut</button>
+            tautan
+            <a href="/update-profile#verifikasi" class="hover-underline">
+                berikut
+            </a>
         </p>
     @endif
     @if (session('success'))
@@ -45,7 +48,7 @@
     @endif
     <div class="bg-white sticky shadow-sm top-0 z-10">
         <header class="flex py-5 mx-5 1xl:mx-auto max-w-[1440px] justify-between items-center">
-            <a href="https://www.jetorbit.com/" class="block">
+            <a href="/" class="block">
                 <img src="{{ asset('images/jetorbit-logo.png') }}" class="mix-blend-multiply w-28" alt="">
             </a>
 
@@ -173,41 +176,6 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @yield('script')
-    <script>
-        $(document).ready(function() {
-            $('.verif').click(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('/email/verifikasi') }}",
-
-                    success: function(response) {
-                        const Toast = Swal.mixin({
-                            width: 400,
-                            padding: 18,
-                            toast: true,
-                            position: 'bottom-end',
-                            showConfirmButton: false,
-                            timer: 1500,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener('mouseenter',
-                                    Swal.stopTimer)
-                                toast.addEventListener('mouseleave',
-                                    Swal.resumeTimer)
-                            }
-                        })
-
-                        Toast.fire({
-
-                            icon: 'success',
-                            title: response.success
-                        })
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
