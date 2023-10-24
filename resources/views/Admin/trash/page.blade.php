@@ -65,6 +65,7 @@
             });
             $('#head-cb').on('click', function() {
                 if ($('#head-cb').prop('checked') === true) {
+                    $('#myTable tbody tr').css('background-color', '#f5f5f5');
                     $('.child-cb').prop('checked', true);
                     $('#restore').prop('disabled', false);
 
@@ -72,13 +73,17 @@
                 } else {
                     $('#restore').prop('disabled', true);
                     $('.child-cb').prop('checked', false);
+                    $('#myTable tbody tr').css('background-color', '');
                 }
             });
-            $('#myTable tbody').on('click', '.child-cb', function() {
-                if ($(this).prop('checked') === false) {
 
+            $('#myTable tbody').on('click', '.child-cb', function() {
+                var uncheckedCheckboxes = $('#myTable tbody .child-cb:not(:checked)');
+                uncheckedCheckboxes.closest('tr').css('background-color', '');
+                if ($(this).prop('checked') === false) {
                     $('#head-cb').prop('checked', false);
                 }
+                $('#myTable tbody .child-cb:checked').closest('tr').css('background-color', '#f5f5f5');
                 let all_checkbox = $('#myTable tbody .child-cb:checked');
                 let active_checkbox = (all_checkbox.length > 0);
                 // console.log(all_checkbox.val());
