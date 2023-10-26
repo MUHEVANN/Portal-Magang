@@ -23,6 +23,7 @@ class BatchController extends Controller
             ->addColumn('action', function ($data) {
                 return view('Admin.updel-user')->with('data', $data);
             })
+
             // ->addColumn('total_user', function ($data) {
 
             //     return $data->apply_count;

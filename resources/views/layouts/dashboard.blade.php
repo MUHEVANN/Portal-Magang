@@ -13,8 +13,8 @@
     {{-- datatables --}}
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-
+        href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.3.2/css/fixedHeader.bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.css">
     <!-- Favicon -->
@@ -26,10 +26,10 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
 
-    
-    @if(env('APP_ENV') == 'local')
+
+    @if (env('APP_ENV') == 'local')
         @vite(['resources/js/app.js'])
-    @else 
+    @else
         <script src="{{ asset('build/assets/app-e596d21f.js') }}"></script>
     @endif
     <!-- Fonts -->
@@ -53,11 +53,11 @@
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-    @if(env('APP_ENV') == 'local')
+    @if (env('APP_ENV') == 'local')
         @vite(['resources/css/dashboard.css'])
-    @else 
+    @else
         <link rel="stylesheet" href="{{ asset('build/assets/dashboard-b2782425.css') }}"
-        class="template-customizer-core-css" />
+            class="template-customizer-core-css" />
     @endif
     <!-- Page CSS -->
 
@@ -198,6 +198,12 @@
                         </a>
                     </li>
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Account</span></li>
+                    <li class="menu-item">
+                        <a href="{{ url('setting') }}" class="menu-link">
+                            <i class='bx bx-cog menu-icon tf-icons'></i>
+                            <div data-i18n="Tables">Mail Settings</div>
+                        </a>
+                    </li>
                     <li class="menu-item">
                         <a href="{{ url('logout') }}" class="menu-link">
                             <i class='bx bx-log-out menu-icon tf-icons text-danger'></i>

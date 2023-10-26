@@ -29,7 +29,7 @@ class VerifUserEmail extends Controller
     public function kirim_verif()
     {
         $user = Auth::user();
-        // EmailUser::dispatch($user);
+        EmailUser::dispatch($user);
         return response()->json(['success' => 'Kami telah mengirimkan verifikasi cek email ada']);
     }
 }
