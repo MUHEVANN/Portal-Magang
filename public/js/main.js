@@ -13,6 +13,8 @@ document.addEventListener("alpine:init", () => {
 
         statusError: "",
 
+        lowonganLen: 0,
+
         // call when page first load and call 'getSorted()' function
         filterInit() {
             this.getSorted();
@@ -49,6 +51,8 @@ document.addEventListener("alpine:init", () => {
                 .json()
                 .then((res) => {
                     this.lowongan = res;
+                    console.log(res.length);
+                    this.lowonganLen = res.length;
                     return res;
                 })
                 .catch((er) => {
@@ -59,8 +63,12 @@ document.addEventListener("alpine:init", () => {
 
         // check if jobs are empty or not then load message
         isEmpty() {
+            console.log(this.lowonganLen);
             if (this.result() == "" && this.search_type != "") {
                 this.placeholder = "Tidak Ada Hasil!";
+                return true;
+            } else if (this.lowonganLen <= 0){
+                this.placeholder = "Oops... Sepertinya lowongan tidak tersedia";
                 return true;
             } else if (
                 this.result() == "" &&
@@ -72,7 +80,7 @@ document.addEventListener("alpine:init", () => {
                 return true;
             } else if (this.statusError != "") {
                 this.placeholder =
-                    "Oops... Sepertinya terjadi masalah! Silahkan coba lagi";
+                    "<p class='text-red-500'>Oops... Sepertinya terjadi masalah! Silahkan coba lagi</p>";
                 return true;
             } else {
                 return false;
@@ -770,4 +778,5 @@ document.addEventListener("alpine:init", () => {
         }
     }));
 });
+
 

@@ -14,7 +14,6 @@
 <body class="antialiased bg-slate-100 m-0 relative h-full" x-cloak
     :class="isOpen ? 'overflow-hidden' : 'overflow-x-hidden'" x-data='apply'>
 
-
     <span class="absolute bg-slate-900 sml:hidden z-[11] opacity-50 top-0 h-full w-full"
         :class="isOpen ? 'block' : 'hidden'" x-on:click="isOpen = !isOpen"></span>
     @if (Auth::check() && Auth::user()->is_active == 0)
@@ -22,7 +21,7 @@
             silahkan
             verifikasi dengan mengklik
             tautan
-            <a href="/update-profile#verifikasi" class="hover-underline">
+            <a href="/update-profile" class="hover-underline">
                 berikut
             </a>
         </p>
@@ -67,12 +66,12 @@
                         class="bg-white shadow-md border-[1px] border-slate-100 w-max right-0 absolute mt-4 rounded-md">
                         <div class="py-3 px-2 text-center">
                             <a href="/update-profile"
-                                class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
+                                class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"><img
                                     src="{{ asset('assets/person.svg') }}" width="24" alt="person">
                                 <p class="px-1">Profile</p>
                             </a>
                             <a href="/dashboard-apply"
-                                class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"> <img
+                                class="p-1 mb-3 rounded flex cursor-pointer items-center hover:bg-slate-200 px-1"><img
                                     src="{{ asset('assets/dashboard.svg') }}" width="24" alt="dashboard">
                                 <p class="px-1">Dashboard</p>
                             </a>

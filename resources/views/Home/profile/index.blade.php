@@ -20,7 +20,7 @@
                     accept=".jpg,.png,.svg,.jpeg">
             </div>
 
-            <div class="mb-3" id="verifikasi">
+            <div class="mb-3">
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name" class="input-style">
                 <p class="error-name"></p>
@@ -32,7 +32,7 @@
                         class=" input-style w-3/5">
                     @if (Auth::check() && Auth::user()->is_active == 0)
                         <form class="w-2/5 ml-3">
-                            <button class="btn-style w-full" x-on:click="waitFor30Seconds"
+                            <button type="submit" class="btn-style w-full" x-on:click="waitFor30Seconds"
                                 x-text="!waitFor ? 'Verifikasi': count + ' detik'" x-bind:disabled="waitFor"></button>
                         </form>
                     @endif

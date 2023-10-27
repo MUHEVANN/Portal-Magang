@@ -33,11 +33,9 @@ const chart = async () => {
             myChart.destroy();
         }
 
-        const user = await axios.get(
-            `http://127.0.0.1:8000/api/get-apply?filter_year=${selectedYear}`
+        const user = await axios.get(`api/get-apply?filter_year=${selectedYear}`
         );
         const months = user.data.data[0].months;
-
         myChart = new Chart(chartId, {
             type: "bar",
             data: {
@@ -64,7 +62,7 @@ const chart = async () => {
     tahun.addEventListener("change", changeYear);
 
     // Ambil daftar tahun dari server
-    const resYear = await axios.get(`http://127.0.0.1:8000/api/get-year`);
+    const resYear = await axios.get(`/api/get-year`);
     const years = resYear.data.data;
 
     // Isi elemen select dengan daftar tahun
@@ -85,8 +83,7 @@ const chart = async () => {
 };
 chart();
 const chartApply = async () => {
-    const resApply = await axios.get(
-        "http://127.0.0.1:8000/api/get-data-apply"
+    const resApply = await axios.get("/api/get-data-apply"
     );
     const { total_ditolak, total_lulus, total_pendaftar } =
         resApply.data.result;
@@ -108,7 +105,7 @@ const chartApply = async () => {
             },
         ],
     };
-    applyChart = new Chart(apply, {
+    let applyChart = new Chart(apply, {
         type: "doughnut",
         data: data,
     });

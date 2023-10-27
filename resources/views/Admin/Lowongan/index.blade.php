@@ -162,7 +162,7 @@
                         data: 'gambar',
                         name: 'gambar',
                         render: function(data) {
-                            return '<img src="storage/lowongan/' + data +
+                            return '<img src="{{ asset('storage/lowongan/') }}' + '/' + data +
                                 '" alt="Image" width="100" height="60" style="object-fit:cover;"/>';
 
                         }
