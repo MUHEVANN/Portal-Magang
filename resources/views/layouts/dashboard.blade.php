@@ -27,11 +27,11 @@
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
 
 
-    @if (env('APP_ENV') == 'local')
-        @vite(['resources/js/app.js'])
+    @vite(['resources/js/app.js'])
+    {{-- @if (env('APP_ENV') == 'local')
     @else
         <script src="{{ asset('build/assets/app-e596d21f.js') }}"></script>
-    @endif
+    @endif --}}
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,12 +53,12 @@
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-    @if (env('APP_ENV') == 'local')
-        @vite(['resources/css/dashboard.css'])
+    @vite(['resources/css/dashboard.css'])
+    {{-- @if (env('APP_ENV') == 'local')
     @else
         <link rel="stylesheet" href="{{ asset('build/assets/dashboard-b2782425.css') }}"
             class="template-customizer-core-css" />
-    @endif
+    @endif --}}
     <!-- Page CSS -->
 
     <!-- Helpers -->

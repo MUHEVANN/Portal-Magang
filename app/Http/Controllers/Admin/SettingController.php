@@ -41,7 +41,7 @@ class SettingController extends Controller
     {
         $mail = MailSetting::get();
         return DataTables::of($mail)->addIndexColumn()->addColumn('action', function ($data) {
-            return view('Admin.updel-user')->with('data', $data);
+            return "<a href='#' data-id='$data->id' class='edit menu-icon tf-icons d-flex '><i class='bx bx-edit-alt'></i></a>";
         })->make(true);
     }
 
