@@ -16,7 +16,7 @@
                     </select>
                 </div>
             </div>
-            <table class="table table-stiped table-hover" id="myTable">
+            <table class="display nowrap table table-hover" id="myTable">
                 <thead>
                     <tr>
                         <th><input type="checkbox" name="" id="head-cb" /></th>
@@ -48,6 +48,8 @@
                     visible: false,
                     targets: 7
                 }],
+                fixedHeader: true,
+                responsive: true,
                 processing: true,
                 serverside: true,
                 ajax: '/apply-user',

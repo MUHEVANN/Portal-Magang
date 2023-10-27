@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 @section('content')
     <div class="container card py-5">
-        <table class="table" id="myTable">
+        <table class="display nowrap table" id="myTable">
             <thead>
                 <tr>
                     <th>No</th>
@@ -59,6 +59,8 @@
             })
 
             var table = $('#myTable').DataTable({
+                fixedHeader: true,
+                responsive: true,
                 processing: true,
                 serverside: true,
                 responsive: true,

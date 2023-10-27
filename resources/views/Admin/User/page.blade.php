@@ -38,7 +38,7 @@
             <div class="mb-3">
                 <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
             </div>
-            <table class="table table-hover" id="myTable">
+            <table class="display nowrap table table-hover" id="myTable">
                 <thead>
                     <tr>
                         <th><input type="checkbox" name="" id="head-cb"></th>
@@ -151,6 +151,7 @@
                     visible: false,
                     targets: 9
                 }],
+                fixedHeader: true,
                 responsive: true,
                 processing: true,
                 serverside: true,
@@ -166,6 +167,8 @@
                         })
                         .data()
                         .each(function(group, i) {
+                            var column = table.columns().count();
+
                             if (last !== group) {
                                 $(rows)
                                     .eq(i)

@@ -5,7 +5,7 @@
             <div class="mb-3">
                 <button type="button" id="restore" class="btn btn-primary" onclick="restore()" disabled>Restore</button>
             </div>
-            <table class="table" id="myTable">
+            <table class="display nowrap table" id="myTable">
                 <thead>
                     <tr>
                         <th><input type="checkbox" name="" id="head-cb"></th>
@@ -31,6 +31,8 @@
                 }
             });
             var table = $('#myTable').DataTable({
+                fixedHeader: true,
+                responsive: true,
                 processing: true,
                 serverside: true,
                 ajax: '/trash',
