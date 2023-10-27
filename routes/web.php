@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\Table\TrashController;
 use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Admin\Table\ListPemagangController;
 use App\Http\Controllers\Admin\Table\ListUserController;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,9 @@ Route::get('/', [function () {
     return redirect('home');
 }]);
 
-
+Route::get('/migrate', function () {
+    Artisan::call('migrate:fresh --seed');
+});
 Route::get('/home', [HomeController::class, 'home']);
 Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail']);
 Route::get('/filters/{type}', [HomeController::class, 'filter'])->name('filters');
