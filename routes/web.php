@@ -8,6 +8,7 @@ use App\Http\Controllers\CarrerUserController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\ApplyJobController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\Table\ApplyController;
 use App\Http\Controllers\Admin\Table\BatchController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Admin\Table\TrashController;
 use App\Http\Controllers\Admin\Table\LowonganController;
 use App\Http\Controllers\Admin\Table\ListPemagangController;
 use App\Http\Controllers\Admin\Table\ListUserController;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +52,9 @@ Route::get('/', [function () {
     return redirect('home');
 }]);
 
-
+Route::get('/migrate', function () {
+    Artisan::call('migrate:fresh --seed');
+});
 Route::get('/home', [HomeController::class, 'home']);
 Route::get('lowongan/detail/{id}', [HomeController::class, 'lowonganDetail']);
 Route::get('/filters/{type}', [HomeController::class, 'filter'])->name('filters');
@@ -115,9 +119,17 @@ Route::middleware('auth')->group(function () {
         Route::get('edit-user/{id}', [ListUserController::class, 'edit']);
         Route::put('edit-user/{id}', [ListUserController::class, 'update']);
         Route::delete('hapus-user/{id}', [ListUserController::class, 'delete']);
+        Route::get('/get-apply', [tes::class, 'getApply']);
+        Route::get('/get-year', [tes::class, 'get_year']);
+        Route::get('/get-data-apply', [DashboardController::class, 'data_apply']);
         // Trash
         Route::get('trash-page', [DashboardController::class, 'trash_page']);
         Route::get('trash', [TrashController::class, 'trash']);
         Route::put('restore/{id}', [TrashController::class, 'restore']);
+        // setting
+        Route::get('/setting', [SettingController::class, 'index']);
+        Route::get('/setting-data', [SettingController::class, 'show']);
+        Route::get('/setting/{id}', [SettingController::class, 'edit']);
+        Route::post('/setting/{id}', [SettingController::class, 'update']);
     });
 });

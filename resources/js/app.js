@@ -58,6 +58,7 @@ const chart = async () => {
         drawChart(selectedYear);
     }
 
+    // console.log('result',tahun);
     // Tambahkan event listener untuk perubahan tahun
     tahun.addEventListener("change", changeYear);
 

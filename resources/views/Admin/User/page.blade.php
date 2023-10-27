@@ -38,7 +38,7 @@
             <div class="mb-3">
                 <button class="btn btn-danger " id="hapus" type="button" onclick="hapus()" disabled>Hapus</button>
             </div>
-            <table class="table table-hover" id="myTable">
+            <table class="display nowrap table table-hover" id="myTable">
                 <thead>
                     <tr>
                         <th><input type="checkbox" name="" id="head-cb"></th>
@@ -151,6 +151,7 @@
                     visible: false,
                     targets: 9
                 }],
+                fixedHeader: true,
                 responsive: true,
                 processing: true,
                 serverside: true,
@@ -166,6 +167,8 @@
                         })
                         .data()
                         .each(function(group, i) {
+                            var column = table.columns().count();
+
                             if (last !== group) {
                                 $(rows)
                                     .eq(i)
@@ -432,6 +435,7 @@
             });
             $('#head-cb').on('click', function() {
                 if ($('#head-cb').prop('checked') === true) {
+                    $('#myTable tbody tr').css('background-color', '#f5f5f5');
                     $('.child-cb').prop('checked', true);
                     $('#hapus').prop('disabled', false);
 
@@ -439,14 +443,17 @@
                 } else {
                     $('#hapus').prop('disabled', true);
                     $('.child-cb').prop('checked', false);
+                    $('#myTable tbody tr').css('background-color', '');
                 }
             });
 
             $('#myTable tbody').on('click', '.child-cb', function() {
+                var uncheckedCheckboxes = $('#myTable tbody .child-cb:not(:checked)');
+                uncheckedCheckboxes.closest('tr').css('background-color', '');
                 if ($(this).prop('checked') === false) {
-
                     $('#head-cb').prop('checked', false);
                 }
+                $('#myTable tbody .child-cb:checked').closest('tr').css('background-color', '#f5f5f5');
                 let all_checkbox = $('#myTable tbody .child-cb:checked');
                 let active_checkbox = (all_checkbox.length > 0);
                 // console.log(all_checkbox.val());

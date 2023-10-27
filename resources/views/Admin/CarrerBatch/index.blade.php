@@ -8,7 +8,7 @@
                 </button>
             </div>
 
-            <table class="table" id="myTable">
+            <table class="display nowrap table" style="width:100%" id="myTable">
                 <thead>
                     <tr>
                         <td>No</td>
@@ -53,7 +53,8 @@
                 }
             });
             var table = $('#myTable').DataTable({
-
+                fixedHeader: true,
+                responsive: true,
                 processing: true,
                 serverside: true,
                 ajax: '/carrer-batch',
@@ -78,6 +79,7 @@
                     }
                 ]
             });
+            new $.fn.dataTable.FixedHeader(table);
             $('body').on('click', '.tambah', function(e) {
                 e.preventDefault();
                 $('#tambah-modal').modal('show');

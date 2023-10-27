@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\AfterApply;
 use App\Jobs\CreateUserFromApply;
+use App\Jobs\notifAdminJob;
 use App\Jobs\StatusApplyJob;
 use App\Models\Carrer;
 use App\Models\Kelompok;
 use App\Models\Konfirmed;
 use App\Models\Lowongan;
+use App\Models\MailSetting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -182,11 +184,11 @@ class ApplyJobController extends Controller
         }
         $carrer->save();
 
-
         Cache::forget('all-pemagang');
         Cache::forget('/pendaftar');
-        AfterApply::dispatch('evan.kusyanto@students.amikom.ac.id');
+        $mailadmin = MailSetting::first();
         AfterApply::dispatch($pendaftar->email);
+        notifAdminJob::dispatch($mailadmin->email)->delay(now()->addSeconds(10));
         return redirect()->to('/home')->with(['success' => 'Berhasil mengirimkan.']);
     }
 
@@ -232,6 +234,7 @@ class ApplyJobController extends Controller
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('pendaftar');
         Cache::forget('all-pemagang');
+        Cache::forget('batch');
         return redirect()->to('/pendaftar')->with(['success' => 'Apply job berhasil dikonfirmasi']);
     }
     public function konfirm($id)
@@ -249,6 +252,7 @@ class ApplyJobController extends Controller
         StatusApplyJob::dispatch($apply->user, $apply->status);
         Cache::forget('all-pemagang');
         Cache::forget('pendaftar');
+        Cache::forget('batch');
         return redirect()->to('/pendaftar')->with(['success' => 'success']);
     }
 }

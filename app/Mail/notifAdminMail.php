@@ -5,15 +5,15 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VerifCode extends Mailable
+class notifAdminMail extends Mailable
 {
     use Queueable, SerializesModels;
-    protected $user;
+    private $user;
+
     /**
      * Create a new message instance.
      */
@@ -28,8 +28,7 @@ class VerifCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            // from: new Address('evankusyanto03@gmail.com', 'jetorbit'),
-            subject: 'Link Verifikasi',
+            subject: 'Ada pendaftar magang',
         );
     }
 
@@ -39,8 +38,7 @@ class VerifCode extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'Verification.verif',
-            with: ["user" => $this->user->verif_code],
+            view: 'Mail.notifadmin',
         );
     }
 

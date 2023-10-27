@@ -158,7 +158,7 @@ document.addEventListener("alpine:init", () => {
         prevPage() {
             if (this.curr_select == 0) return;
             this.selectPage(--this.curr_select);
-        }
+        },
     });
 });
 
@@ -419,6 +419,7 @@ document.addEventListener("alpine:init", () => {
 
             const Toast = Swal.mixin({
                 toast: true,
+                padding: "15px",
                 position: "bottom-end",
                 showConfirmButton: false,
                 timer: 5500,
@@ -438,7 +439,7 @@ document.addEventListener("alpine:init", () => {
 
         scrollPos() {
             this.top_position = scrollY <= 200 ? true : false;
-        }
+        },
     }));
 });
 
@@ -673,6 +674,7 @@ document.addEventListener("alpine:init", () => {
         alertChangePass(param, icon = "success") {
             const Toast = Swal.mixin({
                 toast: true,
+                padding: "15px",
                 position: "bottom-end",
                 showConfirmButton: false,
                 timer: 5000,
@@ -693,13 +695,13 @@ document.addEventListener("alpine:init", () => {
 
 document.addEventListener("alpine:init", () => {
     Alpine.data("dashboard", () => ({
+        message: "",
+        async dashboardUser() {
+            const response = await (await fetch("/dashboard-data-user")).json();
 
-        message: '',
-        async dashboardUser(){
-            const response = await (await fetch('/dashboard-data-user')).json();
-
-            if(response.result.length <= 0){
-                this.message = 'Oops,.. Sepertinya anda belum melakukan pendaftaran ke lowongan yang tersedia.';
+            if (response.result.length <= 0) {
+                this.message =
+                    "Oops,.. Sepertinya anda belum melakukan pendaftaran ke lowongan yang tersedia.";
             }
 
             console.log("hasil" + response);
@@ -712,18 +714,18 @@ document.addEventListener("alpine:init", () => {
     }));
 });
 
-
 document.addEventListener("alpine:init", () => {
     Alpine.data("profile", () => ({
-
         // 30 seconds waiting
         waitFor: false,
         count: 30,
 
-        initWaitFor30Seconds(){
-            let storageParse = JSON.parse(localStorage.getItem("emailVerification"));
+        initWaitFor30Seconds() {
+            let storageParse = JSON.parse(
+                localStorage.getItem("emailVerification")
+            );
             let statusParse = localStorage.getItem("status");
-            if(storageParse == null) return;
+            if (storageParse == null) return;
             this.waitFor = storageParse.waiting;
             this.count = storageParse.countdown;
 
@@ -735,47 +737,59 @@ document.addEventListener("alpine:init", () => {
                 this.countdown();
             }
 
-            this.$nextTick(() => { 
-                if(statusParse){
+            this.$nextTick(() => {
+                if (statusParse) {
                     const Toast = Swal.mixin({
                         toast: true,
+                        padding: "15px",
                         position: "bottom-end",
                         showConfirmButton: false,
                         timer: 5000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
-                            toast.addEventListener("mouseenter", Swal.stopTimer);
-                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
                         },
                     });
-        
+
                     Toast.fire({
-                        icon: 'success',
-                        title: statusParse
+                        icon: "success",
+                        title: statusParse,
                     });
 
-                    localStorage.removeItem('status');
+                    localStorage.removeItem("status");
                 }
-            })
+            });
         },
 
-        async waitFor30Seconds(){
-            const response = await (await fetch('/email/verifikasi')).json();
-            let data = { 'countdown' : 30, 'waiting': true };
+        async waitFor30Seconds() {
+            const response = await (await fetch("/email/verifikasi")).json();
+            let data = { countdown: 30, waiting: true };
             localStorage.setItem("status", response.success);
             localStorage.setItem("emailVerification", JSON.stringify(data));
         },
 
-        countdown(){ 
+        countdown() {
             if (this.count > 0) {
                 setInterval(() => {
-                    const waitFor = JSON.parse(localStorage.getItem("emailVerification"));
+                    const waitFor = JSON.parse(
+                        localStorage.getItem("emailVerification")
+                    );
                     waitFor.countdown--;
-                    localStorage.setItem("emailVerification", JSON.stringify(waitFor));
+                    localStorage.setItem(
+                        "emailVerification",
+                        JSON.stringify(waitFor)
+                    );
                     this.count--;
                 }, 1000);
             }
-        }
+        },
     }));
 });
 

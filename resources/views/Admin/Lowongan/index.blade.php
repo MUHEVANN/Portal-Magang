@@ -16,7 +16,7 @@
                     Tambah
                 </button>
             </div>
-            <table class="table" id="myTable">
+            <table class="display nowrap table" style="width:100%" id="myTable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -99,6 +99,8 @@
                 }
             });
             var table = $('#myTable').DataTable({
+                fixedHeader: true,
+                responsive: true,
                 processing: true,
                 serverside: true,
                 // scrollX: true,

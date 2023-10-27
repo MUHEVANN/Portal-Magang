@@ -12,9 +12,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- datatables --}}
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.3.2/css/fixedHeader.bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.css">
     <!-- Favicon -->
@@ -26,9 +25,12 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
 
-    
-    @vite(['resources/js/app.js'])
 
+    @vite(['resources/js/app.js'])
+    {{-- @if (env('APP_ENV') == 'local')
+    @else
+        <script src="{{ asset('build/assets/app-e596d21f.js') }}"></script>
+    @endif --}}
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,8 +52,12 @@
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('template/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-        @vite(['resources/css/dashboard.css'])
-
+    @vite(['resources/css/dashboard.css'])
+    {{-- @if (env('APP_ENV') == 'local')
+    @else
+        <link rel="stylesheet" href="{{ asset('build/assets/dashboard-b2782425.css') }}"
+            class="template-customizer-core-css" />
+    @endif --}}
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -191,6 +197,12 @@
                         </a>
                     </li>
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Account</span></li>
+                    <li class="menu-item">
+                        <a href="{{ url('setting') }}" class="menu-link">
+                            <i class='bx bx-cog menu-icon tf-icons'></i>
+                            <div data-i18n="Tables">Mail Settings</div>
+                        </a>
+                    </li>
                     <li class="menu-item">
                         <a href="{{ url('logout') }}" class="menu-link">
                             <i class='bx bx-log-out menu-icon tf-icons text-danger'></i>
@@ -343,7 +355,9 @@
     <script src="{{ asset('template/assets/vendor/js/menu.js') }}"></script>
     {{-- datatable --}}
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap.min.js"></script>
     {{-- <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script> --}}
     {{-- bootstrap --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
@@ -361,7 +375,6 @@
     <script src="{{ asset('template/assets/js/main.js') }}"></script>
     <!-- Page JS -->
     <script src="{{ asset('template/assets/js/dashboards-analytics.js') }}"></script>
-
     @yield('script')
     {{-- <script>
         $(document).ready(function() {
