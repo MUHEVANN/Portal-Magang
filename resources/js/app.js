@@ -34,7 +34,7 @@ const chart = async () => {
         }
 
         const user = await axios.get(
-            `http://127.0.0.1:8000/api/get-apply?filter_year=${selectedYear}`
+            `https://magang2.ipanel.id/api/get-apply?filter_year=${selectedYear}`
         );
         const months = user.data.data[0].months;
 
@@ -65,7 +65,7 @@ const chart = async () => {
     tahun.addEventListener("change", changeYear);
 
     // Ambil daftar tahun dari server
-    const resYear = await axios.get(`http://127.0.0.1:8000/api/get-year`);
+    const resYear = await axios.get(`https://magang2.ipanel.id/api/get-year`);
     const years = resYear.data.data;
 
     // Isi elemen select dengan daftar tahun
@@ -87,7 +87,7 @@ const chart = async () => {
 chart();
 const chartApply = async () => {
     const resApply = await axios.get(
-        "http://127.0.0.1:8000/api/get-data-apply"
+        "https://magang2.ipanel.id/api/get-data-apply"
     );
     const { total_ditolak, total_lulus, total_pendaftar } =
         resApply.data.result;
