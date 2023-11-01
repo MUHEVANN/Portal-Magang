@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center">
@@ -63,6 +65,8 @@
                         password</a>
                 </div>
                 <br>
+                <div class="g-recaptcha" data-sitekey="{{ config('recaptcha.api_site_key') }}"></div>
+
                 <button type="submit"
                     class=" text-pink-100 cursor-pointer rounded bg-[#001D86] mb-6 p-2 px-4 w-full">Login</button>
                 <a class="text-center cursor-pointer block hover-underline" href="register">Register</a>
