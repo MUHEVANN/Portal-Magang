@@ -83,6 +83,7 @@
             $('body').on('click', '.tambah', function(e) {
                 e.preventDefault();
                 $('#tambah-modal').modal('show');
+                $('.submit').off('click');
                 $('.submit').click(function() {
                     $.ajax({
                         type: "POST",
