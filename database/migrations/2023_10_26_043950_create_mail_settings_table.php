@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('mail_settings', function (Blueprint $table) {
             $table->id();
             $table->string('transport')->default('smtp');
-            $table->string('host')->default('sandbox.smtp.mailtrap.io');
-            $table->string('port')->default('2525');
-            $table->string('username')->default('38f3e177fe3b14');
-            $table->string('password')->default('9bb188ed391bc4');
+            $table->string('host')->default('live.smtp.mailtrap.io');
+            $table->string('port')->default('587');
+            $table->string('username')->default('api');
+            $table->string('password')->default('de98c838194ea2e369f9d9a5c8172b3d');
             $table->string('email')->default('evankusyanto03@gmail.com');
             $table->timestamps();
         });
