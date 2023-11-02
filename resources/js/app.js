@@ -10,7 +10,6 @@ const chart = async () => {
     const tahun = document.getElementById("tahun");
     const chartId = document.getElementById("charts");
     let myChart; // Variabel untuk menyimpan objek grafik
-
     const monthNames = [
         "Januari",
         "Februari",

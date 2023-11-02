@@ -8,9 +8,11 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\CodeChangePassword;
+use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,6 +27,7 @@ class UserAuth extends Controller
     }
     public function proccess_register(Request $request)
     {
+
         $validate = Validator::make($request->all(), [
             'name' => "required",
             'email' => "required|email|unique:users",
@@ -65,6 +68,18 @@ class UserAuth extends Controller
         $validate = Validator::make($request->all(), [
             'email' => "required|email",
             'password' => "required",
+            'g-recaptcha-response' => ["required", function (string $attribute, mixed $value, Closure $fail) {
+                $g_response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => config('services.recaptcha.secret_key'),
+                    'response' => $value,
+                    'remoteip' => \request()->ip()
+                ]);
+                // dd($g_response->json());
+                if (!$g_response->json('success')) {
+                    $fail("The {$attribute} is invalid.");
+                }
+            },],
+
         ]);
 
         if ($validate->fails()) {
