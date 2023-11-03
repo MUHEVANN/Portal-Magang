@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\MailSetting;
 use Illuminate\Support\ServiceProvider;
 use Config;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,21 +30,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $mailsetting = MailSetting::first();
-        if ($mailsetting) {
-            $data = [
-                'host' => $mailsetting->host,
-                'port' => $mailsetting->port,
-                'username' => $mailsetting->username,
-                'password' => $mailsetting->password,
-                'driver' => $mailsetting->transport,
-                'from'  => [
-                    'address' => $mailsetting->email,
-                    'name' => 'jetorbit',
-                ],
-            ];
+        if (Schema::hasTable('mail_settings')) {
+            $mailsetting = MailSetting::first();
+            if ($mailsetting) {
+                $data = [
+                    'host' => $mailsetting->host,
+                    'port' => $mailsetting->port,
+                    'username' => $mailsetting->username,
+                    'password' => $mailsetting->password,
+                    'driver' => $mailsetting->transport,
+                    'from'  => [
+                        'address' => $mailsetting->email,
+                        'name' => 'jetorbit',
+                    ],
+                ];
 
-            Config::set('mail', $data);
+                Config::set('mail', $data);
+            }
         }
     }
 }
