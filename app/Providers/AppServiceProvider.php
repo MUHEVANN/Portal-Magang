@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
                     'username' => $mailsetting->username,
                     'password' => $mailsetting->password,
                     'driver' => $mailsetting->transport,
+                    'encryption' => 'tls',
                     'from'  => [
                         'address' => $mailsetting->email,
                         'name' => 'jetorbit',
@@ -48,5 +49,7 @@ class AppServiceProvider extends ServiceProvider
                 Config::set('mail', $data);
             }
         }
+
+        // dd(config('mail'));
     }
 }
