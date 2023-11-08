@@ -81,7 +81,7 @@ class UserAuth extends Controller
             },],
 
         ]);
-
+        // dd(request());
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate->messages())->withInput();
         }

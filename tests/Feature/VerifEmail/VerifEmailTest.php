@@ -28,13 +28,13 @@ class VerifEmailTest extends TestCase
 
     public function test_verif_email_error()
     {
-        $response = $this->get('email/verifikasi/8624e24-e548-4425-bbac-2fd8f108d7f3');
+        $response = $this->get('email/verifikasi/aa0c5db8-5db6-4882-ada4-a055a577cbb');
         $response->assertRedirect('/register');
     }
 
     public function test_verif_email()
     {
-        $response = $this->get('email/verifikasi/8624e24b-e548-4425-bbac-2fd8f108d7f3');
+        $response = $this->get('email/verifikasi/aa0c5db8-5db6-4882-ada4-a055a577cbb8');
         $response->assertRedirect('/home');
     }
 }

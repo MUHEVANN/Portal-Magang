@@ -20,20 +20,15 @@ class PemagangEditSuccessTest extends TestCase
      */
     public function test_example(): void
     {
-        $response = $this->put('/edit-pemagang/6', [
-            'name' => 'Evan K',
-            'email' => 'evankusyanto05@gmail.com',
-            'password' => 'password',
-            'alamat' => 'Sendangan',
-            'no_hp' => '0289302',
-            'gender' => 'L',
-            'carrer_id' => 2,
+        $response = $this->put('/edit-pemagang/1', [
+            'name' => 'evan',
+            'email' => 'evan.kusyanto@students.amikom.ac.id',
+            'carrer_id' => 12,
             'tgl_mulai' => now(),
             'tgl_selesai' => now()->addDays(100),
-            'job_magang_id' => 2
+            'job_magang_id' => 6,
+            'cv_user' => 'uk8w3zGCVV.pdf',
         ]);
-
-
         $response->assertJsonFragment(['success' => 'Berhasil Mengupdate']);
     }
 }

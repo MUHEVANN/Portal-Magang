@@ -12,7 +12,7 @@ class LogoutTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::latest()->first();
+        $user = User::find(11);
         $this->actingAs($user);
     }
     /**

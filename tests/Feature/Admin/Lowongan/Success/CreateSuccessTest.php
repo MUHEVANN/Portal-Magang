@@ -21,8 +21,8 @@ class CreateSuccessTest extends TestCase
     public function test_example(): void
     {
         $response = $this->post('/lowongan', [
-            'name' => 'back end 2',
-            'gambar' => new \Illuminate\Http\UploadedFile(storage_path('app/public/lowongan/19821cac-e342-4346-a05e-c957d7fd9c47.jpg'), '19821cac-e342-4346-a05e-c957d7fd9c47.jpg', 'image/jpeg', null, true),
+            'name' => 'back end ',
+            'gambar' => new \Illuminate\Http\UploadedFile(storage_path('app/public/lowongan/3d16d158-a9ef-418b-b62f-9bfe2fa3ed81.jpg'), '3d16d158-a9ef-418b-b62f-9bfe2fa3ed81.jpg', 'image/jpeg', null, true),
             'desc' => 'required',
             'kualifikasi' => 'required',
             'benefit' => 'required',

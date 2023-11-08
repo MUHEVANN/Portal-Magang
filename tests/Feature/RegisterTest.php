@@ -22,7 +22,7 @@ class RegisterTest extends TestCase
     {
         $response = $this->post('/register', [
             'name' => "evan",
-            'email' => 'evanafillate@gmail.com',
+            'email' => 'evankusyanto04@gmail.com',
             'password' => 'tes',
             'confirm_password' => 'tes',
 

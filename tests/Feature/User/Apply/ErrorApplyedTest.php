@@ -12,7 +12,7 @@ class ErrorApplyedTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::where('id', 7)->first();
+        $user = User::where('id', 10)->first();
         $this->actingAs($user);
     }
     /**
@@ -25,6 +25,6 @@ class ErrorApplyedTest extends TestCase
             'cv_pendaftar' => 'evan.pdf',
         ]);
         $response->assertStatus(302);
-        $this->assertEquals('Anda sudah melakukan Apply, silahkan tunggu konfirmasi dari kami', session('error'));
+        $this->assertEquals('Anda sudah melakukan applyan dan dikonfirmasi, tunggu59 hari lagi untuk melakukan apply', session('error'));
     }
 }

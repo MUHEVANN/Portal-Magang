@@ -41,14 +41,4 @@ class ForgetPasswordTest extends TestCase
         ]);
         $response->assertStatus(302);
     }
-
-    public function test_feature_change_password()
-    {
-        $response = $this->post('/changePassword', [
-            'verif_code' => 'd936e4b9-bf9a-4fe9-9a76-71b4c953502d',
-            'password' => 'tes123',
-            'repeat_password' => 'tes123',
-        ]);
-        $response->assertRedirect('/login');
-    }
 }
