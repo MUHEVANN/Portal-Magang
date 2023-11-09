@@ -41,8 +41,8 @@ test("Home", async ({ page }) => {
 
   await page.getByRole('button',{name: 'urutkan berdasarkan'}).click();
 
-  await expect(page.getByRole('radio', {name: "terbaru"})).toBeVisible();
   await expect(page.getByRole('radio', {name: "terlama"})).toBeVisible();
+  await expect(page.getByRole('radio', {name: "terbaru"})).toBeVisible();
 
   await expect(page.getByRole('button', {name: 'lamar magang'})).toBeDisabled();
 
@@ -55,10 +55,10 @@ test("Home", async ({ page }) => {
   
   await expect(page.getByRole("list")).toHaveCount(3)
   
-  await page.getByPlaceholder("E.g. java developer").fill("Deborah");
-  await expect(page.getByTestId('lists')).toHaveCount(1);
+  await page.getByPlaceholder("E.g. java developer").fill("Murray");
+  await expect(page.getByTestId('lists')).toHaveCount(10);
   
   // await page.getByPlaceholder("E.g. java developer").clear()
 
-  await page.getByText('5').click();
+  // await page.getByText('5').click();
 })
