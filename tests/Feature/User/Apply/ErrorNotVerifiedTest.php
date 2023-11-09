@@ -12,7 +12,7 @@ class ErrorNotVerifiedTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::where('id', 3)->first();
+        $user = User::where('id', 4)->first();
         $this->actingAs($user);
     }
     /**

@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('dashboard-data-user', [HomeController::class, 'dashboard_apply']);
     Route::get('/email/verifikasi', [VerifUserEmail::class, 'kirim_verif']);
     // verif user
-    Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
+    // Route::get('/email/verifikasi/{verif}', [VerifUserEmail::class, 'verif'])->name('verif');
     // profile
     Route::get('/profile', [ProfileControllerApi::class, 'profile']);
     Route::put('/profile', [ProfileControllerApi::class, 'update']);

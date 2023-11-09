@@ -74,5 +74,6 @@ class BatchController extends Controller
     {
         $carrer = Carrer::find($id);
         $carrer->delete();
+        Cache::forget('batch');
     }
 }

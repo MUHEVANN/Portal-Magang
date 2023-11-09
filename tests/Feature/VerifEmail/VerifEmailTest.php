@@ -13,7 +13,7 @@ class VerifEmailTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::latest()->first();
+        $user = User::find(17);
         $this->actingAs($user);
     }
     /**
@@ -24,17 +24,5 @@ class VerifEmailTest extends TestCase
         $response = $this->get('/email/verifikasi');
 
         $response->assertJson(['success' => 'Kami telah mengirimkan verifikasi cek email ada']);
-    }
-
-    public function test_verif_email_error()
-    {
-        $response = $this->get('email/verifikasi/8624e24-e548-4425-bbac-2fd8f108d7f3');
-        $response->assertRedirect('/register');
-    }
-
-    public function test_verif_email()
-    {
-        $response = $this->get('email/verifikasi/8624e24b-e548-4425-bbac-2fd8f108d7f3');
-        $response->assertRedirect('/home');
     }
 }

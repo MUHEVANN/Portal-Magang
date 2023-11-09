@@ -20,9 +20,8 @@ class LowonganController extends Controller
         if ($batch_id) {
             $query->where('carrer_id', $batch_id);
         }
-        $data = Cache::remember('job', 3000, function () use ($query) {
-            return $query->get();
-        });
+
+        $data = $query->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
@@ -77,7 +76,7 @@ class LowonganController extends Controller
             'gambar' => $gambar_name,
             'carrer_id' => $carrer->id
         ]);
-        Cache::forget('job');
+        Cache::forget('batch');
         if ($lowongan) {
             return response()->json(['success' => 'Berhasil menambah lowongan']);
         } else {
@@ -101,11 +100,6 @@ class LowonganController extends Controller
     {
         $lowongan = Lowongan::find($id);
         $lowongan->delete();
-        $batch_id = $request->batch_id;
-        $query =  Lowongan::where('name', '!=', 'kosong');
-        if ($batch_id) {
-            $query->where('carrer_id', $batch_id);
-        }
-        Cache::forget('job');
+        Cache::forget('batch');
     }
 }

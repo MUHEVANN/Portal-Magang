@@ -10,9 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monda:wght@400;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- <script src="https://www.google.com/recaptcha/api.js"></script> --}}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 </head>
 
 <body class="bg-slate-100 flex flex-wrap h-screen content-center justify-center">
+
     <div x-data="apply"
         class="bg-white h-full md:h-[30rem] justify-center w-[45rem] flex items-center flex-col md:flex-row shadow-sm border-2 border-gray-100 rounded-md">
         @if (session('success'))
@@ -27,7 +30,7 @@
                 <span class="block text-sm opacity-50 text-gray-700">Belum punya akun? <a
                         class="hover-underline text-[#001D86]" href="register">Registrasi</a></span>
             </div>
-            <form action="{{ url('login') }}" method="post">
+            <form action="{{ url('login') }}" method="post" id="form-login">
                 @csrf
                 <div class="relative">
                     <input type="email" name="email" class="auth-input mb-2" placeholder="e.g. fulan@email.com"
@@ -51,8 +54,12 @@
                     <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator'
                         x-on:click='toggle()' class="absolute cursor-pointer w-6 top-2 right-3" alt="">
                 </div>
+                <input type="hidden" name="g-recaptcha-response" id='g-recaptcha-response'>
                 @if ($errors->any() && $errors->password)
                     <p class="text-red-600">{{ $errors->first('password') }}</p>
+                @endif
+                @if ($errors->any() && $errors->email)
+                    <p class="text-red-600">{{ $errors->first('g-recaptcha-response') }}</p>
                 @endif
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-x-1">
@@ -63,7 +70,9 @@
                         password</a>
                 </div>
                 <br>
-                <button type="submit"
+                {{-- <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div> --}}
+
+                <button type="submit" onclick="onClick(event)"
                     class=" text-pink-100 cursor-pointer rounded bg-[#001D86] mb-6 p-2 px-4 w-full">Login</button>
                 <a class="text-center cursor-pointer block hover-underline" href="register">Register</a>
             </form>
@@ -75,6 +84,25 @@
 
     </div>
     <script src="{{ asset('js/main.js') }}"></script>
+    {{-- <script>
+        function onSubmit(token) {
+            document.getElementById("form-login").submit();
+        }
+    </script> --}}
+    <script>
+        function onClick(e) {
+            e.preventDefault();
+            grecaptcha.ready(function() {
+                grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {
+                    action: 'login'
+                }).then(function(token) {
+                    // Add your logic to submit to your backend server here.
+                    document.getElementById("g-recaptcha-response").value = token;
+                    document.getElementById("form-login").submit();
+                });
+            });
+        }
+    </script>
 </body>
 
 </html>

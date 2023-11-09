@@ -10,7 +10,6 @@ const chart = async () => {
     const tahun = document.getElementById("tahun");
     const chartId = document.getElementById("charts");
     let myChart; // Variabel untuk menyimpan objek grafik
-
     const monthNames = [
         "Januari",
         "Februari",
@@ -32,7 +31,6 @@ const chart = async () => {
             // Hapus objek grafik sebelumnya jika ada
             myChart.destroy();
         }
-
         const user = await axios.get(`api/get-apply?filter_year=${selectedYear}`
         );
         const months = user.data.data[0].months;
@@ -63,7 +61,9 @@ const chart = async () => {
     tahun.addEventListener("change", changeYear);
 
     // Ambil daftar tahun dari server
+
     const resYear = await axios.get(`/api/get-year`);
+
     const years = resYear.data.data;
 
     // Isi elemen select dengan daftar tahun
@@ -84,7 +84,9 @@ const chart = async () => {
 };
 chart();
 const chartApply = async () => {
+
     const resApply = await axios.get("/api/get-data-apply"
+
     );
     const { total_ditolak, total_lulus, total_pendaftar } =
         resApply.data.result;
