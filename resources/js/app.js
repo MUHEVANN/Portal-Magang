@@ -10,7 +10,6 @@ const chart = async () => {
     const tahun = document.getElementById("tahun");
     const chartId = document.getElementById("charts");
     let myChart; // Variabel untuk menyimpan objek grafik
-
     const monthNames = [
         "Januari",
         "Februari",
@@ -65,7 +64,9 @@ const chart = async () => {
     tahun.addEventListener("change", changeYear);
 
     // Ambil daftar tahun dari server
+
     const resYear = await axios.get(`/api/get-year`);
+
     const years = resYear.data.data;
 
     // Isi elemen select dengan daftar tahun

@@ -26,14 +26,14 @@ class KonfirmasiTest extends TestCase
     }
     public function test_lulus(): void
     {
-        $response = $this->get('apply-status-konfirm/6');
+        $response = $this->get('apply-status-konfirm/1');
         $response->assertRedirect('/pendaftar');
         $this->assertEquals('success', session('success'));
     }
 
     public function test_ditolak(): void
     {
-        $response = $this->get('apply-status-reject/5');
+        $response = $this->get('apply-status-reject/2');
         $response->assertRedirect('/pendaftar');
         $this->assertEquals('Apply job berhasil dikonfirmasi', session('success'));
     }

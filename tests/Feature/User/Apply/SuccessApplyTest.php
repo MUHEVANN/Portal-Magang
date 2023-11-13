@@ -12,7 +12,7 @@ class SuccessApplyTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::where('id', 9)->first();
+        $user = User::where('id', 13)->first();
         $this->actingAs($user);
     }
     /**
@@ -21,7 +21,7 @@ class SuccessApplyTest extends TestCase
     public function test_example(): void
     {
         $response = $this->post('/apply-form', [
-            'job_magang_ketua' => 1,
+            'job_magang_ketua' => 6,
             'cv_pendaftar' => 'user.pdf',
         ]);
 
