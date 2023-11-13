@@ -41,7 +41,7 @@
                             </div>
                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                 <div class="me-2">
-                                    <h6 class="mb-0">Pending</h6>
+                                    <h6 class="mb-0">Menunggu</h6>
                                 </div>
                                 <div class="user-progress d-flex align-items-center gap-1">
                                     <h6 class="mb-0" id="pending"></h6>
@@ -87,8 +87,6 @@
                                 </div>
                             </div>
                         </li>
-
-
                     </ul>
                 </div>
             </div>
@@ -97,7 +95,6 @@
             <div class="card h-auto">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h5 class="card-title m-0 me-2">User</h5>
-
                 </div>
                 <div class="card-body">
                     <ul class="p-0 m-0">
@@ -140,11 +137,11 @@
                 <canvas id="charts"></canvas>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4 ">
-            <div class="card container-chart w-full p-3">
-                <canvas id="charts-apply">d</canvas>
+        <di v class="col-md-6 col-lg-4">
+            <div class="card container-chart w-full p-3" id="status">
+                <canvas id="charts-apply" style="width: 100%;"></canvas>
             </div>
-        </div>
+    </div>
     </div>
 @endsection
 @section('script')
@@ -154,7 +151,6 @@
                 type: "GET",
                 url: "/dashboard-data",
                 success: function(response) {
-                    // console.log(response.result);
                     $('#lulus').html(response.result.total_lulus);
                     $('#ditolak').html(response.result.total_ditolak);
                     $('#pending').html(response.result.total_pendaftar);

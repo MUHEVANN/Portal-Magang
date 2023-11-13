@@ -53,7 +53,8 @@
 
             @if (Auth::check())
                 <div x-data="{ open: false }" class="hidden sml:block relative z-20" x-on:click.outside='open = false'>
-                    <div x-on:click="open = ! open" class="flex cursor-pointer transition items-center gap-2">
+                    <div x-on:click="open = ! open" data-testid="menus"
+                        class="flex cursor-pointer transition items-center gap-2">
                         <strong>{{ Auth::user()->name }}</strong>
                         <img class="rounded-full object-cover w-8 h-8"
                             src=" {{ Auth::user()->profile_image === null ? asset('images/profile.jpg') : asset('storage/profile/' . Auth::user()->profile_image) }}"
@@ -82,7 +83,7 @@
                         </div>
                     </span>
                 </div>
-                <img src="{{ asset('assets/menu.svg') }}" alt="" class="sml:hidden"
+                <img src="{{ asset('assets/menu.svg') }}" data-testid="menus" alt="" class="sml:hidden"
                     x-on:click="isOpen = !isOpen">
             @else
                 <div class="flex justify-center items-center gap-4">

@@ -26,7 +26,7 @@
                 <p class="error-name"></p>
             </div>
             <div class="mb-3">
-                <label for="name">Email</label>
+                <label for="email">Email</label>
                 <div class="flex items-center">
                     <input type="email" name="email" id="email" style="margin-right: 0px"
                         class=" input-style w-3/5">
