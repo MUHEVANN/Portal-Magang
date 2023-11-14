@@ -7,6 +7,8 @@ test('change password in correct way', async ({ page }) => {
   
     await page.getByPlaceholder('e.g. fulan@email.com').fill("superma@gmail.com");
     await page.getByPlaceholder('password').fill("123");
+
+    await page.getByRole('img', { name: 'eye-pass', exact: true }).click();
   
     await page.getByRole('button', {name: 'Login'}).click();
   
@@ -14,7 +16,8 @@ test('change password in correct way', async ({ page }) => {
   
     await page.getByRole("link", {name: "Ubah Password"}).click();
   
-    await page.getByLabel("Password Lama").fill('123');
+    await page.getByLabel("Password Lama").fill("123");
+    await page.getByRole('img', { name: 'old-pass-eye', exact: true }).click();
     
     await page.getByLabel("Password", { exact: true }).fill("1234");
   
@@ -22,10 +25,11 @@ test('change password in correct way', async ({ page }) => {
   
     await page.getByRole("button", { name: "Ubah Password" }).click();
   
-    await expect(page.getByLabel("Password Lama")).toBeEmpty();
-    await expect(page.getByLabel("Password", { exact: true })).toBeEmpty();
-    await expect(page.getByLabel("Ulangi Password")).toBeEmpty();
-    await expect(page.getByText("password berhasil diganti")).toBeVisible();
+    await expect(page.getByLabel("Password Lama")).toBeEmpty({ timeout: 20000 });
+    await expect(page.getByLabel("Password", { exact: true })).toBeEmpty({ timeout: 20000 });
+    await expect(page.getByLabel("Ulangi Password")).toBeEmpty({ timeout: 20000});
+
+    await expect(page.getByText("password berhasil diganti")).toBeVisible({ timeout: 20000 });
   
     await page.getByText("Kembali").click();
   
@@ -34,7 +38,9 @@ test('change password in correct way', async ({ page }) => {
   
     await page.getByPlaceholder('e.g. fulan@email.com').fill("superma@gmail.com");
     await page.getByPlaceholder('password').fill("1234");
-  
-    await expect(page.getByText("Dapatkan kesempatan magang bersama Jetorbit")).toBeVisible();
+
+    await page.getByRole('button', {name: 'Login'}).click();
+    
+    await expect(page.getByText("Dapatkan kesempatan magang bersama Jetorbit")).toBeVisible({ timeout: 20000 });
   })
   

@@ -52,7 +52,7 @@
                         name="password" class="auth-input" placeholder="password">
                     <img src="assets/pass.svg" class="absolute w-6 top-2 left-1" alt="">
                     <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator'
-                        x-on:click='toggle()' class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                        x-on:click='toggle()' class="absolute cursor-pointer w-6 top-2 right-3" alt="eye-pass">
                 </div>
                 <input type="hidden" name="g-recaptcha-response" id='g-recaptcha-response'>
                 @if ($errors->any() && $errors->password)

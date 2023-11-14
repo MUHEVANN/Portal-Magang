@@ -18,7 +18,6 @@ test('forget password', async ({ page }) => {
 
     await page.getByRole("button", { name: "Kirim Kode" }).click(); 
 
-    await expect()
 
     await expect(page.getByText("Email tidak ada")).toBeVisible({ timeout: 30000 });
 

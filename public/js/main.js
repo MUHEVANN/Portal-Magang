@@ -315,7 +315,6 @@ document.addEventListener("alpine:init", () => {
             } else {
                 if (this.single_click < 1) {
                     this.single_click++;
-                    console.log("send");
                 } else {
                     console.log("anda sudah menklik, slihkan tunggu!");
                     this.$event.preventDefault();
