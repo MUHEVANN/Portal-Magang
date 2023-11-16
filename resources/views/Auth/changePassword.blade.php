@@ -33,7 +33,7 @@
                 <input :type="!isVisible ? 'password' : 'text'" x-model="old_pass" id='password_lama' name="password_lama"
                     class=" bg-gray-100 py-2 px-2 w-full" required>
                 <img :src="!isVisible ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle()'
-                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="old-pass-eye">
             </div>
 
             <span class="text-red-500 mb-2" x-text="old_pass_invalid"></span>
@@ -46,7 +46,7 @@
                 <input :type="!isVisible1 ? 'password' : 'text'" x-model="new_pass" id='password_baru' name="password_baru"
                     class=" bg-gray-100 py-2 px-2 w-full" required>
                 <img :src="!isVisible1 ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle1()'
-                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="new-pass-eye">
             </div>
 
 
@@ -58,7 +58,7 @@
                 <input :type="!isVisible2 ? 'password' : 'text'" x-model="repeat_pass" id='confirm_password'
                     name="confirm_password" class=" bg-gray-100 py-2 px-2 w-full" required>
                 <img :src="!isVisible2 ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle2()'
-                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="repeat-new-pass-eye">
             </div>
             <span class="text-red-500" x-text="repeat_pass_invalid"></span> <br>
 

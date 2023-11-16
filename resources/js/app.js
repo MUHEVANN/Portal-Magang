@@ -31,8 +31,11 @@ const chart = async () => {
             // Hapus objek grafik sebelumnya jika ada
             myChart.destroy();
         }
-        const user = await axios.get(`api/get-apply?filter_year=${selectedYear}`
-        );
+
+        console.log(selectedYear);
+
+        const user = await axios.get(`api/get-apply?filter_year=${selectedYear}`);
+
         const months = user.data.data[0].months;
         myChart = new Chart(chartId, {
             type: "bar",
@@ -84,31 +87,37 @@ const chart = async () => {
 };
 chart();
 const chartApply = async () => {
-
-    const resApply = await axios.get("/api/get-data-apply"
-
-    );
+    const resApply = await axios.get("/api/get-data-apply");
+    console.log(resApply);
     const { total_ditolak, total_lulus, total_pendaftar } =
         resApply.data.result;
 
-    // applyData,map((item)=>item.total)
+    const status = document.getElementById("status");
+        // applyData,map((item)=>item.total)
+    if(total_ditolak <= 0 && total_lulus <= 0 && total_pendaftar <= 0) {
+        console.log('tidak ada data tersedia');
+        status.textContent = 'tidak ada data tersedia';
+        return false;
+    }
+    
     const apply = document.getElementById("charts-apply");
+
     const data = {
-        labels: ["Ditolak", "Lulus", "Pending"],
+        labels: ["Ditolak", "Lulus", "Menunggu"],
         datasets: [
             {
                 label: "My First Dataset",
                 data: [total_ditolak, total_lulus, total_pendaftar],
                 backgroundColor: [
                     "#d05f5f", // Merah
-                    "#5FD068", // Hijau yang kurang cerah
+                    "lightgreen", // Hijau yang kurang cerah
                     "#5f87d0", // Biru
                 ],
                 hoverOffset: 4,
             },
         ],
     };
-    let applyChart = new Chart(apply, {
+    new Chart(apply, {
         type: "doughnut",
         data: data,
     });

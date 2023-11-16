@@ -64,7 +64,7 @@
                 <input :type="!isVisible1 ? 'password' : 'text'" x-model="new_forget_pass" id='password' name="password"
                     class=" bg-gray-100 py-2 px-2 w-full" placeholder="Password baru kamu">
                 <img :src="!isVisible1 ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle1()'
-                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="eye-pass">
             </div>
 
             <label for="repeat_password">Ulangi Password</label> <br>
@@ -72,7 +72,7 @@
                 <input :type="!isVisible2 ? 'password' : 'text'" x-model="repeat_new_forget_pass" id='repeat_password'
                     name="repeat_password" class=" bg-gray-100 py-2 px-2 w-full" placeholder="Ulangi password baru kamu">
                 <img :src="!isVisible2 ? 'assets/close-eye.svg' : 'assets/eye.svg'" id='indicator' x-on:click='toggle2()'
-                    class="absolute cursor-pointer w-6 top-2 right-3" alt="">
+                    class="absolute cursor-pointer w-6 top-2 right-3" alt="eye-pass-repeated">
             </div>
             <span class="text-red-500" x-text="new_forget_password_invalid"></span> <br>
 

@@ -59,7 +59,7 @@
 
             <div x-show.transition="current_pos == 2">
 
-                <label for="alamat">Job Ketua</label> <br>
+                <label for="job_ketua">Job Ketua</label> <br>
                 <select name="job_magang_ketua" id="job_ketua" x-model="job_lead" class="input-style">
                     <option value="">Pilih Job Magang</option>
                     @foreach ($lowongan as $item)
@@ -99,8 +99,8 @@
 
 
                 <hr class="my-5">
-                <label for="tipe-magang">Nomor WA</label> <br>
-                <input type="number" class="input-style" name="no_hp">
+                <label for="no_wa">Nomor WA</label> <br>
+                <input type="number" id="no_wa" class="input-style" name="no_hp">
                 <label for="tipe-magang">Tipe Magang</label> <br>
                 <select x-model='tipe_magang' name="tipe_magang" class="input-style" id="tipe-magang">
                     <option class="text-slate-500" value="" selected disabled>--Pilih Salah Satu--</option>
@@ -159,8 +159,8 @@
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-                            <label for="tipe-magang">Nomor WA</label> <br>
-                            <input type="number" class="input-style" name="no_hp_anggota[]">
+                            <label for="no_wa">Nomor WA</label> <br>
+                            <input type="number" class="input-style" id="no_wa" name="no_hp_anggota[]">
                             <label for="cv">CV</label>
                             <input type="file" name="cv_anggota[]" class="input-style" id="cv"
                                 x-model="ar.cv" accept=".pdf" />

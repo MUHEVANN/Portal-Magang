@@ -12,7 +12,7 @@ document.addEventListener("alpine:init", () => {
         end_to: 10,
 
         statusError: "",
-
+        statusCode: '',
         lowonganLen: 0,
 
         // call when page first load and call 'getSorted()' function
@@ -34,40 +34,40 @@ document.addEventListener("alpine:init", () => {
         fetchSearch(param) {
             if (param.value == "") this.result();
             this.search_type = param.value;
+            console.log(param.value.toLowerCase());
             let search = [];
             this.lowongan.filter((a) => {
-                if (a.name.toLowerCase().includes(param.value)) {
+                if (a.name.toLowerCase().includes(param.value.toLowerCase())) {
                     search.push(a);
                 }
             });
             this.lowongan_search = search;
         },
 
-        // Sort the data, newest or oldest by fetching data and put in on variable 'lowogang'
+        // Sort the data, newest or oldest by fetching data and put in on variable 'lowongan'
         async getSorted(param = "terbaru") {
-            await (
-                await fetch(`/filters/${param}/`)
-            )
-                .json()
-                .then((res) => {
-                    this.lowongan = res;
-                    console.log(res.length);
-                    this.lowonganLen = res.length;
-                    return res;
-                })
-                .catch((er) => {
-                    this.statusError = er;
-                    console.log(er);
-                });
+
+            const data = await fetch(`/filters/${param}/`);
+            this.statusCode = data.status;
+
+            data.json().then((res) => {
+                this.lowongan = res;
+                this.lowonganLen = res.length;
+                return res;
+            })
+            .catch((er) => {
+                this.statusError = er;
+                console.log(er);
+            });
         },
 
         // check if jobs are empty or not then load message
         isEmpty() {
-            console.log(this.lowonganLen);
+            console.log(this.lowonganLen, this.statusCode);
             if (this.result() == "" && this.search_type != "") {
                 this.placeholder = "Tidak Ada Hasil!";
                 return true;
-            } else if (this.lowonganLen <= 0){
+            } else if (this.lowonganLen <= 0 && this.statusCode == 200){
                 this.placeholder = "Oops... Sepertinya lowongan tidak tersedia";
                 return true;
             } else if (
@@ -86,7 +86,6 @@ document.addEventListener("alpine:init", () => {
                 return false;
             }
         },
-
         // pagination var js
         paginate: function () {
             if (this.search_type != "") return;
@@ -316,7 +315,6 @@ document.addEventListener("alpine:init", () => {
             } else {
                 if (this.single_click < 1) {
                     this.single_click++;
-                    console.log("send");
                 } else {
                     console.log("anda sudah menklik, slihkan tunggu!");
                     this.$event.preventDefault();
@@ -616,15 +614,17 @@ document.addEventListener("alpine:init", () => {
                 return e.preventDefault();
             }
 
-            localStorage.setItem(
-                "waitFor",
-                JSON.stringify({
-                    isWaiting: true,
-                    countdown: 30,
-                })
-            );
-
-            this.isClicked = 1;
+            if(this.valid_email_pass){
+                localStorage.setItem(
+                        "waitFor",
+                    JSON.stringify({
+                        isWaiting: true,
+                        countdown: 30,
+                    })
+                );
+                this.isClicked = 1;
+            }
+                        
             if (!this.valid_email_pass) {
                 this.alertChangePass("Anda harus memasukan email!", "error");
                 return e.preventDefault();
